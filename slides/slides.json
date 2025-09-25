@@ -1,0 +1,19 @@
+[
+  {
+    "slug": "teste1",
+    "title": "Teste 1",
+    "event": "Testando o site",
+    "date": "2025-09-25",
+    "html": "teste1.html",
+    "pdf": "teste1.pdf"
+  },
+  {
+    "slug": "air-arr-2025",
+    "title": "Teste 2",
+    "event": "Testando o site",
+    "date": "2025-09-25",
+    "html": "teste2.html",
+    "pdf": "teste2.pdf"
+  }
+]
+
