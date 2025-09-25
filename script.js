@@ -63,10 +63,11 @@ const i18n = {
     pubsTitle: 'Publicações',
     pubsIntro: 'Artigos acadêmicos, livros e relatórios de pesquisa, op-eds e repositórios/código.',
     pubsTypes: {
-      article: 'Artigos acadêmicos',
-      'book-report': 'Livros e relatórios',
-      'op-ed': 'Op-eds',
-      repo: 'Repositórios / código'
+      "article": "Artigos acadêmicos",
+      "book-chapter": "Livros e capítulos",
+      "report": "Relatórios",
+      "op-ed": "Op-eds",
+      "repo": "Repositórios / código"
     },
     openLink: 'Acessar',
     doi: 'DOI',
@@ -100,10 +101,11 @@ const i18n = {
     pubsTitle: 'Publications',
     pubsIntro: 'Academic articles, books/reports, op-eds, and repositories/code.',
     pubsTypes: {
-      article: 'Academic articles',
-      'book-report': 'Books & reports',
-      'op-ed': 'Op-eds',
-      repo: 'Repositories / code'
+      "article": "Academic articles",
+      "book-chapter": "Books & chapters",
+      "report": "Reports",
+      "op-ed": "Op-eds",
+      "repo": "Repositories / code"
     },
     openLink: 'Access',
     doi: 'DOI',
@@ -503,7 +505,7 @@ async function renderPublications(lang) {
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
   // ordem fixa das seções
-  const order = ['article','book-report','op-ed','repo'];
+  const order = ['article','book-chapter','report','op-ed','repo'];
 
   const container = document.getElementById('pubs');
   const html = order.map(tp => {
@@ -552,33 +554,44 @@ async function renderCV(lang) {
   `);
   document.getElementById('cv-body').innerHTML = marked.parse(md, { breaks: true });
 
-  // Publicações selecionadas (cv:true), formato simples (texto corrido)
+  // Selected publications (cv:true)
   try {
-    const pubs = (await getJSON('publications/publications.json'))
-      .filter(p => p.lang === lang && p.cv === true)
-      .sort((a,b) => (a.date < b.date ? 1 : -1));
+  const all = await getJSON('publications/publications.json');
 
-    if (pubs.length) {
-      const wrap = document.getElementById('cv-pubs');
-      const items = pubs.map(p => {
+  // EN: only publications in English
+  // PT: all selected publications (pt + en)
+  const selected = all.filter(p => {
+    if (p.cv !== true) return false;
+    if (lang === 'en') return p.lang === 'en';
+    // lang === 'pt'
+    return p.lang === 'pt' || p.lang === 'en';
+  }).sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  if (selected.length) {
+    const wrap = document.getElementById('cv-pubs');
+    const order = ['article','book-chapter','report','op-ed','repo'];
+
+    const sections = order.map(tp => {
+      const items = selected.filter(p => p.type === tp);
+      if (!items.length) return '';
+      const list = items.map(p => {
         const parts = [];
         const authors = fmtAuthors(p.authors);
         if (authors) parts.push(authors);
-        if (p.title) parts.push(`“${p.title}”`);
-        // veículo e data — apenas esses dois, sem URL/DOI
+        if (p.title)  parts.push(`“${p.title}”`);
         const tail = [p.publication, p.date].filter(Boolean).join(', ');
         if (tail) parts.push(tail);
         return `<li>${parts.join('. ')}</li>`;
       }).join('');
+      const secTitle = i18n[lang].pubsTypes[tp] || tp;
+      return `<h3>${secTitle}</h3><ul>${list}</ul>`;
+    }).join('');
 
-      wrap.innerHTML = `
-        <h2>${i18n[lang].selectedPubsTitle}</h2>
-        <ul>${items}</ul>
-      `;
-    }
-  } catch (e) {
-    // silenciosamente ignora erro de publicações no CV
+    wrap.innerHTML = `<h2>${i18n[lang].selectedPubsTitle}</h2>${sections}`;
   }
+} catch (e) {
+  // silently ignores errores while loading publications
+}
 }
 
 

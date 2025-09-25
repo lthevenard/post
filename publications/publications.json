@@ -8,7 +8,7 @@
     "url": "https://periodicos.fgv.br/revdireitogv/article/view/91354",
     "lang": "pt",
     "doi": "https://doi.org/10.1690/2317-6172202414",
-    "cv": true
+    "cv": false
   },
   {
     "type": "article",
@@ -33,12 +33,32 @@
     "cv": false
   },
   {
-    "type": "book-report",
+    "type": "book-chapter",
     "title": "Agências Reguladoras Estaduais: Pesquisa Empírica sobre sua Maturidade Institucional",
     "authors": ["Eduardo Jordão", "Lucas Thevenard", "Bernardo Schwaitzer"],
     "date": "2024-07-05",
     "publication": "Editora Juspodivm",
     "url": "https://direitorio.fgv.br/publicacao/agencias-reguladoras-estaduais-pesquisa-empirica-sobre-sua-maturidade-institucional",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "report",
+    "title": "Ferramentas de Melhoria Regulatória no Setor de Seguros: Estudo empírico e recomendações de aprimoramento",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Luiz Guilherme Cantarelli", "Luiza Szczerbacki Castello Branco"],
+    "date": "2025-09-01",
+    "publication": "FGV Direito Rio",
+    "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/ferramentas-de-melhoria-regulatoria-no-setor-de-seguros-policy-report",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "report",
+    "title": "Recursos em queda, obrigações em alta: A sustentabilidade da força de trabalho nas agências reguladoras",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Luiz Guilherme Cantarelli", "Luiza Szczerbacki Castello Branco"],
+    "date": "2025-09-05",
+    "publication": "FGV Direito Rio",
+    "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/recursos-em-queda-obrigacoes-em-alta-sustentabilidade-da-forca-de-trabalho-nas-agencias",
     "lang": "pt",
     "cv": true
   },
@@ -50,6 +70,26 @@
     "publication": "Conjuntura Econômica (nº 76)",
     "url": "https://periodicos.fgv.br/rce/article/view/85807/80907",
     "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "How Many Are Too Few? Analyzing the Diversity of Regulatory Options Considered in Brazilian RIAs",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2025-03-27",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/how-many-are-too-few-analyzing-diversity-regulatory-options-considered-brazilian-rias7",
+    "lang": "en",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Regulatory Impact Analysis in Brazil: An Assessment of Exemptions and Ex Post Reviews",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2024-10-23",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/regulatory-impact-analysis-brazil-assessment-exemptions-and-ex-post-reviews",
+    "lang": "en",
     "cv": false
   },
   {
