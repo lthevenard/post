@@ -1,19 +1,22 @@
 [
   {
-    "slug": "teste1",
-    "title": "Teste 1",
+    "group": "2025-09-test",
+    "slug": "teste_pt",
+    "title": "Teste",
     "event": "Testando o site",
     "date": "2025-09-25",
-    "html": "teste1.html",
-    "pdf": "teste1.pdf"
+    "html": "teste_pt.html",
+    "pdf": "teste_pt.pdf",
+    "lang": "pt"
   },
   {
-    "slug": "air-arr-2025",
-    "title": "Teste 2",
-    "event": "Testando o site",
+    "group": "2025-09-test",
+    "slug": "test_en",
+    "title": "Test",
+    "event": "Testing the website",
     "date": "2025-09-25",
-    "html": "teste2.html",
-    "pdf": "teste2.pdf"
+    "html": "test_en.html",
+    "pdf": "test_en.pdf",
+    "lang": "en"
   }
 ]
-

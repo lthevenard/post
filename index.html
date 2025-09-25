@@ -1,32 +1,29 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lucas Thevenard — Pesquisa, Blog, Slides</title>
   <meta name="description" content="Blog, CV acadêmico e slides (Marp) de Lucas Thevenard." />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Markdown renderer (leve e CDN-friendly) -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="brand">
-      <a href="#/" class="brand-link">Lucas Thevenard</a>
-      <span class="tagline">Regulação, dados e participação social</span>
+      <a href="#/pt" class="brand-link" id="brandLink">Lucas Thevenard</a>
+      <span class="tagline" id="tagline">Regulação, dados e participação social</span>
     </div>
-    <nav class="nav">
-      <a href="#/" data-route>Início</a>
-      <a href="#/blog" data-route>Blog</a>
-      <a href="#/cv" data-route>CV</a>
-      <a href="#/slides" data-route>Slides</a>
+    <nav class="nav" id="mainNav">
+      <a href="#/pt" data-route="home" id="navHome">Início</a>
+      <a href="#/pt/blog" data-route="blog" id="navBlog">Blog</a>
+      <a href="#/pt/cv" data-route="cv" id="navCV">CV</a>
+      <a href="#/pt/slides" data-route="slides" id="navSlides">Slides</a>
     </nav>
+    <button class="lang-btn" id="langToggle">See this page in English</button>
   </header>
 
-  <main id="app" class="container">
-    <!-- conteúdo dinâmico aqui -->
-  </main>
+  <main id="app" class="container"></main>
 
   <footer class="site-footer">
     <p>© <span id="year"></span> Lucas Thevenard · Feito com GitHub Pages</p>

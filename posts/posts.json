@@ -1,8 +1,20 @@
 [
   {
-    "slug": "2025-09-hello-world",
-    "title": "Hello, World (e por que regulação precisa de dados)",
+    "group": "2025-09-hello-world",
+    "slug": "2025-09-hello-world-pt",
+    "title": "Hello, World",
     "date": "2025-09-25",
-    "tags": ["regulação", "dados", "participação"]
+    "tags": ["regulação", "dados", "participação"],
+    "lang": "pt",
+    "file": "posts/2025-09-hello-world.pt.md"
+  },
+  {
+    "group": "2025-09-hello-world",
+    "slug": "2025-09-hello-world-en",
+    "title": "Hello, World",
+    "date": "2025-09-25",
+    "tags": ["regulation", "data", "participation"],
+    "lang": "en",
+    "file": "posts/2025-09-hello-world.en.md"
   }
 ]

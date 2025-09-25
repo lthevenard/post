@@ -119,15 +119,15 @@ td.player1 {
 
 ![bg](section_bg.png)
 
-# Teste 2 
+# Teste
 **Criação do novo site – 2025.2**
 Lucas Thevenard
 
 ---
 <!-- 
 paginate: true 
-header: Teste 2
-footer: lucas.gomes@fgv.br | DD/MM/AAAA
+header: Teste
+footer: lucas.gomes@fgv.br | 25/09/1986
 -->
 
 ## Objetivo deste deck

@@ -119,16 +119,16 @@ td.player1 {
 
 ![bg](section_bg.png)
 
-# Teste 1 
-**Criação do novo site – 2025.2**
+# Test
+**Criating a new website – 2025.2**
 Lucas Thevenard
 
 ---
 <!-- 
 paginate: true 
-header: Teste 1
-footer: lucas.gomes@fgv.br | DD/MM/AAAA
+header: Test
+footer: lucas.gomes@fgv.br | 25/09/1986
 -->
 
-## Objetivo deste deck
-- Fazer o primeiro teste do meu novo site de slides.
+## Goal of this deck
+- Conduct the first test of my website's functionality
