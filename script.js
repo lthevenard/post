@@ -1,6 +1,6 @@
-/* SPA bilingue por hash:
-   - Rotas: #/pt, #/pt/blog, #/en, #/en/blog, etc.
-   - Blog e Slides filtram por lang via JSON.
+/* SPA bilingual by hash:
+   - Routes: #/pt, #/pt/blog, #/en, #/en/blog, etc.
+   - Blog & Slides filtered by lang via JSON.
 */
 const app = document.getElementById('app');
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -11,7 +11,9 @@ const routes = {
   'blog': renderBlogIndex,
   'post': renderBlogPost,
   'cv': renderCV,
-  'slides': renderSlides
+  'slides': renderSlides,
+  'projects': renderProjectsIndex,
+  'project': renderProjectPage
 };
 
 const cache = {};
@@ -34,7 +36,7 @@ const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
     tagline: 'Regulação, dados e participação social',
-    nav: { home: 'Início', blog: 'Blog', cv: 'CV', slides: 'Slides' },
+    nav: { home: 'Início', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projetos' },
     toggle: 'See this page in English',
     homeTitle: 'Bem-vindo!',
     homeIntro:
@@ -48,12 +50,15 @@ const i18n = {
     downloadPDF: 'Baixar PDF',
     notFound: 'Página não encontrada',
     errorTitle: 'Ops…',
-    errorBody: 'Algo deu errado ao carregar o conteúdo.'
+    errorBody: 'Algo deu errado ao carregar o conteúdo.',
+    projectsIntro: 'Coleções de slides por projeto/aula. Cada página reúne apenas os slides daquele projeto, em ordem cronológica.',
+    viewProject: 'Ver projeto',
+    backToProjects: '← Voltar aos projetos'
   },
   en: {
     title: 'Lucas Thevenard — Research, Blog, Slides',
     tagline: 'Regulation, data & public participation',
-    nav: { home: 'Home', blog: 'Blog', cv: 'CV', slides: 'Slides' },
+    nav: { home: 'Home', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projects' },
     toggle: 'Veja esta página em português',
     homeTitle: 'Welcome!',
     homeIntro:
@@ -67,11 +72,14 @@ const i18n = {
     downloadPDF: 'Download PDF',
     notFound: 'Page not found',
     errorTitle: 'Oops…',
-    errorBody: 'Something went wrong while loading content.'
+    errorBody: 'Something went wrong while loading content.',
+    projectsIntro: 'Slide collections by project/course. Each page shows only the slides for that project, in chronological order.',
+    viewProject: 'See project',
+    backToProjects: '← Back to projects'
   }
 };
 
-// Estado de navegação atual (para alternar idioma preservando a página)
+// State of current navigation (to change language preserving the "same page")
 let current = { lang: 'pt', path: '/', query: '' };
 
 function parseHashOrRedirect() {
@@ -80,10 +88,10 @@ function parseHashOrRedirect() {
     location.replace('#/pt');
     return null;
   }
-  // Garante formato /<lang>/<path...>
+  // Ensures format /<lang>/<path...>
   const match = raw.match(/^\/(pt|en)(\/[^?]*)?(\?.*)?$/);
   if (!match) {
-    // Possível hash sem idioma (ex: "#/blog"); injeta pt.
+    // Possible hash without language (ex: "#/blog"); injects pt.
     const fix = raw.startsWith('/') ? raw : '/' + raw;
     location.replace('#/pt' + fix);
     return null;
@@ -96,13 +104,13 @@ function parseHashOrRedirect() {
 
 function navigate() {
   const parsed = parseHashOrRedirect();
-  if (!parsed) return; // já redirecionou
+  if (!parsed) return; // already redirected
   current = parsed;
 
-  // Atualiza UI para o idioma (título, nav, botão, atributo lang)
+  // Updates the UI for the current language (title, nav, button, lang atribute)
   updateUIForLang(current.lang);
 
-  // Resolve rota
+  // Resolves the route
   const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0]; // '', 'blog', 'cv', ...
   const route = routes[seg] || renderNotFound;
   const params = new URLSearchParams(current.query.replace(/^\?/, ''));
@@ -119,7 +127,7 @@ function updateUIForLang(lang) {
   document.getElementById('brandLink').setAttribute('href', `#/${lang}`);
   document.getElementById('tagline').innerHTML = t.tagline;
 
-  const map = { navHome: '', navBlog: 'blog', navCV: 'cv', navSlides: 'slides' };
+  const map = { navHome: '', navBlog: 'blog', navCV: 'cv', navSlides: 'slides', navProjects: 'projects' };
   Object.entries(map).forEach(([id, p]) => {
     const a = document.getElementById(id);
     a.textContent = i18n[lang].nav[id.replace('nav','').toLowerCase()];
@@ -130,26 +138,40 @@ function updateUIForLang(lang) {
   toggle.textContent = t.toggle;
   toggle.onclick = async () => {
     const other = lang === 'pt' ? 'en' : 'pt';
-    // tenta preservar a "mesma" página ao trocar idioma
-    const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0]; // '', 'blog', 'post', ...
+    const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
     let targetHash = `#/${other}${current.path}${current.query}`;
 
     if (seg === 'post') {
-      // se for um post, tenta mapear por group
       const posts = await getJSON('posts/posts.json');
       const params = new URLSearchParams(current.query.replace(/^\?/, ''));
       const slug = params.get('slug');
       const here = findPostBySlugAndLang(posts, slug, lang);
       if (here && here.group) {
         const there = counterpartByGroup(posts, here.group, other);
-        if (there) targetHash = `#/${other}/post?slug=${encodeURIComponent(there.slug)}`;
-        else {
-          // se não existir, tenta mesmo slug no outro idioma; senão cai no índice
-          const sameSlug = findPostBySlugAndLang(posts, slug, other);
-          targetHash = sameSlug ? `#/${other}/post?slug=${encodeURIComponent(slug)}` : `#/${other}/blog`;
+        targetHash = there ? `#/${other}/post?slug=${encodeURIComponent(there.slug)}` : `#/${other}/blog`;
+      }
+    } else if (seg === 'project') {
+      const [projects, slidesAll] = await Promise.all([
+        getJSON('projects/projects.json'),
+        getJSON('slides/slides.json')
+      ]);
+      const params = new URLSearchParams(current.query.replace(/^\?/, ''));
+      const slug = params.get('slug');
+      const here = findProjectBySlugAndLang(projects, slug, lang);
+      if (here && here.group) {
+        const there = counterpartByGroup(projects, here.group, other);
+        if (there) {
+          const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug);
+          targetHash = thereHasSlides ? `#/${other}/project?slug=${encodeURIComponent(there.slug)}` : `#/${other}/projects`;
+        } else {
+          targetHash = `#/${other}/projects`;
         }
+      } else {
+        targetHash = `#/${other}/projects`;
       }
     }
+
+
     location.hash = targetHash;
   };
 }
@@ -181,7 +203,19 @@ function renderNotFound(lang) {
   return Promise.resolve();
 }
 
-// ---- Páginas
+function projectSlugsWithSlides(slides, lang) {
+  const set = new Set();
+  slides.forEach(s => {
+    if (s.lang === lang && s.project) set.add(s.project);
+  });
+  return set;
+}
+
+function findProjectBySlugAndLang(list, slug, lang) {
+  return list.find(p => p.slug === slug && p.lang === lang);
+}
+
+// ---- Pages
 async function renderHome(lang) {
   const t = i18n[lang];
   setContent(`
@@ -194,7 +228,7 @@ async function renderHome(lang) {
     </section>
   `);
 
-  // Carrega últimos posts do índice (filtrando por idioma)
+  // Loads the last posts in the index (filtering by language)
   const res = await fetch('posts/posts.json');
   const posts = (await res.json()).filter(p => p.lang === lang);
   const latest = posts.slice(0, 3);
@@ -270,7 +304,7 @@ async function renderBlogPost(lang, params) {
   if (!mdRes.ok) throw new Error(`Não foi possível carregar ${item.file}`);
   const md = await mdRes.text();
 
-  // Link para versão no outro idioma (quando existir)
+  // Link for the version in another language (when available)
   const other = lang === 'pt' ? 'en' : 'pt';
   const there = item.group ? counterpartByGroup(posts, item.group, other) : null;
   const switchLink = there
@@ -286,6 +320,126 @@ async function renderBlogPost(lang, params) {
     </div>
   `);
   document.getElementById('post').innerHTML = marked.parse(md, { breaks: true });
+}
+
+
+async function renderProjectsIndex(lang) {
+  const t = i18n[lang];
+  setContent(`
+    <section class="card prose">
+      <h1>${lang === 'pt' ? 'Projetos' : 'Projects'}</h1>
+      <p>${t.projectsIntro}</p>
+    </section>
+    <section class="card">
+      <div class="list" id="projects-list"></div>
+    </section>
+  `);
+
+  const [projectsAll, slidesAll] = await Promise.all([
+    getJSON('projects/projects.json'),
+    getJSON('slides/slides.json')
+  ]);
+
+  const allowed = projectSlugsWithSlides(slidesAll, lang);
+
+  const projects = projectsAll
+    .filter(p => p.lang === lang && allowed.has(p.slug))
+    .sort((a, b) => a.title.localeCompare(b.title, lang));
+
+  const list = document.getElementById('projects-list');
+
+  if (!projects.length) {
+    list.innerHTML = `<div class="list-item">${lang === 'pt' ? 'Nenhum projeto com slides ainda.' : 'No projects with slides yet.'}</div>`;
+    return;
+  }
+
+  list.innerHTML = projects.map(p => `
+    <div class="list-item">
+      <div>
+        <div class="list-item-title">
+          <a href="#/${lang}/project?slug=${encodeURIComponent(p.slug)}">${p.title}</a>
+        </div>
+        <div class="muted" style="color:#9ca3af;font-size:.9rem">
+          ${p.tags?.join(' • ') || ''}
+        </div>
+      </div>
+      <a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(p.slug)}">
+        ${lang === 'pt' ? 'Abrir' : 'Open'}
+      </a>
+    </div>
+  `).join('');
+}
+
+async function renderProjectPage(lang, params) {
+  const slug = params.get('slug');
+  if (!slug) return renderNotFound(lang);
+
+  const [projects, slidesAll] = await Promise.all([
+    getJSON('projects/projects.json'),
+    getJSON('slides/slides.json')
+  ]);
+
+  const project = findProjectBySlugAndLang(projects, slug, lang);
+  if (!project) return renderNotFound(lang);
+
+  const slides = slidesAll
+    .filter(s => s.lang === lang && s.project === slug)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  // Se não há slides, não exiba a página (comportamento "não aparece em lugar nenhum")
+  if (!slides.length) return renderNotFound(lang);
+
+  const t = i18n[lang];
+
+  // link para versão no outro idioma (somente se a versão-irmã TAMBÉM tiver slides)
+  const other = lang === 'pt' ? 'en' : 'pt';
+  const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
+  let switchLink = '';
+  if (twinProj) {
+    const twinHasSlides = slidesAll.some(s => s.lang === other && s.project === twinProj.slug);
+    if (twinHasSlides) {
+      switchLink = `<a class="badge" style="text-decoration:none" href="#/${other}/project?slug=${encodeURIComponent(twinProj.slug)}">
+        ${lang === 'pt' ? 'Ver esta página em inglês' : 'See this page in Portuguese'}
+      </a>`;
+    }
+  }
+
+  setContent(`
+    <section class="card prose">
+      <h1>${project.title}</h1>
+      <p>${project.description || ''}</p>
+      <p class="muted" style="color:#9ca3af">${project.tags?.map(tag => `#${tag}`).join(' ') || ''}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="#/${lang}/projects">${t.backToProjects}</a>
+        ${switchLink}
+      </div>
+    </section>
+    <section class="card">
+      <div class="list" id="proj-slides"></div>
+    </section>
+  `);
+
+  const list = document.getElementById('proj-slides');
+  list.innerHTML = slides.map(s => {
+    const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
+    const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+    return `
+      <div class="list-item" style="flex-wrap:wrap; gap:10px">
+        <div style="min-width:250px">
+          <div class="list-item-title">
+            <a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>
+          </div>
+          <div class="muted" style="color:#9ca3af;font-size:.9rem">
+            ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center">
+          <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
+          <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 
@@ -315,20 +469,24 @@ async function renderSlides(lang) {
     </section>
   `);
 
-  const all = await getJSON('slides/slides.json');
-  const items = all.filter(s => s.lang === lang);
-  const other = lang === 'pt' ? 'en' : 'pt';
+  const [allSlides, allProjects] = await Promise.all([
+    getJSON('slides/slides.json'),
+    getJSON('projects/projects.json')
+  ]);
+
+  const items = allSlides.filter(s => s.lang === lang).sort((a,b) => (a.date < b.date ? 1 : -1));
+  const allowed = projectSlugsWithSlides(allSlides, lang);
 
   const list = document.getElementById('slides-list');
   list.innerHTML = items.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
     const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
 
-    const twin = s.group ? counterpartByGroup(all, s.group, other) : null;
-    const twinLink = twin
-      ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
-           ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
-         </a>`
+    // badge "Ver projeto" só se houver metadado do projeto + houver ao menos 1 slide
+    const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
+    const showProj = proj && allowed.has(proj.slug);
+    const projLink = showProj
+      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
       : '';
 
     return `
@@ -344,13 +502,14 @@ async function renderSlides(lang) {
         <div style="display:flex; gap:10px; align-items:center">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
           <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
-          ${twinLink}
+          ${projLink}
         </div>
       </div>
     `;
   }).join('');
 }
 
-// Eventos
+
+// Events
 window.addEventListener('hashchange', navigate);
 window.addEventListener('load', navigate);

@@ -1,0 +1,26 @@
+[
+  {
+    "group": "regnum",
+    "slug": "projeto-regnum",
+    "lang": "pt",
+    "title": "Regulação em Números",
+    "description": "Materiais de apresentação e divulgação das pesquisas desenvolvidas no âmbito do projeto Regulação em Números da FGV Direito Rio.",
+    "tags": ["regulação", "pesquisa empírica", "ciência de dados"]
+  },
+  {
+    "group": "regnum",
+    "slug": "project-regnum",
+    "lang": "en",
+    "title": "Regulation in Numbers",
+    "description": "Presentation and dissemination materials of research developed under the project Regulação em Números at FGV Rio Law.",
+    "tags": ["regulation", "empirical research", "data science"]
+  },
+  {
+    "group": "td-26",
+    "slug": "teodec",
+    "lang": "pt",
+    "title": "Teoria da Decisão – 2026.1",
+    "description": "Repositório de slides do curso de Teoria da Decisão ministrado no primeiro semestre de 2026 na FGV Direito Rio.",
+    "tags": ["teoria da decisão", "graduação", "FGV Direito Rio"]
+  }
+]
