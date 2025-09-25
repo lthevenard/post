@@ -13,7 +13,8 @@ const routes = {
   'cv': renderCV,
   'slides': renderSlides,
   'projects': renderProjectsIndex,
-  'project': renderProjectPage
+  'project': renderProjectPage,
+  'archived': renderArchivedSlides
 };
 
 const cache = {};
@@ -35,17 +36,17 @@ function findPostBySlugAndLang(list, slug, lang) {
 const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
-    tagline: 'Regulação, dados e participação social',
+    tagline: 'Regulação, pesquisa empírica e ciência de dados',
     nav: { home: 'Início', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projetos' },
     toggle: 'See this page in English',
     homeTitle: 'Bem-vindo!',
     homeIntro:
-      'Este é o site de <strong>Lucas Thevenard</strong>, com textos sobre regulação, ciência de dados e participação social. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV acadêmico</a> e um repositório de <a href="#/pt/slides">slides</a> (Marp).',
+      'Me chamo <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV acadêmico</a> e um repositório de <a href="#/pt/slides">slides</a> (Marp).',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
-    blogIntro: 'Textos sobre regulação, AIR/ARR, participação, NLP e mais.',
+    blogIntro: 'extos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
     slidesIntro:
-      'Cada apresentação possui sua própria pasta em <code>/slides/&lt;slug&gt;/</code>, com um arquivo <strong>HTML</strong> para visualização online e um <strong>PDF</strong> para download.',
+      'Repositório de slides utilizados em apresentações avulsas, cursos de graduação e pós-graduação, entre outros. Cada apresentação está acompanhada de uma versão <strong>HTML</strong> para visualização online e um arquivo <strong>PDF</strong> para download.',
     seeOnline: 'Ver online',
     downloadPDF: 'Baixar PDF',
     notFound: 'Página não encontrada',
@@ -53,21 +54,25 @@ const i18n = {
     errorBody: 'Algo deu errado ao carregar o conteúdo.',
     projectsIntro: 'Coleções de slides por projeto/aula. Cada página reúne apenas os slides daquele projeto, em ordem cronológica.',
     viewProject: 'Ver projeto',
-    backToProjects: '← Voltar aos projetos'
+    backToProjects: '← Voltar aos projetos',
+    seeArchived: 'Ver slides arquivados →',
+    archivedTitle: 'Slides Arquivados',
+    archivedIntro: 'Lista simples de PDFs de apresentações antigas (repositório leve).',
+    backToSlides: '← Voltar para Slides'
   },
   en: {
     title: 'Lucas Thevenard — Research, Blog, Slides',
-    tagline: 'Regulation, data & public participation',
+    tagline: 'Regulation, empirical research and data science',
     nav: { home: 'Home', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projects' },
     toggle: 'Veja esta página em português',
     homeTitle: 'Welcome!',
     homeIntro:
-      'This is <strong>Lucas Thevenard</strong>’s site with notes on regulation, data science, and public participation. Find my <a href="#/en/blog">blog</a>, my <a href="#/en/cv">academic CV</a>, and a <a href="#/en/slides">slides</a> repository (Marp).',
+      'My name is <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/pt/blog">blog</a>, my <a href="#/pt/cv">academic CV</a>, and a <a href="#/pt/slides">slides</a> repository (Marp).',
     latestPosts: 'Latest posts',
     backToBlog: '← Back to blog',
-    blogIntro: 'Notes on regulation, RIA/ex post, participation, NLP, and more.',
+    blogIntro: 'Miscellaneous writings on projects I’m involved in. My main area of interest is the use of data science techniques—such as machine learning and large language models—to study and to improve government regulation.',
     slidesIntro:
-      'Each talk lives in <code>/slides/&lt;slug&gt;/</code>, with an <strong>HTML</strong> deck for viewing and a <strong>PDF</strong> for download.',
+      'Repository of slides used in standalone presentations, undergraduate and graduate courses, among others. Each presentation has an <strong>HTML</strong> version for online viewing and a <strong>PDF</strong> for download.',
     seeOnline: 'View online',
     downloadPDF: 'Download PDF',
     notFound: 'Page not found',
@@ -75,7 +80,11 @@ const i18n = {
     errorBody: 'Something went wrong while loading content.',
     projectsIntro: 'Slide collections by project/course. Each page shows only the slides for that project, in chronological order.',
     viewProject: 'See project',
-    backToProjects: '← Back to projects'
+    backToProjects: '← Back to projects',
+    seeArchived: 'See archived slides →',
+    archivedTitle: 'Archived Slides',
+    archivedIntro: 'Simple list of PDFs from older decks (lightweight repository).',
+    backToSlides: '← Back to Slides'
   }
 };
 
@@ -206,7 +215,7 @@ function renderNotFound(lang) {
 function projectSlugsWithSlides(slides, lang) {
   const set = new Set();
   slides.forEach(s => {
-    if (s.lang === lang && s.project) set.add(s.project);
+    if (s.lang === lang && s.project && !s.archive) set.add(s.project);
   });
   return set;
 }
@@ -383,15 +392,15 @@ async function renderProjectPage(lang, params) {
   if (!project) return renderNotFound(lang);
 
   const slides = slidesAll
-    .filter(s => s.lang === lang && s.project === slug)
+    .filter(s => s.lang === lang && s.project === slug && !s.archive) // <-- excludes archived slides
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 
-  // Se não há slides, não exiba a página (comportamento "não aparece em lugar nenhum")
+  // If there are no slides, show "not found" (project without slides should not be linked)
   if (!slides.length) return renderNotFound(lang);
 
   const t = i18n[lang];
 
-  // link para versão no outro idioma (somente se a versão-irmã TAMBÉM tiver slides)
+  // Link to the same version in another language (only if this version also has slides)
   const other = lang === 'pt' ? 'en' : 'pt';
   const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
   let switchLink = '';
@@ -474,19 +483,32 @@ async function renderSlides(lang) {
     getJSON('projects/projects.json')
   ]);
 
-  const items = allSlides.filter(s => s.lang === lang).sort((a,b) => (a.date < b.date ? 1 : -1));
-  const allowed = projectSlugsWithSlides(allSlides, lang);
+  const other = lang === 'pt' ? 'en' : 'pt';
+  const items = allSlides
+    .filter(s => s.lang === lang && !s.archive)     // <-- ignores archived slides
+    .sort((a,b) => (a.date < b.date ? 1 : -1));
 
   const list = document.getElementById('slides-list');
   list.innerHTML = items.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
     const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
 
-    // badge "Ver projeto" só se houver metadado do projeto + houver ao menos 1 slide
+    // link to version in another language (if available)
+    const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
+    const twinLink = twin && !twin.archive
+      ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
+           ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
+         </a>`
+      : '';
+
+    // badge "See project" only if the project exists and has ≥1 non-archived slide
+    const allowed = projectSlugsWithSlides(allSlides, lang);
     const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
     const showProj = proj && allowed.has(proj.slug);
     const projLink = showProj
-      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
+      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">
+           ${t.viewProject}
+         </a>`
       : '';
 
     return `
@@ -503,11 +525,56 @@ async function renderSlides(lang) {
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
           <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
           ${projLink}
+          ${twinLink}
         </div>
       </div>
     `;
-  }).join('');
+  }).join('') + `
+    <div class="list-item" style="background:transparent;border:none;justify-content:flex-end">
+      <a href="#/${lang}/archived">${t.seeArchived}</a>
+    </div>
+  `;
 }
+
+
+async function renderArchivedSlides(lang) {
+  const t = i18n[lang];
+  setContent(`
+    <section class="card prose">
+      <h1>${t.archivedTitle}</h1>
+      <p>${t.archivedIntro}</p>
+    </section>
+    <section class="card prose">
+      <div id="archived-list">Carregando…</div>
+    </section>
+    <section class="card">
+      <a href="#/${lang}/slides">${t.backToSlides}</a>
+    </section>
+  `);
+
+  const slides = (await getJSON('slides/slides.json'))
+    .filter(s => s.lang === lang && s.archive)
+    .sort((a,b) => (a.date < b.date ? 1 : -1));
+
+  const el = document.getElementById('archived-list');
+
+  if (!slides.length) {
+    el.innerHTML = lang === 'pt' ? 'Nenhum slide arquivado ainda.' : 'No archived slides yet.';
+    return;
+  }
+
+  // concise listing: date — title → PDF
+  el.innerHTML = `
+    <ul>
+      ${slides.map(s => {
+        const pdfHref = `slides/archived/${encodeURIComponent(s.pdf)}`;
+        const label = [s.date, s.title].filter(Boolean).join(' — ');
+        return `<li><a href="${pdfHref}" target="_blank" rel="noopener">${label}</a></li>`;
+      }).join('')}
+    </ul>
+  `;
+}
+
 
 
 // Events

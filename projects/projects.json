@@ -22,5 +22,21 @@
     "title": "Teoria da Decisão – 2026.1",
     "description": "Repositório de slides do curso de Teoria da Decisão ministrado no primeiro semestre de 2026 na FGV Direito Rio.",
     "tags": ["teoria da decisão", "graduação", "FGV Direito Rio"]
+  },
+  {
+    "group": "test",
+    "slug": "teste_pt",
+    "lang": "pt",
+    "title": "Teste da página de projetos",
+    "description": "Repositório de teste da página de projetos do site.",
+    "tags": ["web development", "test"]
+  },
+  {
+    "group": "test",
+    "slug": "test_en",
+    "lang": "en",
+    "title": "Test of the projects page",
+    "description": "Slide repository to test the project page of the website.",
+    "tags": ["web development", "test"]
   }
 ]

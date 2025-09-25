@@ -53,7 +53,7 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 }
 
 .lang-btn{
-  background: var(--panel);
+  background: var(--link);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 10px;

@@ -7,7 +7,9 @@
     "date": "2025-09-25",
     "html": "teste_pt.html",
     "pdf": "teste_pt.pdf",
-    "lang": "pt"
+    "lang": "pt",
+    "project": "teste_pt",
+    "archive": false
   },
   {
     "group": "2025-09-test",
@@ -17,6 +19,26 @@
     "date": "2025-09-25",
     "html": "test_en.html",
     "pdf": "test_en.pdf",
-    "lang": "en"
+    "lang": "en",
+    "project": "test_en",
+    "archive": false
+  },
+  {
+    "group": "sbca_2025",
+    "title": "(SBCA 2025) How many are too few? Analyzing the diversity of regulatory options considered in Brazil's RIAs",
+    "event": "SBCA 2025",
+    "date": "2025-03-10",
+    "pdf": "sbca.pdf",
+    "lang": "en",
+    "archive": true
+  },
+  {
+    "group": "eped_2025",
+    "title": "(EPED 2025) Diferenciando normas abstratas de atos administrativos concretos com auxílio de ferramentas de machine learning",
+    "event": "EPED 2025",
+    "date": "2025-08-15",
+    "pdf": "eped-25.pdf",
+    "lang": "pt",
+    "archive": true
   }
 ]
