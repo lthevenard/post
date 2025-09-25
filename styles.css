@@ -60,7 +60,7 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
   padding: 8px 12px;
   cursor: pointer;
 }
-.lang-btn:hover{ background:#0b1220 }
+.lang-btn:hover{ background:#6860fa }
 
 /* Prose */
 .prose h1,.prose h2,.prose h3{margin:1.2em 0 .4em}
@@ -73,3 +73,8 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
   margin:1rem 0;padding:.6rem .9rem;border-left:3px solid var(--accent);
   background:#0b1220;color:#cbd5e1;border-radius:6px;
 }
+
+/* Publications */
+.pub-card .title{font-weight:700; font-size:1.05rem; margin-bottom:4px}
+.pub-card .authors{color:var(--text)}
+.pub-card .meta{color:var(--muted); font-size:.9rem}

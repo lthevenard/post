@@ -14,7 +14,8 @@ const routes = {
   'slides': renderSlides,
   'projects': renderProjectsIndex,
   'project': renderProjectPage,
-  'archived': renderArchivedSlides
+  'archived': renderArchivedSlides,
+  'publications': renderPublications 
 };
 
 const cache = {};
@@ -37,7 +38,7 @@ const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
     tagline: 'Regulação, pesquisa empírica e ciência de dados',
-    nav: { home: 'Início', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projetos' },
+    nav: { home:'Início', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projetos', publications:'Publicações' },
     toggle: 'See this page in English',
     homeTitle: 'Bem-vindo!',
     homeIntro:
@@ -58,12 +59,23 @@ const i18n = {
     seeArchived: 'Ver slides arquivados →',
     archivedTitle: 'Slides Arquivados',
     archivedIntro: 'Lista simples de PDFs de apresentações antigas (repositório leve).',
-    backToSlides: '← Voltar para Slides'
+    backToSlides: '← Voltar para Slides',
+    pubsTitle: 'Publicações',
+    pubsIntro: 'Artigos acadêmicos, livros e relatórios de pesquisa, op-eds e repositórios/código.',
+    pubsTypes: {
+      article: 'Artigos acadêmicos',
+      'book-report': 'Livros e relatórios',
+      'op-ed': 'Op-eds',
+      repo: 'Repositórios / código'
+    },
+    openLink: 'Acessar',
+    doi: 'DOI',
+    selectedPubsTitle: 'Publicações selecionadas'
   },
   en: {
     title: 'Lucas Thevenard — Research, Blog, Slides',
     tagline: 'Regulation, empirical research and data science',
-    nav: { home: 'Home', blog: 'Blog', cv: 'CV', slides: 'Slides', projects: 'Projects' },
+    nav: { home:'Home', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projects', publications:'Publications' },
     toggle: 'Veja esta página em português',
     homeTitle: 'Welcome!',
     homeIntro:
@@ -84,7 +96,18 @@ const i18n = {
     seeArchived: 'See archived slides →',
     archivedTitle: 'Archived Slides',
     archivedIntro: 'Simple list of PDFs from older decks (lightweight repository).',
-    backToSlides: '← Back to Slides'
+    backToSlides: '← Back to Slides',
+    pubsTitle: 'Publications',
+    pubsIntro: 'Academic articles, books/reports, op-eds, and repositories/code.',
+    pubsTypes: {
+      article: 'Academic articles',
+      'book-report': 'Books & reports',
+      'op-ed': 'Op-eds',
+      repo: 'Repositories / code'
+    },
+    openLink: 'Access',
+    doi: 'DOI',
+    selectedPubsTitle: 'Selected publications'
   }
 };
 
@@ -136,7 +159,11 @@ function updateUIForLang(lang) {
   document.getElementById('brandLink').setAttribute('href', `#/${lang}`);
   document.getElementById('tagline').innerHTML = t.tagline;
 
-  const map = { navHome: '', navBlog: 'blog', navCV: 'cv', navSlides: 'slides', navProjects: 'projects' };
+  const map = {
+    navHome: '', navBlog: 'blog', navCV: 'cv',
+    navSlides: 'slides', navProjects: 'projects',
+    navPublications: 'publications'
+  };
   Object.entries(map).forEach(([id, p]) => {
     const a = document.getElementById(id);
     a.textContent = i18n[lang].nav[id.replace('nav','').toLowerCase()];
@@ -222,6 +249,15 @@ function projectSlugsWithSlides(slides, lang) {
 
 function findProjectBySlugAndLang(list, slug, lang) {
   return list.find(p => p.slug === slug && p.lang === lang);
+}
+
+function fmtAuthors(authors) {
+  if (!Array.isArray(authors) || !authors.length) return '';
+  return authors.join(', ');
+}
+
+function safeSpan(value, cls='') {
+  return value ? `<span class="${cls}">${value}</span>` : '';
 }
 
 // ---- Pages
@@ -452,17 +488,97 @@ async function renderProjectPage(lang, params) {
 }
 
 
+async function renderPublications(lang) {
+  const t = i18n[lang];
+  setContent(`
+    <section class="card prose">
+      <h1>${t.pubsTitle}</h1>
+      <p>${t.pubsIntro}</p>
+    </section>
+    <section class="card" id="pubs"></section>
+  `);
+
+  const data = (await getJSON('publications/publications.json'))
+    .filter(p => p.lang === lang)
+    .sort((a,b) => (a.date < b.date ? 1 : -1));
+
+  // ordem fixa das seções
+  const order = ['article','book-report','op-ed','repo'];
+
+  const container = document.getElementById('pubs');
+  const html = order.map(tp => {
+    const items = data.filter(p => p.type === tp);
+    if (!items.length) return '';
+    const cards = items.map(p => {
+      const authors = fmtAuthors(p.authors);
+      const metaParts = [p.publication, p.date].filter(Boolean).join(' · ');
+      const doi = p.doi ? `<span class="meta">${t.doi}: ${p.doi}</span>` : '';
+      const btn = p.url ? `<a class="badge" style="text-decoration:none" href="${p.url}" target="_blank" rel="noopener">${t.openLink}</a>` : '';
+
+      return `
+        <div class="list-item pub-card" style="flex-wrap:wrap; gap:10px">
+          <div style="min-width:280px; max-width:700px">
+            ${safeSpan(p.title, 'title')}
+            ${authors ? `<div class="authors">${authors}</div>` : ''}
+            ${metaParts ? `<div class="meta">${metaParts}</div>` : ''}
+            ${doi}
+          </div>
+          <div style="display:flex; gap:10px; align-items:center">${btn}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="prose"><h2>${t.pubsTypes[tp]}</h2></div>
+      <div class="list">${cards}</div>
+    `;
+  }).join('');
+
+  container.innerHTML = html || `<div class="list-item">${lang==='pt'?'Nenhuma publicação ainda.':'No publications yet.'}</div>`;
+}
+
+
 async function renderCV(lang) {
   const path = `cv/cv.${lang}.md`;
   const res = await fetch(path);
   const md = await res.text();
+
   setContent(`
     <section class="card prose">
       <h1>${lang === 'pt' ? 'CV Acadêmico' : 'Academic CV'}</h1>
       <div id="cv-body">Carregando…</div>
     </section>
+    <section class="card prose" id="cv-pubs"></section>
   `);
   document.getElementById('cv-body').innerHTML = marked.parse(md, { breaks: true });
+
+  // Publicações selecionadas (cv:true), formato simples (texto corrido)
+  try {
+    const pubs = (await getJSON('publications/publications.json'))
+      .filter(p => p.lang === lang && p.cv === true)
+      .sort((a,b) => (a.date < b.date ? 1 : -1));
+
+    if (pubs.length) {
+      const wrap = document.getElementById('cv-pubs');
+      const items = pubs.map(p => {
+        const parts = [];
+        const authors = fmtAuthors(p.authors);
+        if (authors) parts.push(authors);
+        if (p.title) parts.push(`“${p.title}”`);
+        // veículo e data — apenas esses dois, sem URL/DOI
+        const tail = [p.publication, p.date].filter(Boolean).join(', ');
+        if (tail) parts.push(tail);
+        return `<li>${parts.join('. ')}</li>`;
+      }).join('');
+
+      wrap.innerHTML = `
+        <h2>${i18n[lang].selectedPubsTitle}</h2>
+        <ul>${items}</ul>
+      `;
+    }
+  } catch (e) {
+    // silenciosamente ignora erro de publicações no CV
+  }
 }
 
 

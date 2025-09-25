@@ -1,0 +1,85 @@
+[
+  {
+    "type": "article",
+    "title": "A evolução da produção normativa da Receita Federal do Brasil (1988-2020): análise empírica e implicações regulatórias",
+    "authors": ["Lucas Thevenard", "Luiz Felipe Monteiro Seixas"],
+    "date": "2023-12-11",
+    "publication": "Revista Direito GV",
+    "url": "https://periodicos.fgv.br/revdireitogv/article/view/91354",
+    "lang": "pt",
+    "doi": "https://doi.org/10.1690/2317-6172202414",
+    "cv": true
+  },
+  {
+    "type": "article",
+    "title": "The Evolution of Normative Production of the Federal Revenue of Brazil (1988-2020): Empirical Analysis and Regulatory Implications",
+    "authors": ["Lucas Thevenard", "Luiz Felipe Monteiro Seixas"],
+    "date": "2023-12-11",
+    "publication": "DIREITO GV L. Rev.",
+    "url": "https://heinonline.org/hol-cgi-bin/get_pdf.cgi?handle=hein.journals/direlaw20&section=16",
+    "lang": "en",
+    "doi": "https://doi.org/10.1690/2317-6172202414",
+    "cv": true
+  },
+  {
+    "type": "article",
+    "title": "Empirical analysis of binding precedent efficiency in Brazilian Supreme Court via case classification",
+    "authors": ["Raphaël Tinarrage", "Henrique Ennes", "Lucas Resck", "Lucas Thevenard", "Jean R. Ponciano", "Jorge Poco"],
+    "date": "2023-12-11",
+    "publication": "Artificial Intelligence and Law",
+    "url": "hhttps://link.springer.com/article/10.1007/s10506-025-09458-6",
+    "lang": "en",
+    "doi": "https://doi.org/10.1007/s10506-025-09458-6",
+    "cv": false
+  },
+  {
+    "type": "book-report",
+    "title": "Agências Reguladoras Estaduais: Pesquisa Empírica sobre sua Maturidade Institucional",
+    "authors": ["Eduardo Jordão", "Lucas Thevenard", "Bernardo Schwaitzer"],
+    "date": "2024-07-05",
+    "publication": "Editora Juspodivm",
+    "url": "https://direitorio.fgv.br/publicacao/agencias-reguladoras-estaduais-pesquisa-empirica-sobre-sua-maturidade-institucional",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "A Dispensa de AIR na Anvisa",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2022-01-01",
+    "publication": "Conjuntura Econômica (nº 76)",
+    "url": "https://periodicos.fgv.br/rce/article/view/85807/80907",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "repo",
+    "title": "Decision Theory – Lottery Simulation",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-03-27",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/decision_theory_lottery",
+    "lang": "en",
+    "cv": false
+  },
+  {
+    "type": "repo",
+    "title": "Decision Theory Exercises",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-03-27",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/dt_exercises",
+    "lang": "en",
+    "cv": false
+  },
+  {
+    "type": "repo",
+    "title": "Dashboard – Produção Normativa da Receita Federal",
+    "authors": ["Lucas Thevenard"],
+    "date": "2024-07-31",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/dashboard_prod_normativa_da_receita",
+    "lang": "pt",
+    "cv": false
+  }
+]
