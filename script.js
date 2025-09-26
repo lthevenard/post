@@ -1,7 +1,4 @@
-/* SPA bilingual by hash:
-   - Routes: #/pt, #/pt/blog, #/en, #/en/blog, etc.
-   - Blog & Slides filtered by lang via JSON.
-*/
+// script.js
 const app = document.getElementById('app');
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -11,11 +8,11 @@ const routes = {
   'blog': renderBlogIndex,
   'post': renderBlogPost,
   'cv': renderCV,
+  'publications': renderPublications,
   'slides': renderSlides,
   'projects': renderProjectsIndex,
   'project': renderProjectPage,
-  'archived': renderArchivedSlides,
-  'publications': renderPublications 
+  'archived': renderArchivedSlides
 };
 
 const cache = {};
@@ -38,11 +35,11 @@ const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
     tagline: 'Regulação, pesquisa empírica e ciência de dados',
-    nav: { home:'Início', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projetos', publications:'Publicações' },
-    toggle: 'See this page in English',
+    nav: { home:'Início', blog:'Blog', cv:'CV', publications:'Publicações', slides:'Slides', projects:'Projetos' },
+    toggle: '🇺🇸 English Version',
     homeTitle: 'Bem-vindo!',
     homeIntro:
-      'Me chamo <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV acadêmico</a> e um repositório de <a href="#/pt/slides">slides</a> (Marp).',
+      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV</a> e minhas <a href="#/pt/publications">publicações</a> acadêmicas, e também um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, que uso em minhas aulas, conferências e outras apresentações.',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
     blogIntro: 'Textos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
@@ -61,7 +58,7 @@ const i18n = {
     archivedIntro: 'Lista simples de PDFs de apresentações antigas (repositório leve).',
     backToSlides: '← Voltar para Slides',
     pubsTitle: 'Publicações',
-    pubsIntro: 'Artigos acadêmicos, livros e relatórios de pesquisa, op-eds e repositórios/código.',
+    pubsIntro: 'Artigos acadêmicos, livros e capítulos, relatórios de pesquisa, artigos de opinião (op-eds) e repositórios/código.',
     pubsTypes: {
       "article": "Artigos acadêmicos",
       "book-chapter": "Livros e capítulos",
@@ -77,10 +74,10 @@ const i18n = {
     title: 'Lucas Thevenard — Research, Blog, Slides',
     tagline: 'Regulation, empirical research and data science',
     nav: { home:'Home', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projects', publications:'Publications' },
-    toggle: 'Veja esta página em português',
+    toggle: '🇧🇷 Versão em Português',
     homeTitle: 'Welcome!',
     homeIntro:
-      'My name is <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/pt/blog">blog</a>, my <a href="#/pt/cv">academic CV</a>, and a <a href="#/pt/slides">slides</a> repository (Marp).',
+      'I’m <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/pt/blog">blog</a>, my <a href="#/pt/cv">CV</a> and academic <a href="#/pt/publications”>publications”</a>, as well as a repository of <a href="#/pt/slides">slides</a> (Marp), grouped by <a href="#/pt/projects”>project</a>, that I use for teaching, to present at academic conferences and similar activities.',
     latestPosts: 'Latest posts',
     backToBlog: '← Back to blog',
     blogIntro: 'Miscellaneous writings on projects I’m involved in. My main area of interest is the use of data science techniques—such as machine learning and large language models—to study and to improve government regulation.',
@@ -99,7 +96,7 @@ const i18n = {
     archivedIntro: 'Simple list of PDFs from older decks (lightweight repository).',
     backToSlides: '← Back to Slides',
     pubsTitle: 'Publications',
-    pubsIntro: 'Academic articles, books/reports, op-eds, and repositories/code.',
+    pubsIntro: 'Academic articles, books and chapters, reports, op-eds, and repositories/code.',
     pubsTypes: {
       "article": "Academic articles",
       "book-chapter": "Books & chapters",
