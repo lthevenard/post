@@ -45,7 +45,7 @@ const i18n = {
       'Me chamo <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV acadêmico</a> e um repositório de <a href="#/pt/slides">slides</a> (Marp).',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
-    blogIntro: 'extos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
+    blogIntro: 'Textos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
     slidesIntro:
       'Repositório de slides utilizados em apresentações avulsas, cursos de graduação e pós-graduação, entre outros. Cada apresentação está acompanhada de uma versão <strong>HTML</strong> para visualização online e um arquivo <strong>PDF</strong> para download.',
     seeOnline: 'Ver online',
@@ -260,6 +260,47 @@ function fmtAuthors(authors) {
 
 function safeSpan(value, cls='') {
   return value ? `<span class="${cls}">${value}</span>` : '';
+}
+
+// --- Flags
+function langFlag(lang){ return lang === 'pt' ? '🇧🇷' : '🇺🇸'; }
+function flagBadge(lang){
+  const title = lang === 'pt' ? 'Português' : 'English';
+  return `<span class="flag-badge" title="${title}">${langFlag(lang)}</span>`;
+}
+
+// --- Keys to group equivalent itens by language
+function keyForSlide(s){
+  // group is canonical; if it doesn't exist, we fall back to slug/pdf (singleton)
+  return s.group || s.slug || `pdf:${s.pdf}`;
+}
+function keyForPub(p){
+  // priority: group > doi > url > title (fallback)
+  return p.group || (p.doi ? `doi:${p.doi}` : (p.url ? `url:${p.url}` : `title:${p.title}`));
+}
+
+// --- Hybrid selection (pt/en)
+function selectHybrid(items, lang, keyFn){
+  const byKey = new Map();
+  for (const it of items){
+    const k = keyFn(it);
+    if (!byKey.has(k)) byKey.set(k, []);
+    byKey.get(k).push(it);
+  }
+  const out = [];
+  for (const arr of byKey.values()){
+    const hasPT = arr.some(x => x.lang === 'pt');
+    const hasEN = arr.some(x => x.lang === 'en');
+    if (hasPT && hasEN){
+      // choose the current language version
+      const chosen = arr.find(x => x.lang === lang);
+      if (chosen) out.push(chosen);
+    } else {
+      // if only one language exists => show in both versions
+      out.push(arr[0]);
+    }
+  }
+  return out;
 }
 
 // ---- Pages
@@ -500,16 +541,15 @@ async function renderPublications(lang) {
     <section class="card" id="pubs"></section>
   `);
 
-  const data = (await getJSON('publications/publications.json'))
-    .filter(p => p.lang === lang)
+  const all = await getJSON('publications/publications.json');
+  const selected = selectHybrid(all, lang, keyForPub)
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
-  // ordem fixa das seções
   const order = ['article','book-chapter','report','op-ed','repo'];
-
   const container = document.getElementById('pubs');
+
   const html = order.map(tp => {
-    const items = data.filter(p => p.type === tp);
+    const items = selected.filter(p => p.type === tp);
     if (!items.length) return '';
     const cards = items.map(p => {
       const authors = fmtAuthors(p.authors);
@@ -520,7 +560,10 @@ async function renderPublications(lang) {
       return `
         <div class="list-item pub-card" style="flex-wrap:wrap; gap:10px">
           <div style="min-width:280px; max-width:700px">
-            ${safeSpan(p.title, 'title')}
+            <div class="title">
+              ${p.title || ''}
+              ${flagBadge(p.lang)}
+            </div>
             ${authors ? `<div class="authors">${authors}</div>` : ''}
             ${metaParts ? `<div class="meta">${metaParts}</div>` : ''}
             ${doi}
@@ -556,41 +599,37 @@ async function renderCV(lang) {
 
   // Selected publications (cv:true)
   try {
-  const all = await getJSON('publications/publications.json');
+    const all = (await getJSON('publications/publications.json'))
+      .filter(p => p.cv === true); // só selecionadas para CV
 
-  // EN: only publications in English
-  // PT: all selected publications (pt + en)
-  const selected = all.filter(p => {
-    if (p.cv !== true) return false;
-    if (lang === 'en') return p.lang === 'en';
-    // lang === 'pt'
-    return p.lang === 'pt' || p.lang === 'en';
-  }).sort((a, b) => (a.date < b.date ? 1 : -1));
+    // hybrid rules (pt/en) with publication keys
+    const chosen = selectHybrid(all, lang, keyForPub)
+      .sort((a,b) => (a.date < b.date ? 1 : -1));
 
-  if (selected.length) {
-    const wrap = document.getElementById('cv-pubs');
-    const order = ['article','book-chapter','report','op-ed','repo'];
+    if (chosen.length) {
+      const wrap = document.getElementById('cv-pubs');
+      const order = ['article','book-chapter','report','op-ed','repo'];
 
-    const sections = order.map(tp => {
-      const items = selected.filter(p => p.type === tp);
-      if (!items.length) return '';
-      const list = items.map(p => {
-        const parts = [];
-        const authors = fmtAuthors(p.authors);
-        if (authors) parts.push(authors);
-        if (p.title)  parts.push(`“${p.title}”`);
-        const tail = [p.publication, p.date].filter(Boolean).join(', ');
-        if (tail) parts.push(tail);
-        return `<li>${parts.join('. ')}</li>`;
+      const sections = order.map(tp => {
+        const items = chosen.filter(p => p.type === tp);
+        if (!items.length) return '';
+        const list = items.map(p => {
+          const parts = [];
+          const authors = fmtAuthors(p.authors);
+          if (authors) parts.push(authors);
+          if (p.title)  parts.push(`“${p.title}”`);
+          const tail = [p.publication, p.date].filter(Boolean).join(', ');
+          if (tail) parts.push(tail);
+          return `<li>${parts.join('. ')}</li>`;
+        }).join('');
+        const secTitle = i18n[lang].pubsTypes[tp] || tp;
+        return `<h3>${secTitle}</h3><ul>${list}</ul>`;
       }).join('');
-      const secTitle = i18n[lang].pubsTypes[tp] || tp;
-      return `<h3>${secTitle}</h3><ul>${list}</ul>`;
-    }).join('');
 
-    wrap.innerHTML = `<h2>${i18n[lang].selectedPubsTitle}</h2>${sections}`;
-  }
-} catch (e) {
-  // silently ignores errores while loading publications
+      wrap.innerHTML = `<h2>${i18n[lang].selectedPubsTitle}</h2>${sections}`;
+    }
+  } catch (e) {
+    // ignore errors while loading publications
 }
 }
 
@@ -612,17 +651,24 @@ async function renderSlides(lang) {
     getJSON('projects/projects.json')
   ]);
 
-  const other = lang === 'pt' ? 'en' : 'pt';
-  const items = allSlides
-    .filter(s => s.lang === lang && !s.archive)     // <-- ignores archived slides
+  // 1) removes archived slides
+  const active = allSlides.filter(s => !s.archive);
+
+  // 2) hybrid selection (pt/en) with slides keys
+  const chosen = selectHybrid(active, lang, keyForSlide)
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
+  // badge to see project only if there is a project in the current language with ≥1 active slide
+  const allowedProjects = projectSlugsWithSlides(active, lang);
+
+  const other = lang === 'pt' ? 'en' : 'pt';
   const list = document.getElementById('slides-list');
-  list.innerHTML = items.map(s => {
+
+  list.innerHTML = chosen.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
     const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
 
-    // link to version in another language (if available)
+    // link to the version in the other language (if it exists and is not archived)
     const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
     const twinLink = twin && !twin.archive
       ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
@@ -630,10 +676,8 @@ async function renderSlides(lang) {
          </a>`
       : '';
 
-    // badge "See project" only if the project exists and has ≥1 non-archived slide
-    const allowed = projectSlugsWithSlides(allSlides, lang);
     const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
-    const showProj = proj && allowed.has(proj.slug);
+    const showProj = proj && allowedProjects.has(proj.slug);
     const projLink = showProj
       ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">
            ${t.viewProject}
@@ -645,6 +689,7 @@ async function renderSlides(lang) {
         <div style="min-width:250px">
           <div class="list-item-title">
             <a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>
+            ${flagBadge(s.lang)}
           </div>
           <div class="muted" style="color:#9ca3af;font-size:.9rem">
             ${(s.event || '')} ${s.date ? '· ' + s.date : ''}

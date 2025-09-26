@@ -80,7 +80,7 @@
     "publication": "Regulatory Studies Center – Commenatries & Insights",
     "url": "https://regulatorystudies.columbian.gwu.edu/how-many-are-too-few-analyzing-diversity-regulatory-options-considered-brazilian-rias7",
     "lang": "en",
-    "cv": false
+    "cv": true
   },
   {
     "type": "op-ed",
@@ -90,7 +90,7 @@
     "publication": "Regulatory Studies Center – Commenatries & Insights",
     "url": "https://regulatorystudies.columbian.gwu.edu/regulatory-impact-analysis-brazil-assessment-exemptions-and-ex-post-reviews",
     "lang": "en",
-    "cv": false
+    "cv": true
   },
   {
     "type": "repo",

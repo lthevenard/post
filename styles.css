@@ -62,6 +62,13 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 }
 .lang-btn:hover{ background:#6860fa }
 
+.flag-badge{
+  display:inline-block;
+  margin-left:8px;
+  font-size:1rem;
+  line-height:1;
+}
+
 /* Prose */
 .prose h1,.prose h2,.prose h3{margin:1.2em 0 .4em}
 .prose h1{font-size:1.8rem}
