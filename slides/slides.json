@@ -40,5 +40,17 @@
     "pdf": "eped-25.pdf",
     "lang": "pt",
     "archive": true
+  },
+  {
+    "group": "regnum_research_gwrsc",
+    "slug": "regnum_research_gwrsc",
+    "title": "Academic research summary for GW's Regulatory Studies Center",
+    "event": "Presentation at GWRSC – 2025",
+    "date": "2025-09-30",
+    "html": "regnum_research_gwrsc.html",
+    "pdf": "regnum_research_gwrsc.pdf",
+    "lang": "en",
+    "project": "regnum",
+    "archive": false
   }
 ]
