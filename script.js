@@ -467,21 +467,21 @@ async function renderProjectPage(lang, params) {
   const project = findProjectBySlugAndLang(projects, slug, lang);
   if (!project) return renderNotFound(lang);
 
+  // somente slides ATIVOS (não arquivados) deste projeto e idioma
   const slides = slidesAll
-    .filter(s => s.lang === lang && s.project === slug && !s.archive) // <-- excludes archived slides
+    .filter(s => s.lang === lang && s.project === slug && !s.archive)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 
-  // If there are no slides, show "not found" (project without slides should not be linked)
   if (!slides.length) return renderNotFound(lang);
 
   const t = i18n[lang];
 
-  // Link to the same version in another language (only if this version also has slides)
+  // link para página irmã no outro idioma (só se a irmã tiver slides)
   const other = lang === 'pt' ? 'en' : 'pt';
   const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
   let switchLink = '';
   if (twinProj) {
-    const twinHasSlides = slidesAll.some(s => s.lang === other && s.project === twinProj.slug);
+    const twinHasSlides = slidesAll.some(s => s.lang === other && s.project === twinProj.slug && !s.archive);
     if (twinHasSlides) {
       switchLink = `<a class="badge" style="text-decoration:none" href="#/${other}/project?slug=${encodeURIComponent(twinProj.slug)}">
         ${lang === 'pt' ? 'Ver esta página em inglês' : 'See this page in Portuguese'}
@@ -505,30 +505,14 @@ async function renderProjectPage(lang, params) {
   `);
 
   const list = document.getElementById('proj-slides');
-  list.innerHTML = chosen.map(s => {
+  list.innerHTML = slides.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
-    const pdfHref  = `slides/${encodeURIComponent(s.pdf) ? encodeURIComponent(s.pdf) : ''}`;
-    const pdfLink  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
-
-    const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
-    const twinLink = twin && !twin.archive
-      ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
-          ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
-        </a>`
-      : '';
-
-    const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
-    const showProj = proj && allowedProjects.has(proj.slug);
-    const projLink = showProj
-      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
-      : '';
-
+    const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
     return `
       <div class="list-item stacked">
         <div class="primary">
           <div class="list-item-title">
             <a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>
-            ${flagBadge(s.lang)}
           </div>
           <div class="muted" style="color:#9ca3af;font-size:.9rem">
             ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
@@ -536,17 +520,11 @@ async function renderProjectPage(lang, params) {
         </div>
         <div class="actions">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
-          <a class="badge" href="${pdfLink}" download style="text-decoration:none">${t.downloadPDF}</a>
-          ${projLink}
-          ${twinLink}
+          <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
         </div>
       </div>
     `;
-  }).join('') + `
-    <div class="list-item" style="background:transparent;border:none;justify-content:flex-end">
-      <a href="#/${lang}/archived">${t.seeArchived}</a>
-    </div>
-  `;
+  }).join('');
 }
 
 
