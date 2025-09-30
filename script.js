@@ -505,26 +505,48 @@ async function renderProjectPage(lang, params) {
   `);
 
   const list = document.getElementById('proj-slides');
-  list.innerHTML = slides.map(s => {
+  list.innerHTML = chosen.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
-    const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+    const pdfHref  = `slides/${encodeURIComponent(s.pdf) ? encodeURIComponent(s.pdf) : ''}`;
+    const pdfLink  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+
+    const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
+    const twinLink = twin && !twin.archive
+      ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
+          ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
+        </a>`
+      : '';
+
+    const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
+    const showProj = proj && allowedProjects.has(proj.slug);
+    const projLink = showProj
+      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
+      : '';
+
     return `
-      <div class="list-item" style="flex-wrap:wrap; gap:10px">
-        <div style="min-width:250px">
+      <div class="list-item stacked">
+        <div class="primary">
           <div class="list-item-title">
             <a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>
+            ${flagBadge(s.lang)}
           </div>
           <div class="muted" style="color:#9ca3af;font-size:.9rem">
             ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
           </div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center">
+        <div class="actions">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
-          <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
+          <a class="badge" href="${pdfLink}" download style="text-decoration:none">${t.downloadPDF}</a>
+          ${projLink}
+          ${twinLink}
         </div>
       </div>
     `;
-  }).join('');
+  }).join('') + `
+    <div class="list-item" style="background:transparent;border:none;justify-content:flex-end">
+      <a href="#/${lang}/archived">${t.seeArchived}</a>
+    </div>
+  `;
 }
 
 
@@ -663,27 +685,25 @@ async function renderSlides(lang) {
 
   list.innerHTML = chosen.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
-    const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+    const pdfHref  = `slides/${encodeURIComponent(s.pdf) ? encodeURIComponent(s.pdf) : ''}`;
+    const pdfLink  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
 
-    // link to the version in the other language (if it exists and is not archived)
     const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
     const twinLink = twin && !twin.archive
       ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
-           ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
-         </a>`
+          ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
+        </a>`
       : '';
 
     const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
     const showProj = proj && allowedProjects.has(proj.slug);
     const projLink = showProj
-      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">
-           ${t.viewProject}
-         </a>`
+      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/project?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
       : '';
 
     return `
-      <div class="list-item" style="flex-wrap:wrap; gap:10px">
-        <div style="min-width:250px">
+      <div class="list-item stacked">
+        <div class="primary">
           <div class="list-item-title">
             <a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>
             ${flagBadge(s.lang)}
@@ -692,9 +712,9 @@ async function renderSlides(lang) {
             ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
           </div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center">
+        <div class="actions">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
-          <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
+          <a class="badge" href="${pdfLink}" download style="text-decoration:none">${t.downloadPDF}</a>
           ${projLink}
           ${twinLink}
         </div>
