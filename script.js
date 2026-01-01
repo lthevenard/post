@@ -15,6 +15,8 @@ const routes = {
   'archived': renderArchivedSlides
 };
 
+const ENABLE_SLIDE_LANGUAGE_SWITCH = false;
+
 const cache = {};
 async function getJSON(path) {
   if (cache[path]) return cache[path];
@@ -666,8 +668,10 @@ async function renderSlides(lang) {
     const pdfHref  = `slides/${encodeURIComponent(s.pdf) ? encodeURIComponent(s.pdf) : ''}`;
     const pdfLink  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
 
-    const twin = s.group ? counterpartByGroup(allSlides, s.group, other) : null;
-    const twinLink = twin && !twin.archive
+    const twin = (ENABLE_SLIDE_LANGUAGE_SWITCH && s.group)
+      ? counterpartByGroup(allSlides, s.group, other)
+      : null;
+    const twinLink = (ENABLE_SLIDE_LANGUAGE_SWITCH && twin && !twin.archive)
       ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
           ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
         </a>`

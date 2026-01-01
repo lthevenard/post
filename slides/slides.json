@@ -50,7 +50,7 @@
     "html": "regnum_research_gwrsc.html",
     "pdf": "regnum_research_gwrsc.pdf",
     "lang": "en",
-    "project": "regnum",
+    "project": "project-regnum",
     "archive": false
   },
   {
@@ -62,7 +62,7 @@
     "html": "legalxplain_1.html",
     "pdf": "legalxplain_1.pdf",
     "lang": "pt",
-    "project": "legalxplain",
+    "project": "projeto-legalxplain",
     "archive": false
   },
   {
