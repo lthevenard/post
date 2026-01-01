@@ -148,8 +148,8 @@ td.player1 {
 
 <div class="title">
 
-# Academic research summary for GW's Regulatory Studies Center
-## From *Regulation in Numbers* projects and personal research – 2025.2
+# Regulation in Numbers: research agenda
+## 2025.2
 Lucas Thevenard
 
 </div>
@@ -157,7 +157,7 @@ Lucas Thevenard
 ---
 <!-- 
 paginate: true 
-header: Introduction & research summary
+header: Regulation in Numbers: research agenda
 footer: lucas.gomes@fgv.br | September 30, 2025
 -->
 
@@ -183,63 +183,6 @@ footer: lucas.gomes@fgv.br | September 30, 2025
 
 ---
 
-## Topics for today
-- A short introduction to the Regulatory State in Brazil
-- Discussion of some research efforts in two main areas:
-  - Public Participation (including my dissertation)
-  - Regulatory impact assessment
-
----
-
-<!-- 
-_header: ""
-_footer: ""
--->
-![bg](section_light_en.png)
-
-
-<div class= "newsec">
-
-# 1. A short introduction to the Regulatory State in Brazil
-
-</div>
-
----
-
-## Historical context
-- 1964-1988: Military dictatorship
-* 1988-1993: Political and economic turmoil (stagnation and high inflation)
-  - 1993-1994: FHC at the Ministry of Finance, Plan "Real" is able to fight off inflation.
-* 1994-2004: Reforms and macroeconomic stability
-  - Privatization of a large number of state companies
-  - Creation of the **independent regulatory agencies** at the federal level.
-
----
-
-## Traditional view in Administrative Law (French influence)
-* All bodies within the Executive answered directly to the President.
-* **Principle of legality**: the Executive Branch could not "innovate" in the legal order.
-  - In practice this had been pure fantasy for decades, but because of the strong Executive during the dictatorship period, legal thinkers in Brazil were very reticent to recognize that the Executive could create new Law.
-
----
-
-## Brazilian Independent Regulatory Agencies
-* Why?
-  - Perceived need for **high-quality, technical** state supervision over infrastructural sectors that would be **insulated from political control**.
-* **Independent agency model** in Brazil:
-  - Colegiate body of directors, with fixed mandates, who cannot be unilaterally fired by the president.
-  - Formal power to create rules, to enforce them and to adjudicate disputes.
-  - Introduction of procedural controls (public participation, RIA, etc.)
-
----
-
-## Brazil vs. US
-- Independent agencies are more similar to Regulatory Commissions in the US system.
-- But they had to deal with more **procedural controls** than other bodies within the Executive, so they have been the primary focus of discussions about governance.
-  - In the past, mandatory procedural controls (such as Public Participation and RIA) have been aimed first at the Independent Regulatory Agencies 
-  - However, recently these procedures have (legally) reached the Executive as a whole, althought there have been many challenges in the actual implementation of them.
-
----
 
 <!-- 
 _header: ""
@@ -333,96 +276,111 @@ _footer: ""
 
 ---
 
-<!-- 
-_header: ""
-_footer: ""
--->
-![bg](section_light_en.png)
+<div class="columns_flex">
 
+<div>
 
-<div class="newsec">
+![](ANEEL_grafico_06.png)
 
-# 2.1. My Dissertation
-## *The role of ideas and language in public participation*
+</div>
 
 </div>
 
 ---
 
-### One main overarching question
+<div class="columns_flex">
 
-<br>
+<div>
 
-#### What is the role of **ideas** (what is actually said by participants) in notice and comment procedures?
+![](ANEEL_grafico_10.png)
 
----
+</div>
 
-## Three complementary questions
-
-- What is the role of ideas to determine who gets heard (**influence**) in notice and comment procedures?  
-  - *Who says it or what is said? Language and the influence of ideas in...*
-* How ideas and goals affect the **formation of interest groups** and their discursive alignment? Are the demands of interest groups always coherent? 
-  - *Investigating Coherence: Discursive Similarities and Differences within...*
-* Do participants form **networks and coalitions** that transcend formal group identities? If so, what is the relationship between discursive allignment and the patterns of co-participation that form these networks?
-  - *Recurring Actors, Shared Ideas: Uncovering Network Dynamics in Public...*
+</div>
 
 ---
 
-## Theoretical framework: testing two main interest group theories
+<div class="columns_flex">
 
-- **Iron Triangle** (dominant view):
-  - Stable, closed (agency–Congress–industry), interest-driven
-  - Predictable alignments  
+<div>
 
-* **Issue Networks** (Heclo, 1978):  
-  - Fluid, open, idea-driven  
-  - Cross-cutting coalitions and shifting alliances
+![](ANEEL_grafico_23.png)
 
----
+</div>
 
-## Connecting to my research questions
-
-- **Influence**: Are ideas more important than group identity?  
-* **Coherence**: Do groups really have consistent policy preferences and speak with “one voice”?  
-* **Networks**: Do actors connect across formal categories, building coalitions around ideas?
+</div>
 
 ---
 
-## Initial expectation
+<div class="columns_flex">
 
-- I expect strong evidence that ideas matter and at least some evidence that issue networks provide relavant insight in certain policy areas.
-- **General hypothesis**: ideas—the substantive content of public comments—play a pivotal role in participatory processes, shaping not only regulatory outcomes, but also the formation of interest groups and the broader structure of participation itself
+<div>
 
-> "No one argues that there are only issue networks or only subgovernments active in policymaking. Rather, the argument is over what is most typical and most descriptive of the policy process. Which should serve as our framework for analyzing how laws and regulations are made?" (Jeffrey Berry, 1989, p. 243-44)
+![](ANEEL_grafico_23.png)
 
----
+</div>
 
-## Some notes about the first study:
+</div>
 
-***Who says it or what is said? Language and the influence of ideas in the regulatory decision-making process of the Brazilian Telecommunications Agency***
-
-- How important are interest groups (who says it) to explain influence over regulatory decisions once we take into account the actual content of submissions (what is said)?
-- **Expectation**: interest group affiliation looses almost all its explanatory power once we take comment content (language and ideas expressed in the comments) into account.
 
 ---
 
-## Some notes about the first study:
+<div class="columns_flex">
 
-> If the agency receives 10,000 very similar, computer-generated comments, no one is paying attention to the names under which they are submitted, whether they are false or real. One cannot be misled by something of which one is unaware. If the submission is not computer-generated—a unique comment filed under a false name — the falsehood is irrelevant for purposes of the agency’s deliberation. The agency will take the comment for what it is worth; the name adds nothing to its weight and will not affect how it is treated.
-> Balla et al., 2022, p. 137-138.
+<div>
+
+![](ANEEL_grafico_38.png)
+
+</div>
+
+</div>
 
 ---
 
-## Predicting Agency Responses with NLP
+<div style="margin:auto; text-align:center;">
 
-* **Task 1 – Scope classification**: Distinguish if a comment is *within scope* or *out of scope*, in a balanced dataset (749 within scope × 749 out of scope)
-* **Task 2 – Impact classification**: Distinguish if a comment is *accepted* (fully/partially) or *rejected*, in a balanced dataset (2,037 accepted × 2,037 rejected).
-* **Method**  
-  - Text represented with **GPT embeddings** (3,076 dimensions per comment)  
-  - Tested multiple supervised classifiers (KNN, SVM, Random Forest, MLP, etc.)  
-  - Stratified train/test split + grid search for hyperparameters  
-  - Evaluated with Accuracy, F1, ROC-AUC, Precision/Recall
-  - Final validation step with held-out data.
+![w:950](ANEEL_grafico_63.png)
+
+
+</div>
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](p_balance_heat_nonzero_nt.png)
+
+
+</div>
+
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](p_args_by_dir.png)
+
+
+</div>
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](p_impact_by_dir_3.png)
+
+
+</div>
+
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](p_args_by_impact_3.png)
+
+
+</div>
 
 ---
 
@@ -444,16 +402,6 @@ _footer: ""
     - SVM: Accuracy ≈ **83.4%**, F1 ≈ **0.83435**
     - KNN: Accuracy ≈ **81.9%**, F1 ≈ **0.81867** 
   - Agency acceptance/rejection is also highly predictable from comment text
-
----
-
-## Key takeaway  
-
-**The content of public comments strongly predicts regulatory outcomes.**
-
-- This suggests that **ideas and discursive alignment** are central in determining whose voices get heard and what influences agency decision-making.
-- **Next step in this paper**: Explanatory (regression) model with content variables (predicted probabilities from the models) vs. interest group categories to test the main hypothesis. 
- - PS: I'm currently going over the comments. 
 
 ---
 
@@ -567,4 +515,55 @@ _footer: ""
 
 ---
 
-### Thank you for your attention!
+<div style="margin:auto; text-align:center;">
+
+![w:950](1_uso_e_dispensa_fill.png)
+
+
+</div>
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](5_menos_de_3_alternativas.png)
+
+
+</div>
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](6_metodos_de_comparacao_por_agencia.png)
+
+
+</div>
+
+---
+
+## Other research areas
+
+- Budget of the agencies
+- Political control of the agencies (by Congress)
+- Regulatory Agendas
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](3.1.totalxtotal.png)
+
+</div>
+
+---
+
+<div style="margin:auto; text-align:center;">
+
+![w:950](3_inclusion_anac.png)
+
+</div>
+
+---
+
+### Thank you

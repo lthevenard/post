@@ -52,5 +52,77 @@
     "lang": "en",
     "project": "regnum",
     "archive": false
+  },
+  {
+    "group": "legalxplain_1",
+    "slug": "legalxplain_1",
+    "title": "LegalXplain: Referências para o Legal RAG e boas práticas de publicidade e proteção de Direitos Autorais",
+    "event": "LegalXplain meeting - 2025-10-14",
+    "date": "2025-10-14",
+    "html": "legalxplain_1.html",
+    "pdf": "legalxplain_1.pdf",
+    "lang": "pt",
+    "project": "legalxplain",
+    "archive": false
+  },
+  {
+    "group": "dissertation_presentation_1",
+    "slug": "dissertation_presentation_1",
+    "title": "Dissertation: First Presentation (30/09/2025)",
+    "event": "Dissertation Meeting - 2025-09-30",
+    "date": "2025-10-14",
+    "html": "dissertation_presentation_1.html",
+    "pdf": "dissertation_presentation_1.pdf",
+    "lang": "en",
+    "project": "dissertation",
+    "archive": false
+  },
+  {
+    "group": "dissertation_qualifying_exam",
+    "slug": "dissertation_qualifying_exam",
+    "title": "Dissertation: PhD Qualifying Committee  (15/12/2025)",
+    "event": "Dissertation Qualifying Committee - 2025-12-15",
+    "date": "2025-10-14",
+    "html": "dissertation_qualifying_exam.html",
+    "pdf": "dissertation_qualifying_exam.pdf",
+    "lang": "en",
+    "project": "dissertation",
+    "archive": false
+  },
+  {
+    "group": "dissertation_qualifying_exam",
+    "slug": "dissertation_qualifying_exam",
+    "title": "Dissertation: PhD Qualifying Committee  (15/12/2025)",
+    "event": "Dissertation Qualifying Committee - 2025-12-15",
+    "date": "2025-12-15",
+    "html": "dissertation_qualifying_exam.html",
+    "pdf": "dissertation_qualifying_exam.pdf",
+    "lang": "en",
+    "project": "dissertation",
+    "archive": false
+  },
+  {
+    "group": "livrotd_chap4",
+    "slug": "livrotd_chap4",
+    "title": "Livro TD: Capítulo 4: Introdução à Teoria dos Jogos",
+    "event": "Reunião do Livro TD - 2025-10-17",
+    "date": "2025-10-17",
+    "html": "livrotd_chap4.html",
+    "pdf": "livrotd_chap4.pdf",
+    "lang": "pt",
+    "project": "livro_td",
+    "archive": false
+  },
+  {
+    "group": "livrotd_chap5",
+    "slug": "livrotd_chap5",
+    "title": "Livro TD: Capítulo 5 – Jogos sequenciais, Incerteza, racionalidade e interações estratégicas",
+    "event": "Reunião do Livro TD - 2025-11-11",
+    "date": "2025-11-11",
+    "html": "livrotd_chap5.html",
+    "pdf": "livrotd_chap5.pdf",
+    "lang": "pt",
+    "project": "livro_td",
+    "archive": false
   }
 ]

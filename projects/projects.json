@@ -1,5 +1,13 @@
 [
   {
+    "group": "legalxplain",
+    "slug": "projeto-legalxplain",
+    "lang": "pt",
+    "title": "LegalXplain",
+    "description": "Materiais de apresentação referentes ao projeto LegalXplain, da Escola de Matemática da FGV (EMAP-RJ).",
+    "tags": ["llms", "inteligência artificial", "ciência de dados", "linguagem jurídica"]
+  },
+  {
     "group": "regnum",
     "slug": "projeto-regnum",
     "lang": "pt",
@@ -22,6 +30,22 @@
     "title": "Teoria da Decisão – 2026.1",
     "description": "Repositório de slides do curso de Teoria da Decisão ministrado no primeiro semestre de 2026 na FGV Direito Rio.",
     "tags": ["teoria da decisão", "graduação", "FGV Direito Rio"]
+  },
+  {
+    "group": "livro_td",
+    "slug": "livro_teodec",
+    "lang": "pt",
+    "title": "Livro 'Introdução à Teoria da Decisão'",
+    "description": "Repositório de slides sobre o processo de escrita do livro 'Introdução à Teoria da Decisão'.",
+    "tags": ["teoria da decisão", "publicações", "livro"]
+  },
+   {
+    "group": "dissertation",
+    "slug": "dissertation",
+    "lang": "en",
+    "title": "PhD Dissertation",
+    "description": "Meetings and presentations related to my PhD dissertation work",
+    "tags": ["regulation", "empirical research", "data science", "public consultation"]
   },
   {
     "group": "test",
