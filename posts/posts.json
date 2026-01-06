@@ -24,7 +24,7 @@
     "date": "2026-01-05",
     "tags": ["epistemologia", "teoria da decisão", "xadrez"],
     "lang": "pt",
-    "file": "posts/2026-01-chess-pt.md"
+    "file": "posts/2026-01-chess.pt.md"
   },
   {
     "group": "2026-01-chess",
@@ -33,6 +33,6 @@
     "date": "2026-01-05",
     "tags": ["epistemology", "decision theory", "chess"],
     "lang": "en",
-    "file": "posts/2026-01-chess-en.md"
+    "file": "posts/2026-01-chess.en.md"
   }
 ]
