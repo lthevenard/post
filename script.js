@@ -302,6 +302,19 @@ function selectHybrid(items, lang, keyFn){
   return out;
 }
 
+function sortPostsNewestFirst(posts) {
+  // Tenta ordenar por data (ISO ou parseável). Se não for parseável, cai no compare de string.
+  return [...posts].sort((a, b) => {
+    const da = Date.parse(a.date);
+    const db = Date.parse(b.date);
+
+    if (!Number.isNaN(da) && !Number.isNaN(db)) return db - da;
+
+    // fallback (útil se a data vier como string comparável, ex: "2025-01-06")
+    return String(b.date).localeCompare(String(a.date));
+  });
+}
+
 // ---- Pages
 async function renderHome(lang) {
   const t = i18n[lang];
@@ -317,7 +330,7 @@ async function renderHome(lang) {
 
   // Loads the last posts in the index (filtering by language)
   const res = await fetch('posts/posts.json');
-  const posts = (await res.json()).filter(p => p.lang === lang);
+  const posts = sortPostsNewestFirst((await res.json()).filter(p => p.lang === lang));
   const latest = posts.slice(0, 3);
   const list = document.getElementById('latest');
   list.innerHTML = `
@@ -354,7 +367,7 @@ async function renderBlogIndex(lang) {
     </section>
   `);
   const res = await fetch('posts/posts.json');
-  const posts = (await res.json()).filter(p => p.lang === lang);
+  const posts = sortPostsNewestFirst((await res.json()).filter(p => p.lang === lang));
   const list = document.getElementById('blog-list');
   list.innerHTML = posts.map(p => `
     <div class="list-item">
