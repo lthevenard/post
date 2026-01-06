@@ -16,5 +16,23 @@
     "tags": ["regulation", "data", "participation"],
     "lang": "en",
     "file": "posts/2025-09-hello-world.en.md"
+  },
+  {
+    "group": "2026-01-chess",
+    "slug": "2026-01-chess-pt",
+    "title": "Xadrez, incerteza e filosofia de botequim",
+    "date": "2026-01-05",
+    "tags": ["epistemologia", "teoria da decisão", "xadrez"],
+    "lang": "pt",
+    "file": "posts/2026-01-chess-pt.md"
+  },
+  {
+    "group": "2026-01-chess",
+    "slug": "2026-01-chess-en",
+    "title": "Chess, Uncertainty, and Pub Philosophy",
+    "date": "2026-01-05",
+    "tags": ["epistemology", "decision theory", "chess"],
+    "lang": "en",
+    "file": "posts/2026-01-chess-en.md"
   }
 ]

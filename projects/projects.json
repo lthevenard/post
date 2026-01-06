@@ -46,21 +46,5 @@
     "title": "PhD Dissertation",
     "description": "Meetings and presentations related to my PhD dissertation work",
     "tags": ["regulation", "empirical research", "data science", "public consultation"]
-  },
-  {
-    "group": "test",
-    "slug": "teste_pt",
-    "lang": "pt",
-    "title": "Teste da página de projetos",
-    "description": "Repositório de teste da página de projetos do site.",
-    "tags": ["web development", "test"]
-  },
-  {
-    "group": "test",
-    "slug": "test_en",
-    "lang": "en",
-    "title": "Test of the projects page",
-    "description": "Slide repository to test the project page of the website.",
-    "tags": ["web development", "test"]
   }
 ]

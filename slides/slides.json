@@ -1,29 +1,5 @@
 [
   {
-    "group": "2025-09-test",
-    "slug": "teste_pt",
-    "title": "Teste",
-    "event": "Testando o site",
-    "date": "2025-09-25",
-    "html": "teste_pt.html",
-    "pdf": "teste_pt.pdf",
-    "lang": "pt",
-    "project": "teste_pt",
-    "archive": false
-  },
-  {
-    "group": "2025-09-test",
-    "slug": "test_en",
-    "title": "Test",
-    "event": "Testing the website",
-    "date": "2025-09-25",
-    "html": "test_en.html",
-    "pdf": "test_en.pdf",
-    "lang": "en",
-    "project": "test_en",
-    "archive": false
-  },
-  {
     "group": "sbca_2025",
     "title": "(SBCA 2025) How many are too few? Analyzing the diversity of regulatory options considered in Brazil's RIAs",
     "event": "SBCA 2025",
