@@ -1,0 +1,24 @@
+[
+  {
+    "slug": "lotteries",
+    "title": {
+      "pt": "Loterias e Valor Esperado",
+      "en": "Lotteries & Expected Value"
+    },
+    "description": {
+      "pt": "Simule loterias para entender valor esperado, dispersão e convergência da média.",
+      "en": "Simulate lotteries to understand expected value, dispersion, and convergence of sample means."
+    },
+    "tags": {
+      "pt": [
+        "Teoria da Decisão",
+        "Probabilidade"
+      ],
+      "en": [
+        "Decision Theory",
+        "Probability"
+      ]
+    },
+    "status": "skeleton"
+  }
+]

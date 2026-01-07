@@ -47,6 +47,10 @@
     <p>© <span id="year"></span> Lucas Thevenard</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script type="module">
+    import { renderAppsIndex, renderAppRoute } from "./apps/router.js";
+    window.AppsRouter = { renderAppsIndex, renderAppRoute };
+  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>

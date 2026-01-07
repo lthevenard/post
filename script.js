@@ -12,6 +12,7 @@ const routes = {
   'slides': renderSlides,
   'projects': renderProjectsIndex,
   'project': renderProjectPage,
+  'apps': renderApps,
   'archived': renderArchivedSlides
 };
 
@@ -312,14 +313,14 @@ function selectHybrid(items, lang, keyFn){
 }
 
 function sortPostsNewestFirst(posts) {
-  // Tenta ordenar por data (ISO ou parseável). Se não for parseável, cai no compare de string.
+  // Tries to sort by date (ISO or parseable). If not parseable, falls back to string compare.
   return [...posts].sort((a, b) => {
     const da = Date.parse(a.date);
     const db = Date.parse(b.date);
 
     if (!Number.isNaN(da) && !Number.isNaN(db)) return db - da;
 
-    // fallback (útil se a data vier como string comparável, ex: "2025-01-06")
+    // fallback (useful if the date comes as a comparable string, e.g., "2025-01-06")
     return String(b.date).localeCompare(String(a.date));
   });
 }
@@ -479,6 +480,36 @@ async function renderProjectsIndex(lang) {
   `).join('');
 }
 
+async function renderApps(lang, current) {
+  const app = document.getElementById('app');
+
+  // Failsafe: if AppsRouter is not loaded
+  if (!window.AppsRouter?.renderAppsIndex || !window.AppsRouter?.renderAppRoute) {
+    app.innerHTML = `
+      <section class="card">
+        <h1>Apps</h1>
+        <p>Erro: Apps router não foi carregado.</p>
+        <p>Error: Failed to load app router.</p>
+      </section>
+    `;
+    return;
+  }
+
+  const path = (current?.path || '/apps').replace(/\/+$/, ''); // remove trailing slash
+
+  const route = `/${lang}${path}`;
+
+  // Decides which sub-route to render
+  const parts = path.split('/').filter(Boolean); // ["apps"] ou ["apps","lotteries"]
+  if (parts.length === 1) {
+    // "#/pt/apps"
+    await window.AppsRouter.renderAppsIndex(app, { route });
+  } else {
+    // "#/pt/apps/<slug>"
+    await window.AppsRouter.renderAppRoute(app, { route });
+  }
+}
+
 async function renderProjectPage(lang, params) {
   const slug = params.get('slug');
   if (!slug) return renderNotFound(lang);
@@ -491,7 +522,7 @@ async function renderProjectPage(lang, params) {
   const project = findProjectBySlugAndLang(projects, slug, lang);
   if (!project) return renderNotFound(lang);
 
-  // somente slides ATIVOS (não arquivados) deste projeto e idioma
+  // only active slides for this project
   const slides = slidesAll
     .filter(s => s.lang === lang && s.project === slug && !s.archive)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -500,7 +531,7 @@ async function renderProjectPage(lang, params) {
 
   const t = i18n[lang];
 
-  // link para página irmã no outro idioma (só se a irmã tiver slides)
+  // link to the sister project in the other language (if it has slides)
   const other = lang === 'pt' ? 'en' : 'pt';
   const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
   let switchLink = '';
@@ -623,7 +654,7 @@ async function renderCV(lang) {
   // Selected publications (cv:true)
   try {
     const all = (await getJSON('publications/publications.json'))
-      .filter(p => p.cv === true); // só selecionadas para CV
+      .filter(p => p.cv === true); // only selected for CV
 
     // hybrid rules (pt/en) with publication keys
     const chosen = selectHybrid(all, lang, keyForPub)
