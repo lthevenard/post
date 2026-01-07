@@ -38,7 +38,7 @@ const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
     tagline: 'Regulação, pesquisa empírica e ciência de dados',
-    nav: { home:'Início', blog:'Blog', cv:'CV', publications:'Publicações', slides:'Slides', projects:'Projetos' },
+    nav: { home:'Início', blog:'Blog', cv:'CV', publications:'Publicações', slides:'Slides', projects:'Projetos', apps: 'Apps' },
     toggle: '🇺🇸 English Version',
     homeTitle: 'Bem-vindo!',
     homeIntro:
@@ -76,7 +76,7 @@ const i18n = {
   en: {
     title: 'Lucas Thevenard — Research, Blog, Slides',
     tagline: 'Regulation, empirical research and data science',
-    nav: { home:'Home', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projects', publications:'Publications' },
+    nav: { home:'Home', blog:'Blog', cv:'CV', slides:'Slides', projects:'Projects', publications:'Publications', apps: 'Apps' },
     toggle: '🇧🇷 Versão em Português',
     homeTitle: 'Welcome!',
     homeIntro:
