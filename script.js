@@ -273,6 +273,15 @@ function keyForSlide(s){
   // group is canonical; if it doesn't exist, we fall back to slug/pdf (singleton)
   return s.group || s.slug || `pdf:${s.pdf}`;
 }
+// --- If a PDF URL is provided, use it; otherwise, build local path
+function resolvePdfHref(slide, { archived = false } = {}) {
+  // 1) If an external PDF URL is provided, use it
+  if (slide.pdf_url) return slide.pdf_url;
+
+  // 2) Fallback: local PDF
+  if (archived) return `slides/archived/${encodeURIComponent(slide.pdf)}`;
+  return `slides/${encodeURIComponent(slide.slug)}/${encodeURIComponent(slide.pdf)}`;
+}
 function keyForPub(p){
   // priority: group > doi > url > title (fallback)
   return p.group || (p.doi ? `doi:${p.doi}` : (p.url ? `url:${p.url}` : `title:${p.title}`));
@@ -522,7 +531,7 @@ async function renderProjectPage(lang, params) {
   const list = document.getElementById('proj-slides');
   list.innerHTML = slides.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
-    const pdfHref  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+    const pdfHref = resolvePdfHref(s);
     return `
       <div class="list-item stacked">
         <div class="primary">
@@ -535,7 +544,9 @@ async function renderProjectPage(lang, params) {
         </div>
         <div class="actions">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
-          <a class="badge" href="${pdfHref}" download style="text-decoration:none">${t.downloadPDF}</a>
+          <a class="badge" href="${pdfHref}" target="_blank" rel="noopener" style="text-decoration:none">
+            ${t.downloadPDF}
+          </a>
         </div>
       </div>
     `;
@@ -678,8 +689,7 @@ async function renderSlides(lang) {
 
   list.innerHTML = chosen.map(s => {
     const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
-    const pdfHref  = `slides/${encodeURIComponent(s.pdf) ? encodeURIComponent(s.pdf) : ''}`;
-    const pdfLink  = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.pdf)}`;
+    const pdfLink = resolvePdfHref(s);
 
     const twin = (ENABLE_SLIDE_LANGUAGE_SWITCH && s.group)
       ? counterpartByGroup(allSlides, s.group, other)
@@ -709,7 +719,9 @@ async function renderSlides(lang) {
         </div>
         <div class="actions">
           <a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>
-          <a class="badge" href="${pdfLink}" download style="text-decoration:none">${t.downloadPDF}</a>
+          <a class="badge" href="${pdfLink}" target="_blank" rel="noopener" style="text-decoration:none">
+            ${t.downloadPDF}
+          </a>
           ${projLink}
           ${twinLink}
         </div>
@@ -753,7 +765,7 @@ async function renderArchivedSlides(lang) {
   el.innerHTML = `
     <ul>
       ${slides.map(s => {
-        const pdfHref = `slides/archived/${encodeURIComponent(s.pdf)}`;
+        const pdfHref = resolvePdfHref(s, { archived: true });
         const label = [s.date, s.title].filter(Boolean).join(' — ');
         return `<li><a href="${pdfHref}" target="_blank" rel="noopener">${label}</a></li>`;
       }).join('')}
