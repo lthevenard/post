@@ -15,6 +15,7 @@ Este documento explica como os dados devem ser estruturados e como o site interp
 
 ### Estrutura Geral do Projeto
 
+```
 /
 ├─ index.html
 ├─ script.js
@@ -33,6 +34,7 @@ Este documento explica como os dados devem ser estruturados e como o site interp
 ├─ publications/
 │  └─ publications.json
 └─ README.md
+```
 
 ### Convenção de Idiomas
 
@@ -207,14 +209,20 @@ Lista artigos, relatórios, capítulos, repositórios etc.
             - 📌 Recomendação forte: sempre preencher group.
     - Além disso, a página CV mostra apenas publicações com publications.cv == true
 
-## ✅ Boas Práticas (Checklist)
+## Boas Práticas (Checklist)
 
 **Antes de dar deploy:**
 
-[] Todo slides.project existe como projects.slug
-[] Idiomas usam apenas "pt" ou "en"
-[] Datas seguem YYYY-MM-DD
-[] slug ≠ group (não confundir funções)
-[] Slides que não devem aparecer estão com "archive": true
-[] Posts apontam para arquivos .md existentes
-[] Publicações possuem group consistente entre idiomas
+✅ Todo slides.project existe como projects.slug
+
+✅ Idiomas usam apenas "pt" ou "en"
+
+✅ Datas seguem YYYY-MM-DD
+
+✅ slug ≠ group (não confundir funções)
+
+✅ Slides que não devem aparecer estão com "archive": true
+
+✅ Posts apontam para arquivos .md existentes
+
+✅ Publicações possuem group consistente entre idiomas
