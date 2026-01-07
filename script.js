@@ -148,7 +148,7 @@ function navigate() {
   const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0]; // '', 'blog', 'cv', ...
   const route = routes[seg] || renderNotFound;
   const params = new URLSearchParams(current.query.replace(/^\?/, ''));
-  route(current.lang, params).catch(err => renderError(current.lang, err));
+  route(current.lang, params, current).catch(err => renderError(current.lang, err));
 }
 
 // ---- UI helpers
@@ -480,7 +480,7 @@ async function renderProjectsIndex(lang) {
   `).join('');
 }
 
-async function renderApps(lang, current) {
+async function renderApps(lang, params, current) {
   const mount = document.getElementById("app");
 
   if (!window.AppsRouter?.renderAppsIndex || !window.AppsRouter?.renderAppRoute) {
