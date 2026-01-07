@@ -481,34 +481,25 @@ async function renderProjectsIndex(lang) {
 }
 
 async function renderApps(lang, current) {
-  const app = document.getElementById('app');
+  const mount = document.getElementById("app");
 
-  // Failsafe: if AppsRouter is not loaded
   if (!window.AppsRouter?.renderAppsIndex || !window.AppsRouter?.renderAppRoute) {
-    app.innerHTML = `
-      <section class="card">
-        <h1>Apps</h1>
-        <p>Erro: Apps router não foi carregado.</p>
-        <p>Error: Failed to load app router.</p>
-      </section>
-    `;
+    mount.innerHTML = `<section class="card"><h1>Apps</h1><p>Apps router não carregou.</p></section>`;
     return;
   }
 
-  const path = (current?.path || '/apps').replace(/\/+$/, ''); // remove trailing slash
+  // Ex.: current.path = "/apps" or "/apps/lotteries"
+  const path = (current?.path || "/apps").replace(/\/+$/, "");
+  const route = `/${lang}${path}`; // "/pt/apps" or "/pt/apps/lotteries"
 
-  const route = `/${lang}${path}`;
-
-  // Decides which sub-route to render
-  const parts = path.split('/').filter(Boolean); // ["apps"] ou ["apps","lotteries"]
-  if (parts.length === 1) {
-    // "#/pt/apps"
-    await window.AppsRouter.renderAppsIndex(app, { route });
+  const parts = path.split("/").filter(Boolean); // ["apps"] or ["apps","lotteries"]
+  if (parts.length >= 2) {
+    await window.AppsRouter.renderAppRoute(mount, { route });
   } else {
-    // "#/pt/apps/<slug>"
-    await window.AppsRouter.renderAppRoute(app, { route });
+    await window.AppsRouter.renderAppsIndex(mount, { route });
   }
 }
+
 
 async function renderProjectPage(lang, params) {
   const slug = params.get('slug');

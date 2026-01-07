@@ -103,3 +103,14 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 .pub-card .title{font-weight:700; font-size:1.05rem; margin-bottom:4px}
 .pub-card .authors{color:var(--text)}
 .pub-card .meta{color:var(--muted); font-size:.9rem}
+
+/* Badges row (Apps index, etc.) */
+.badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.badge{
+  white-space:nowrap;
+}
