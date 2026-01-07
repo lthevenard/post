@@ -34,5 +34,23 @@
     "tags": ["epistemology", "decision theory", "chess"],
     "lang": "en",
     "file": "posts/2026-01-chess.en.md"
+  },
+  {
+    "group": "2026-01-gormley-complexity",
+    "slug": "2026-01-gormley-complexity-en",
+    "title": "The Complex Concept of Complexity: A Note on Gormley’s Typology",
+    "date": "2026-01-07",
+    "tags": ["regulation", "public participation", "complexity"],
+    "lang": "en",
+    "file": "posts/2026-01-gormley-complexity.en.md"
+  },
+  {
+    "group": "2026-01-gormley-complexity",
+    "slug": "2026-01-gormley-complexity-pt",
+    "title": "O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley",
+    "date": "2026-01-07",
+    "tags": ["regulação", "participação pública", "complexidade"],
+    "lang": "pt",
+    "file": "posts/2026-01-gormley-complexity.pt.md"
   }
 ]
