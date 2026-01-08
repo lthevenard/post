@@ -1,8 +1,8 @@
-LOTTERIES APP — PROJECT CONTEXT (Milestone A completed)
+LOTTERIES APP — PROJECT CONTEXT (Milestones A, B and C in progress)
 
 This document summarizes the current state of the Lotteries app, its structure,
-design decisions, and next development steps. It is meant to be reused as context
-in future ChatGPT sessions to avoid losing project continuity.
+design decisions, completed milestones, and pending issues. It is meant to be
+reused as context in future ChatGPT sessions to preserve project continuity.
 
 ============================================================
 1. GENERAL CONTEXT
@@ -19,70 +19,14 @@ Routing is handled by a central apps router, which dynamically loads each app.
 The Lotteries app is self-contained, with its own UI, logic, and CSS, but visually
 integrated with the site's identity (colors, typography).
 
-The guiding principle is:
+Guiding principles:
 - Treat the original Shiny app as a functional specification.
 - Rebuild incrementally using vanilla JavaScript (no frameworks).
 - Separate concerns clearly: parsing, validation, model logic, views, wiring.
+- Each milestone must produce visible, testable outputs.
 
 ============================================================
-2. CURRENT STATUS — MILESTONE A (COMPLETED)
-============================================================
-
-Milestone A goal:
-- Verify that inputs are correctly parsed and validated.
-- Ensure UI is fully interactive (tabs + buttons).
-- Provide visible feedback so the user can test parsing behavior.
-
-Milestone A is now fully working.
-
-What works:
-- Sidebar inputs for Lottery 1 and Lottery 2 (payoffs and probabilities).
-- Parsing of semicolon-separated lists (e.g., "20; 40; 0").
-- Validation rules:
-  - Same length for payoffs and probabilities.
-  - Probabilities must sum to 1.
-  - Probabilities in [0, 1].
-  - Maximum of 20 outcomes.
-  - Dot (.) as decimal separator (commas rejected).
-- “Simulate” button is wired and active.
-- Clear error messages are shown when validation fails.
-- On success, parsed inputs are printed in the Lottery 1 and Lottery 2 tabs
-  (explicitly as a test for Milestone A).
-- Tabs (About, Lottery 1, Lottery 2, Comparisons, Instructions) are fully clickable
-  and switch content correctly.
-
-============================================================
-3. VISUAL / UX DECISIONS
-============================================================
-
-Key design decisions:
-- The app uses a "full-bleed" layout to escape the narrow central container
-  of the site, allowing wider content for charts and tables.
-- The app surface uses a light background (instead of the site's dark blue),
-  to support charts and data-heavy visuals.
-- Site identity is preserved by reusing CSS variables from the main site:
-  - --bg      (deep blue, used for text/headings)
-  - --link    (light blue, used for active tabs, slider fill, buttons)
-- No global CSS was modified; the app loads its own styles.css dynamically.
-
-UI elements:
-- "Simulate" button:
-  - Dark blue gradient based on --bg.
-  - White text.
-  - Subtle shadow (not floating).
-- Tabs:
-  - Minimal, text-based tabs.
-  - Active tab is indicated only by text color (--link) and font weight.
-- Slider:
-  - Custom-styled range input.
-  - Fill uses --link color and updates dynamically via CSS variable (--fill).
-- "Back to Apps" button:
-  - Small, secondary button.
-  - Blue background (--link), white text.
-  - Very subtle hover shadow.
-
-============================================================
-4. FILE STRUCTURE (RELEVANT FILES)
+2. FILE STRUCTURE (CURRENT)
 ============================================================
 
 apps/
@@ -93,35 +37,62 @@ apps/
    │   - Injects app-specific CSS.
    │   - Wires:
    │       - Tab click handlers.
-   │       - "Simulate" button logic.
-   │   - Calls parsing + validation and updates tab content.
+   │       - "Simulate" button.
+   │       - Seed logic (Milestone C).
+   │       - Slider + animation logic (Milestone C).
+   │   - Renders content for:
+   │       - Lottery 1 tab
+   │       - Lottery 2 tab
+   │       - Simulation / Comparisons tab
    │
    ├─ styles.css
    │   - App-specific styling.
-   │   - Implements full-bleed layout, light surface, buttons, tabs, slider.
-   │   - Reuses site CSS variables (--bg, --link).
+   │   - Full-bleed layout and light surface.
+   │   - Cards, tabs, buttons, charts.
+   │   - Custom-styled range slider (Milestone C).
    │
    ├─ views/
-   │   └─ page.js
-   │       - Renders the full UI (HTML structure).
-   │       - Sidebar + main area + tabs.
-   │       - Provides helper functions:
-   │           - getRawInputs()
-   │           - setError()
-   │           - clearError()
-   │           - setActiveTab()
-   │       - Manages slider fill via CSS variable (--fill).
+   │   ├─ page.js
+   │   │   - Renders the full UI structure.
+   │   │   - Sidebar + main area + tabs.
+   │   │   - Sidebar inputs for lotteries and N.
+   │   │   - Seed selection UI (auto/manual).
+   │   │   - Exposes helpers:
+   │   │       - getRawInputs()
+   │   │       - setError()
+   │   │       - clearError()
+   │   │       - setActiveTab()
+   │   │
+   │   └─ charts.js
+   │       - SVG chart renderers (Milestone B and C).
+   │       - Distribution bar chart.
+   │       - Expected value + standard deviation chart.
+   │       - Charts are responsive, SVG-based, no dependencies.
    │
    ├─ model/
-   │   └─ lottery.js
-   │       - Core parsing + validation logic for Milestone A.
-   │       - parseAndValidateLottery()
-   │       - validateLottery()
+   │   ├─ lottery.js
+   │   │   - Parsing and validation logic.
+   │   │   - parseAndValidateLottery()
+   │   │   - validateLottery()
+   │   │   - describeLottery():
+   │   │       - outcome labels (A, B, C…)
+   │   │       - cumulative probabilities
+   │   │       - expected value
+   │   │       - theoretical standard deviation
+   │   │       - grouped distribution
+   │   │
+   │   └─ simulation.js
+   │       - Simulation engine (Milestone C).
+   │       - Deterministic seeded RNG (Mulberry32).
+   │       - Seed validation and generation (5-digit integers).
+   │       - buildSimulationTable(N, …):
+   │           - Simulates tickets from 1..N incrementally.
+   │           - Tracks outcome counts, total returns,
+   │             mean returns, and profit vs EV.
+   │       - getRowForTickets(table, N).
    │
    └─ (future)
-       ├─ simulation.js
-       ├─ charts.js
-       └─ copy.js
+       └─ copy.js (optional explanatory text)
 
 shared/
 └─ parsing/
@@ -130,55 +101,122 @@ shared/
        - Used by lottery.js.
 
 ============================================================
-5. CURRENT BEHAVIOR (HOW TO TEST)
+3. MILESTONE A — INPUT PARSING & VALIDATION (COMPLETED)
 ============================================================
 
-1. Open the app at #/pt/apps/lotteries.
-2. Click between tabs to verify navigation works.
-3. Change inputs (e.g., break probability sum).
-4. Click "Simulate".
-   - If invalid: error box appears with messages.
-   - If valid: Lottery 1 and Lottery 2 tabs show parsed arrays as JSON.
-5. Slider updates label and visual fill but does not trigger simulation yet
-   (by design).
+Goals:
+- Verify correct parsing of inputs.
+- Ensure UI is fully interactive.
+- Provide visible feedback for testing.
+
+What works:
+- Sidebar inputs for Lottery 1 and Lottery 2 (payoffs and probabilities).
+- Parsing of semicolon-separated lists (e.g., "20; 40; 0").
+- Validation rules:
+  - Same length for payoffs and probabilities.
+  - Probabilities must sum to 1.
+  - Probabilities in [0, 1].
+  - Maximum of 20 outcomes.
+  - Dot (.) as decimal separator only.
+- "Simulate" button is fully wired.
+- Clear error messages on validation failure.
+- Tabs (About, Lottery 1, Lottery 2, Simulation, Instructions) switch correctly.
 
 ============================================================
-6. UPCOMING MILESTONES
+4. MILESTONE B — THEORETICAL RESULTS (COMPLETED)
 ============================================================
 
-Milestone B — Lottery Description & Theoretical Results
-- Compute Expected Value (EV).
-- Compute theoretical standard deviation.
-- Generate outcome labels (A, B, C...).
-- Render textual lottery description.
-- Add theoretical distribution charts.
+Goals:
+- Reproduce the theoretical part of the Shiny app.
 
-Milestone C — Simulation Engine (1..N)
-- Incremental simulation up to N tickets.
-- Track outcome counts, returns, mean returns, profit vs EV.
-- Efficient cumulative logic (no re-simulation per N).
-
-Milestone D — Simulation Comparisons
-- Tables for Lottery 1 and Lottery 2 (1..N).
-- Conditional formatting (profit +/-).
-- Charts:
-  - Mean returns vs number of tickets (with EV line).
-  - Relative frequency distribution for a selected N.
-
-Milestone E — Polish & Extensions
-- Performance tuning.
-- Accessibility refinements.
-- Optional export of results (CSV).
-- Minor UX improvements.
+Implemented features:
+- Outcome labels (A, B, C…).
+- Textual description of lottery returns.
+- Expected Value (EV).
+- Theoretical standard deviation.
+- SVG charts:
+  - Theoretical distribution (bar chart).
+  - EV ± σ chart (single-lottery view).
+- Careful visual hierarchy:
+  - Large section titles.
+  - Card-based layout.
+  - Charts appear before solution boxes.
+- SVG charts are:
+  - Responsive.
+  - Clean (no rounded bars or shadows).
+  - With axes, ticks, plot box, and consistent colors.
 
 ============================================================
-7. DESIGN PRINCIPLES TO KEEP
+5. MILESTONE C — SIMULATION ENGINE (IN PROGRESS)
 ============================================================
 
-- Vanilla JS only (no frameworks).
-- Clear separation of concerns.
-- Router-driven mounting.
-- Shiny app is the behavioral reference, not the implementation model.
-- Incremental milestones with visible outputs at each step.
+Goals:
+- Reproduce the simulation logic of the Shiny app.
+- Allow incremental simulation from 1..N tickets.
+- Ensure reproducibility via random seed.
+
+Implemented features:
+- Deterministic seeded RNG.
+- Seed UI:
+  - Option to generate a random seed.
+  - Option to manually input a 5-digit seed (10000–99999).
+- Same seed is used for both lotteries.
+- Simulation logic:
+  - For each N, simulates N draws, consuming RNG sequentially.
+  - Tracks outcome counts, total returns, mean returns, and profit.
+- Simulation tab:
+  - Displays the seed used.
+  - Slider to select number of tickets (N).
+  - Play / Stop buttons to animate the slider (Shiny-like behavior).
+  - Table showing relative frequencies of outcomes for Lottery 1 vs Lottery 2
+    at the selected N.
+
+Known issues / pending work:
+- Slider still has visual/UX issues:
+  - Fill behavior needs fine-tuning.
+  - Initial position and maximum reach were recently fixed but need review.
+  - Value display was moved to a large box on the right (desired),
+    but styling still needs final polish.
+- Simulation charts are not yet implemented:
+  - Mean Returns vs Tickets (with EV reference line).
+  - Graphical comparison of relative frequencies (bar chart).
+
+============================================================
+6. VISUAL / UX DECISIONS
+============================================================
+
+- Full-bleed layout to allow wide charts and tables.
+- Light app surface (distinct from the dark-blue site background).
+- Site identity preserved via CSS variables:
+  - --bg   (deep blue, primary accent).
+  - --link (lighter blue, interactive elements).
+- No global site CSS was modified.
+- App CSS is dynamically injected on mount.
+
+============================================================
+7. NEXT STEPS (FOR FUTURE CHATS)
+============================================================
+
+Immediate (Milestone C continuation):
+- Finalize slider behavior and styling.
+- Ensure consistent behavior across browsers.
+
+Next milestones:
+- Add simulation charts:
+  - Mean Returns vs Tickets (SVG).
+  - Relative frequency bar charts for selected N.
+- Minor refactoring of index.js (reduce handler size).
+- Optional CSV export of simulation tables.
+- Accessibility improvements.
+
+============================================================
+8. DESIGN PRINCIPLES TO KEEP
+============================================================
+
+- Vanilla JavaScript only.
+- No external charting libraries.
+- Shiny app as behavioral reference.
+- Incremental milestones with visible outputs.
+- Clear separation between model, view, and wiring.
 
 END OF FILE

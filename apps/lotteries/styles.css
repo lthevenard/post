@@ -35,6 +35,74 @@
 .lotteries-surface li,
 .lotteries-surface label{ font-size: 15px; }
 
+/* Header branding (logo + title) */
+.lotteries-header{
+  padding: 16px 18px 10px 18px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.lotteries-brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  min-width: 0;
+}
+
+/* Logo no header: usar a própria imagem como ícone (sem padding/tile) */
+.lotteries-logo-tile{
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.lotteries-logo{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 520px){
+  .lotteries-logo-tile{
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+  }
+}
+
+.lotteries-title{
+  margin: 0;
+  line-height: 1.15;
+}
+
+.lotteries-subtitle{
+  margin: 8px 0 0 0;
+  opacity: .85;
+}
+
+@media (max-width: 520px){
+  .lotteries-logo-tile{
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+  .lotteries-logo{
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
 /* Layout */
 .lotteries-grid{
   display:grid;
@@ -195,7 +263,7 @@
 }
 
 /* Range slider with site-consistent fill color */
-.lotteries-surface input[type="range"]{
+.lotteries-surface input[type="range"]:not(.lottery-slider){
   --fill: 50%;
   width:100%;
   height: 26px;
@@ -204,7 +272,7 @@
 }
 
 /* WebKit track */
-.lotteries-surface input[type="range"]::-webkit-slider-runnable-track{
+.lotteries-surface input[type="range"]:not(.lottery-slider)::-webkit-slider-runnable-track{
   height: 8px;
   border-radius: 999px;
   background:
@@ -216,7 +284,7 @@
 }
 
 /* WebKit thumb */
-.lotteries-surface input[type="range"]::-webkit-slider-thumb{
+.lotteries-surface input[type="range"]:not(.lottery-slider)::-webkit-slider-thumb{
   -webkit-appearance: none;
   appearance: none;
   margin-top: -6px;
@@ -229,21 +297,21 @@
 }
 
 /* Firefox track */
-.lotteries-surface input[type="range"]::-moz-range-track{
+.lotteries-surface input[type="range"]:not(.lottery-slider)::-moz-range-track{
   height: 8px;
   border-radius: 999px;
   background: rgba(15,23,42,.18);
 }
 
 /* Firefox fill */
-.lotteries-surface input[type="range"]::-moz-range-progress{
+.lotteries-surface input[type="range"]:not(.lottery-slider)::-moz-range-progress{
   height: 8px;
   border-radius: 999px;
   background: var(--link);
 }
 
 /* Firefox thumb */
-.lotteries-surface input[type="range"]::-moz-range-thumb{
+.lotteries-surface input[type="range"]:not(.lottery-slider)::-moz-range-thumb{
   width: 18px;
   height: 18px;
   border-radius: 999px;
@@ -303,3 +371,257 @@
   }
 }
 
+/* Simulation slider */
+
+.lottery-slider-wrap{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.lottery-slider-col{
+  display: flex;
+  flex-direction: column;
+}
+
+.lottery-slider-scale{
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: .75;
+  margin-top: 6px;
+}
+
+.lottery-slider{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(
+    to right,
+    var(--link) 0%,
+    var(--link) var(--slider-pct, 0%),
+    rgba(15,23,42,.20) var(--slider-pct, 0%),
+    rgba(15,23,42,.20) 100%
+  );
+  border-radius: 999px;
+  outline: none;
+}
+
+/* WebKit */
+.lottery-slider::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  border: 2px solid var(--bg);
+
+  box-shadow:
+    0 4px 10px rgba(15,23,42,.22),
+    inset 0 0 0 3px rgba(15,23,42,.06);
+
+  cursor: pointer;
+}
+
+/* Firefox */
+.lottery-slider::-moz-range-thumb{
+  width: 35x;
+  height: 35px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  border: 2px solid var(--bg);
+
+  box-shadow:
+    0 4px 10px rgba(15,23,42,.22),
+    inset 0 0 0 3px rgba(15,23,42,.06);
+
+  cursor: pointer;
+}
+
+.lottery-slider::-moz-range-track{
+  background: transparent;
+}
+
+/* Selected value box (right side) */
+.lottery-slider-value{
+  min-width: 96px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 850;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--bg);
+  border: 1px solid rgba(15,23,42,.15);
+  box-shadow: 0 1px 3px rgba(67, 70, 85, 0.18);
+}
+
+/* Simulation outcomes table (Comparisons tab) */
+
+simfreq-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px){
+  .simfreq-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+.simfreq-caption{
+  font-size: 17px;
+  font-weight: 250;
+  opacity: .9;
+  margin: 6px 0 6px 0;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.simfreq-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.simfreq-table thead th{
+  padding: 10px 10px;
+  border-bottom: 2px solid rgba(15,23,42,.18);
+  font-size: 12px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  opacity: .85;
+}
+
+.simfreq-table tbody tr{
+  border-bottom: 1px solid rgba(15,23,42,.12);
+}
+
+.simfreq-table tbody td{
+  padding: 10px 10px;
+  vertical-align: top;
+}
+
+.simfreq-outcome{
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.simfreq-num{
+  text-align: right;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.simfreq-payoff-pos{
+  color: #16a34a;
+  font-weight: 900;
+}
+
+.simfreq-payoff-neg{
+  color: #dc2626;
+  font-weight: 900;
+}
+
+/* Animated bar charts (Comparisons tab) */
+
+.simcharts-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px){
+  .simcharts-grid{ grid-template-columns: 1fr; }
+}
+
+.simchart{
+  height: 190px;
+  border: 1.5px solid rgba(15,23,42,.30);
+  background: rgba(255,255,255,.25);
+  border-radius: 12px;
+  padding: 12px 12px 28px 12px;
+  display: flex;
+  gap: 20px;
+  place-content: center;
+  align-items: flex-end;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.simchart-bar{
+  flex: 1 1 0;
+  min-width: 44px;
+  max-width: 120px;
+  position: relative;
+  height: 100%;
+  border-radius: 12px;
+  background: rgba(15,23,42,.10);
+  border: 1px solid rgba(15,23,42,.10);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+
+.simchart-fill{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: calc(var(--obs, 0) * 1%);
+  background: var(--link);
+  border-radius: 10px;
+
+  transition: height 220ms ease;
+}
+
+/* dashed marker for theoretical probability */
+.simchart-bar::after{
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: calc(var(--theory, 0) * 1%);
+  border-top: 3px dashed var(--bg);
+  opacity: .95;
+  pointer-events: none;
+}
+
+
+.simchart-x{
+  position: absolute;
+  bottom: 6px;
+  font-size: 12px;
+  opacity: .9;
+}
+
+.simchart-legend{
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  opacity: .8;
+}
+
+.simchart-dot{
+  width: 18px;
+  height: 0;
+  border-top: 2px dashed rgba(15,23,42,.45);
+  display: inline-block;
+}
+
+.simchart{
+  padding-top: 20px;
+  padding-bottom: 16px;
+}

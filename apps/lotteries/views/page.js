@@ -27,21 +27,29 @@ export function renderPage(mount, { lang }) {
     probs1: "0.25; 0.25; 0.5",
     values2: "120; 140; -100",
     probs2: "0.25; 0.25; 0.5",
-    nMax: 500,
+    nMax: 1000,
   };
 
   mount.innerHTML = `
     <section class="lotteries-fullbleed">
       <div class="lotteries-surface">
-        <header style="padding: 16px 18px 10px 18px; display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
-          <div>
-            <h1 style="margin:0; line-height:1.15;">${labels.title}</h1>
-            <p style="margin:8px 0 0 0; opacity:.85;">
-              ${isEn ? "Milestone B: theoretical description + EV + dispersion." : "Milestone B: descrição teórica + valor esperado + dispersão."}
-            </p>
+        <header class="lotteries-header">
+          <div class="lotteries-brand">
+            <div class="lotteries-logo-tile" aria-hidden="true">
+              <img class="lotteries-logo" src="apps/lotteries/assets/logo.png" alt="" />
+            </div>
+
+            <div>
+              <h1 class="lotteries-title">${labels.title}</h1>
+              <p class="lotteries-subtitle">
+                ${isEn ? "Simulate lotteries to understand concepts such as expected value, dispersion, and convergence of sample means." : "Simule loterias para entender conceitos como o de valor esperado, dispersão e convergência da média."}
+              </p>
+            </div>
           </div>
+
           <a href="#/${lang}/apps" class="lotteries-link-btn">${labels.back}</a>
         </header>
+
 
         <div class="lotteries-grid">
           <aside class="lotteries-sidebar">
@@ -63,15 +71,46 @@ export function renderPage(mount, { lang }) {
             <input id="probs_2" type="text" value="${defaults.probs2}" />
 
             <h3 style="margin: 16px 0 10px 0;">${labels.simulations}</h3>
-            <label style="display:block; font-weight:650; margin: 8px 0 6px 0;">${labels.nMax}</label>
-            <input id="simulation_n" type="range" min="100" max="1000" step="50" value="${defaults.nMax}" />
+            <label style="display:block; font-weight:650; margin: 8px 0 6px 0;">
+              ${labels.nMax}:
+              <span id="simulation_n_value" style="color: var(--link); font-weight: 800;">
+                ${defaults.nMax}
+              </span>
+            </label>
+            <input id="simulation_n" type="range" min="100" max="2000" step="50" value="${defaults.nMax}" />
             <div style="display:flex; justify-content:space-between; font-size: 12px; opacity: .85; margin-top: 4px;">
               <span>100</span>
-              <span id="simulation_n_value">${defaults.nMax}</span>
-              <span>1000</span>
+              <span>2000</span>
             </div>
 
             <button id="simulate_btn" class="lotteries-cta" type="button">${labels.simulate}</button>
+
+            <div class="lottery-card" style="margin-top: 12px;">
+              <div class="lottery-card-title">${isEn ? "Random seed" : "Seed aleatório"}</div>
+
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <label style="display:flex; gap:8px; align-items:center; cursor:pointer;">
+                  <input type="radio" name="seed_mode" value="auto" checked />
+                  <span>${isEn ? "Generate random seed" : "Gerar seed aleatório"}</span>
+                </label>
+
+                <label style="display:flex; gap:8px; align-items:center; cursor:pointer;">
+                  <input type="radio" name="seed_mode" value="manual" />
+                  <span>${isEn ? "Provide seed" : "Informar o seed"}</span>
+                </label>
+
+                <div id="seed_manual_wrap" style="display:none;">
+                  <label style="display:block; font-weight:650; margin: 0 0 6px 0;">
+                    ${isEn ? "Seed (10000–99999)" : "Seed (10000–99999)"}
+                  </label>
+                  <input id="seed_manual" type="number" min="10000" max="99999" step="1" placeholder="12345" />
+                  <div style="font-size:12px; opacity:.8; margin-top:6px;">
+                    ${isEn ? "Use a 5-digit integer for reproducible results." : "Use um inteiro de 5 dígitos para reproduzir os resultados."}
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </aside>
 
           <main class="lotteries-main">
@@ -111,6 +150,9 @@ export function renderPage(mount, { lang }) {
     tabLottery2: mount.querySelector("#tab_lottery2"),
     tabComparisons: mount.querySelector("#tab_comparisons"),
     tabInstructions: mount.querySelector("#tab_instructions"),
+    seedRadios: Array.from(mount.querySelectorAll('input[name="seed_mode"]')),
+    seedManualWrap: mount.querySelector("#seed_manual_wrap"),
+    seedManual: mount.querySelector("#seed_manual"),
   };
 
   // Basic initial content (Milestone A).
@@ -161,6 +203,8 @@ export function renderPage(mount, { lang }) {
       values2: String(els.values2.value ?? ""),
       probs2: String(els.probs2.value ?? ""),
       nMax: Number(els.nMax.value),
+      seedMode: els.seedRadios.find((r) => r.checked)?.value ?? "auto",
+      seedManual: String(els.seedManual?.value ?? ""),
     };
   }
 
@@ -191,6 +235,15 @@ export function renderPage(mount, { lang }) {
   }
 
   setActiveTab("about");
+
+  function syncSeedUI() {
+    const mode = els.seedRadios.find((r) => r.checked)?.value ?? "auto";
+    els.seedManualWrap.style.display = mode === "manual" ? "block" : "none";
+  }
+
+  for (const r of els.seedRadios) r.addEventListener("change", syncSeedUI);
+  syncSeedUI();
+
 
   return { els, getRawInputs, setError, clearError, setActiveTab };
 }
