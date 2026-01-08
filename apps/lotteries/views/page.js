@@ -54,65 +54,67 @@ export function renderPage(mount, { lang }) {
   };
 
   mount.innerHTML = `
-    <section class="card" style="padding: 0; overflow: hidden;">
-      <header style="padding: 18px 18px 10px 18px; display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
-        <div>
-          <h1 style="margin:0; line-height: 1.15;">${title}</h1>
-          <p style="margin:8px 0 0 0; opacity: .85;">
-            ${labels.placeholder}
-          </p>
+    <section class="lotteries-fullbleed">
+      <div class="lotteries-surface">
+        <header style="padding: 18px 18px 10px 18px; display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+          <div>
+            <h1 style="margin:0; line-height: 1.15;">${title}</h1>
+            <p style="margin:8px 0 0 0; opacity: .85;">
+              ${labels.placeholder}
+            </p>
+          </div>
+          <a href="#/${lang}/apps" class="btn" style="white-space:nowrap;">${back}</a>
+        </header>
+
+        <div class="lotteries-grid">
+          <!-- Sidebar -->
+          <aside class="lotteries-sidebar">
+            <div id="lotteries-error" style="display:none; margin-bottom: 12px; padding: 10px 12px; border: 1px solid rgba(220,38,38,.35); border-radius: 10px;">
+              <div style="font-weight: 700; margin-bottom: 6px; color: rgb(220,38,38);">${isEn ? "Incorrect input" : "Entrada incorreta"}</div>
+              <ul id="lotteries-error-list" style="margin:0; padding-left: 18px;"></ul>
+            </div>
+
+            <h3 style="margin: 0 0 10px 0;">${labels.lottery1}</h3>
+            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
+            <input id="values_1" type="text" value="${defaults.values1}" style="width:100%;" />
+            <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
+            <input id="probs_1" type="text" value="${defaults.probs1}" style="width:100%;" />
+
+            <h3 style="margin: 16px 0 10px 0;">${labels.lottery2}</h3>
+            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
+            <input id="values_2" type="text" value="${defaults.values2}" style="width:100%;" />
+            <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
+            <input id="probs_2" type="text" value="${defaults.probs2}" style="width:100%;" />
+
+            <h3 style="margin: 16px 0 10px 0;">${labels.simulations}</h3>
+            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.nMax}</label>
+            <input id="simulation_n" type="range" min="100" max="1000" step="50" value="${defaults.nMax}" style="width:100%;" />
+            <div style="display:flex; justify-content:space-between; font-size: 12px; opacity: .85; margin-top: 4px;">
+              <span>100</span>
+              <span id="simulation_n_value">${defaults.nMax}</span>
+              <span>1000</span>
+            </div>
+
+            <button id="simulate_btn" class="btn primary" style="width:100%; margin-top: 14px;">${labels.simulate}</button>
+          </aside>
+
+          <!-- Main content -->
+          <main class="lotteries-main">
+            <nav class="lotteries-tabs">
+              <button class="btn" data-tab="about">${labels.about}</button>
+              <button class="btn" data-tab="lottery1">${labels.tabL1}</button>
+              <button class="btn" data-tab="lottery2">${labels.tabL2}</button>
+              <button class="btn" data-tab="comparisons">${labels.comparisons}</button>
+              <button class="btn" data-tab="instructions">${labels.instructions}</button>
+            </nav>
+
+            <section id="tab_about" data-tab-panel="about"></section>
+            <section id="tab_lottery1" data-tab-panel="lottery1" hidden></section>
+            <section id="tab_lottery2" data-tab-panel="lottery2" hidden></section>
+            <section id="tab_comparisons" data-tab-panel="comparisons" hidden></section>
+            <section id="tab_instructions" data-tab-panel="instructions" hidden></section>
+          </main>
         </div>
-        <a href="#/${lang}/apps" class="btn" style="white-space:nowrap;">${back}</a>
-      </header>
-
-      <div style="display:grid; grid-template-columns: 320px 1fr; gap: 0; border-top: 1px solid rgba(0,0,0,.08);">
-        <!-- Sidebar -->
-        <aside style="padding: 16px 16px 18px 16px; border-right: 1px solid rgba(0,0,0,.08);">
-          <div id="lotteries-error" style="display:none; margin-bottom: 12px; padding: 10px 12px; border: 1px solid rgba(220,38,38,.35); border-radius: 10px;">
-            <div style="font-weight: 700; margin-bottom: 6px; color: rgb(220,38,38);">${isEn ? "Incorrect input" : "Entrada incorreta"}</div>
-            <ul id="lotteries-error-list" style="margin:0; padding-left: 18px;"></ul>
-          </div>
-
-          <h3 style="margin: 0 0 10px 0;">${labels.lottery1}</h3>
-          <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
-          <input id="values_1" type="text" value="${defaults.values1}" style="width:100%;" />
-          <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
-          <input id="probs_1" type="text" value="${defaults.probs1}" style="width:100%;" />
-
-          <h3 style="margin: 16px 0 10px 0;">${labels.lottery2}</h3>
-          <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
-          <input id="values_2" type="text" value="${defaults.values2}" style="width:100%;" />
-          <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
-          <input id="probs_2" type="text" value="${defaults.probs2}" style="width:100%;" />
-
-          <h3 style="margin: 16px 0 10px 0;">${labels.simulations}</h3>
-          <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.nMax}</label>
-          <input id="simulation_n" type="range" min="100" max="1000" step="50" value="${defaults.nMax}" style="width:100%;" />
-          <div style="display:flex; justify-content:space-between; font-size: 12px; opacity: .85; margin-top: 4px;">
-            <span>100</span>
-            <span id="simulation_n_value">${defaults.nMax}</span>
-            <span>1000</span>
-          </div>
-
-          <button id="simulate_btn" class="btn primary" style="width:100%; margin-top: 14px;">${labels.simulate}</button>
-        </aside>
-
-        <!-- Main content -->
-        <main style="padding: 16px 18px 18px 18px;">
-          <nav style="display:flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
-            <button class="btn" data-tab="about">${labels.about}</button>
-            <button class="btn" data-tab="lottery1">${labels.tabL1}</button>
-            <button class="btn" data-tab="lottery2">${labels.tabL2}</button>
-            <button class="btn" data-tab="comparisons">${labels.comparisons}</button>
-            <button class="btn" data-tab="instructions">${labels.instructions}</button>
-          </nav>
-
-          <section id="tab_about" data-tab-panel="about"></section>
-          <section id="tab_lottery1" data-tab-panel="lottery1" hidden></section>
-          <section id="tab_lottery2" data-tab-panel="lottery2" hidden></section>
-          <section id="tab_comparisons" data-tab-panel="comparisons" hidden></section>
-          <section id="tab_instructions" data-tab-panel="instructions" hidden></section>
-        </main>
       </div>
     </section>
   `;

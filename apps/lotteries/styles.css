@@ -1,2 +1,121 @@
 /* Optional app-specific styles (placeholder).
    Prefer using the main styles.css for consistency with the site. */
+/* apps/lotteries/styles.css */
+/* App-scoped styling for a light surface while keeping the site's visual identity. */
+
+.lotteries-fullbleed {
+  /* Break out of the site's narrow centered container */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  /* Add breathing room against the site background */
+  padding: 18px 16px 24px 16px;
+}
+
+.lotteries-surface {
+  /* Wide but still readable on large monitors */
+  width: min(1400px, calc(100vw - 32px));
+  margin: 0 auto;
+
+  /* Light theme surface (good for charts) */
+  background: #f8fafc; /* subtle cool white */
+  color: #0f172a;
+
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10);
+
+  overflow: hidden;
+}
+
+/* Header spacing and typography improvements */
+.lotteries-surface h1 {
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+
+.lotteries-surface h2 {
+  font-size: 20px;
+}
+
+.lotteries-surface p,
+.lotteries-surface li,
+.lotteries-surface label,
+.lotteries-surface input,
+.lotteries-surface button {
+  font-size: 15px;
+}
+
+/* Make the main layout more generous */
+.lotteries-surface .lotteries-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.10);
+}
+
+@media (max-width: 980px) {
+  .lotteries-surface .lotteries-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar appearance (light panel) */
+.lotteries-surface .lotteries-sidebar {
+  background: #ffffff;
+  border-right: 1px solid rgba(15, 23, 42, 0.10);
+  padding: 16px 16px 18px 16px;
+}
+
+/* Main area */
+.lotteries-surface .lotteries-main {
+  padding: 16px 18px 18px 18px;
+}
+
+/* Inputs: larger and easier to use */
+.lotteries-surface input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.20);
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+}
+
+.lotteries-surface input[type="text"]:focus {
+  border-color: rgba(2, 132, 199, 0.65); /* blue-ish focus */
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+}
+
+/* Range slider: a bit taller and readable */
+.lotteries-surface input[type="range"] {
+  width: 100%;
+  height: 22px;
+}
+
+/* Tabs: bigger clickable targets */
+.lotteries-surface .lotteries-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+/* If your site already defines .btn, we keep it but improve sizing here */
+.lotteries-surface .btn {
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+/* Active tab button enhancement when you toggle .primary in JS */
+.lotteries-surface .btn.primary {
+  /* Keep coherence with site blues, but readable on light background */
+  border: 1px solid rgba(2, 132, 199, 0.35);
+}
+
+/* Error box tuned for light background */
+.lotteries-surface #lotteries-error {
+  background: rgba(239, 68, 68, 0.06);
+}
