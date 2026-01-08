@@ -1,0 +1,184 @@
+LOTTERIES APP — PROJECT CONTEXT (Milestone A completed)
+
+This document summarizes the current state of the Lotteries app, its structure,
+design decisions, and next development steps. It is meant to be reused as context
+in future ChatGPT sessions to avoid losing project continuity.
+
+============================================================
+1. GENERAL CONTEXT
+============================================================
+
+The Lotteries app is a JavaScript reimplementation of a previously existing
+Shiny app (R), integrated into a personal static website hosted on GitHub Pages.
+
+The app lives inside the site under:
+  #/pt/apps/lotteries
+  #/en/apps/lotteries
+
+Routing is handled by a central apps router, which dynamically loads each app.
+The Lotteries app is self-contained, with its own UI, logic, and CSS, but visually
+integrated with the site's identity (colors, typography).
+
+The guiding principle is:
+- Treat the original Shiny app as a functional specification.
+- Rebuild incrementally using vanilla JavaScript (no frameworks).
+- Separate concerns clearly: parsing, validation, model logic, views, wiring.
+
+============================================================
+2. CURRENT STATUS — MILESTONE A (COMPLETED)
+============================================================
+
+Milestone A goal:
+- Verify that inputs are correctly parsed and validated.
+- Ensure UI is fully interactive (tabs + buttons).
+- Provide visible feedback so the user can test parsing behavior.
+
+Milestone A is now fully working.
+
+What works:
+- Sidebar inputs for Lottery 1 and Lottery 2 (payoffs and probabilities).
+- Parsing of semicolon-separated lists (e.g., "20; 40; 0").
+- Validation rules:
+  - Same length for payoffs and probabilities.
+  - Probabilities must sum to 1.
+  - Probabilities in [0, 1].
+  - Maximum of 20 outcomes.
+  - Dot (.) as decimal separator (commas rejected).
+- “Simulate” button is wired and active.
+- Clear error messages are shown when validation fails.
+- On success, parsed inputs are printed in the Lottery 1 and Lottery 2 tabs
+  (explicitly as a test for Milestone A).
+- Tabs (About, Lottery 1, Lottery 2, Comparisons, Instructions) are fully clickable
+  and switch content correctly.
+
+============================================================
+3. VISUAL / UX DECISIONS
+============================================================
+
+Key design decisions:
+- The app uses a "full-bleed" layout to escape the narrow central container
+  of the site, allowing wider content for charts and tables.
+- The app surface uses a light background (instead of the site's dark blue),
+  to support charts and data-heavy visuals.
+- Site identity is preserved by reusing CSS variables from the main site:
+  - --bg      (deep blue, used for text/headings)
+  - --link    (light blue, used for active tabs, slider fill, buttons)
+- No global CSS was modified; the app loads its own styles.css dynamically.
+
+UI elements:
+- "Simulate" button:
+  - Dark blue gradient based on --bg.
+  - White text.
+  - Subtle shadow (not floating).
+- Tabs:
+  - Minimal, text-based tabs.
+  - Active tab is indicated only by text color (--link) and font weight.
+- Slider:
+  - Custom-styled range input.
+  - Fill uses --link color and updates dynamically via CSS variable (--fill).
+- "Back to Apps" button:
+  - Small, secondary button.
+  - Blue background (--link), white text.
+  - Very subtle hover shadow.
+
+============================================================
+4. FILE STRUCTURE (RELEVANT FILES)
+============================================================
+
+apps/
+└─ lotteries/
+   ├─ index.js
+   │   - Entry point of the app.
+   │   - Exports mountApp(mount, { lang }) for the central router.
+   │   - Injects app-specific CSS.
+   │   - Wires:
+   │       - Tab click handlers.
+   │       - "Simulate" button logic.
+   │   - Calls parsing + validation and updates tab content.
+   │
+   ├─ styles.css
+   │   - App-specific styling.
+   │   - Implements full-bleed layout, light surface, buttons, tabs, slider.
+   │   - Reuses site CSS variables (--bg, --link).
+   │
+   ├─ views/
+   │   └─ page.js
+   │       - Renders the full UI (HTML structure).
+   │       - Sidebar + main area + tabs.
+   │       - Provides helper functions:
+   │           - getRawInputs()
+   │           - setError()
+   │           - clearError()
+   │           - setActiveTab()
+   │       - Manages slider fill via CSS variable (--fill).
+   │
+   ├─ model/
+   │   └─ lottery.js
+   │       - Core parsing + validation logic for Milestone A.
+   │       - parseAndValidateLottery()
+   │       - validateLottery()
+   │
+   └─ (future)
+       ├─ simulation.js
+       ├─ charts.js
+       └─ copy.js
+
+shared/
+└─ parsing/
+   └─ listParser.js
+       - Generic helper to parse semicolon-separated numeric lists.
+       - Used by lottery.js.
+
+============================================================
+5. CURRENT BEHAVIOR (HOW TO TEST)
+============================================================
+
+1. Open the app at #/pt/apps/lotteries.
+2. Click between tabs to verify navigation works.
+3. Change inputs (e.g., break probability sum).
+4. Click "Simulate".
+   - If invalid: error box appears with messages.
+   - If valid: Lottery 1 and Lottery 2 tabs show parsed arrays as JSON.
+5. Slider updates label and visual fill but does not trigger simulation yet
+   (by design).
+
+============================================================
+6. UPCOMING MILESTONES
+============================================================
+
+Milestone B — Lottery Description & Theoretical Results
+- Compute Expected Value (EV).
+- Compute theoretical standard deviation.
+- Generate outcome labels (A, B, C...).
+- Render textual lottery description.
+- Add theoretical distribution charts.
+
+Milestone C — Simulation Engine (1..N)
+- Incremental simulation up to N tickets.
+- Track outcome counts, returns, mean returns, profit vs EV.
+- Efficient cumulative logic (no re-simulation per N).
+
+Milestone D — Simulation Comparisons
+- Tables for Lottery 1 and Lottery 2 (1..N).
+- Conditional formatting (profit +/-).
+- Charts:
+  - Mean returns vs number of tickets (with EV line).
+  - Relative frequency distribution for a selected N.
+
+Milestone E — Polish & Extensions
+- Performance tuning.
+- Accessibility refinements.
+- Optional export of results (CSV).
+- Minor UX improvements.
+
+============================================================
+7. DESIGN PRINCIPLES TO KEEP
+============================================================
+
+- Vanilla JS only (no frameworks).
+- Clear separation of concerns.
+- Router-driven mounting.
+- Shiny app is the behavioral reference, not the implementation model.
+- Incremental milestones with visible outputs at each step.
+
+END OF FILE

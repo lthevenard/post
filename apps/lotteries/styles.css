@@ -1,121 +1,305 @@
-/* Optional app-specific styles (placeholder).
-   Prefer using the main styles.css for consistency with the site. */
 /* apps/lotteries/styles.css */
-/* App-scoped styling for a light surface while keeping the site's visual identity. */
+/* App-scoped styling: light surface + site's blue/cyan identity. */
 
-.lotteries-fullbleed {
-  /* Break out of the site's narrow centered container */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-
-  /* Add breathing room against the site background */
+.lotteries-fullbleed{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
   padding: 18px 16px 24px 16px;
 }
 
-.lotteries-surface {
-  /* Wide but still readable on large monitors */
+/* Light surface, but still "belongs" to the site through shared variables */
+.lotteries-surface{
   width: min(1400px, calc(100vw - 32px));
   margin: 0 auto;
 
-  /* Light theme surface (good for charts) */
-  background: #f8fafc; /* subtle cool white */
-  color: #0f172a;
-
-  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #f7fafc;
+  color: var(--bg); /* deep blue from the site: #0f172a */
+  border: 1px solid rgba(15,23,42,.10);
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10);
-
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
   overflow: hidden;
 }
 
-/* Header spacing and typography improvements */
-.lotteries-surface h1 {
-  font-size: 28px;
+/* Typography: darker headings to match site's deep blue identity */
+.lotteries-surface h1,
+.lotteries-surface h2,
+.lotteries-surface h3{
+  color: var(--bg);
   letter-spacing: -0.02em;
 }
 
-.lotteries-surface h2 {
-  font-size: 20px;
-}
-
+.lotteries-surface h1{ font-size: 28px; margin: 0; }
+.lotteries-surface h2{ font-size: 20px; }
 .lotteries-surface p,
 .lotteries-surface li,
-.lotteries-surface label,
-.lotteries-surface input,
-.lotteries-surface button {
-  font-size: 15px;
-}
+.lotteries-surface label{ font-size: 15px; }
 
-/* Make the main layout more generous */
-.lotteries-surface .lotteries-grid {
-  display: grid;
+/* Layout */
+.lotteries-grid{
+  display:grid;
   grid-template-columns: 360px 1fr;
-  gap: 0;
-  border-top: 1px solid rgba(15, 23, 42, 0.10);
+  border-top: 1px solid rgba(15,23,42,.10);
 }
 
-@media (max-width: 980px) {
-  .lotteries-surface .lotteries-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 980px){
+  .lotteries-grid{ grid-template-columns: 1fr; }
 }
 
-/* Sidebar appearance (light panel) */
-.lotteries-surface .lotteries-sidebar {
+.lotteries-sidebar{
   background: #ffffff;
-  border-right: 1px solid rgba(15, 23, 42, 0.10);
+  border-right: 1px solid rgba(15,23,42,.10);
   padding: 16px 16px 18px 16px;
 }
 
-/* Main area */
-.lotteries-surface .lotteries-main {
+@media (max-width: 980px){
+  .lotteries-sidebar{
+    border-right: none;
+    border-bottom: 1px solid rgba(15,23,42,.10);
+  }
+}
+
+.lotteries-main{
   padding: 16px 18px 18px 18px;
 }
 
-/* Inputs: larger and easier to use */
-.lotteries-surface input[type="text"] {
-  width: 100%;
+/* Inputs */
+.lotteries-surface input[type="text"]{
+  width:100%;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(15, 23, 42, 0.20);
+  border: 1px solid rgba(15,23,42,.20);
   background: #ffffff;
-  color: #0f172a;
+  color: var(--bg);
   outline: none;
 }
 
-.lotteries-surface input[type="text"]:focus {
-  border-color: rgba(2, 132, 199, 0.65); /* blue-ish focus */
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+.lotteries-surface input[type="text"]:focus{
+  border-color: rgba(96,165,250,.75); /* derived from --link (#60a5fa) */
+  box-shadow: 0 0 0 4px rgba(96,165,250,.20);
 }
 
-/* Range slider: a bit taller and readable */
-.lotteries-surface input[type="range"] {
-  width: 100%;
-  height: 22px;
-}
-
-/* Tabs: bigger clickable targets */
-.lotteries-surface .lotteries-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-/* If your site already defines .btn, we keep it but improve sizing here */
-.lotteries-surface .btn {
-  padding: 10px 12px;
-  border-radius: 12px;
-}
-
-/* Active tab button enhancement when you toggle .primary in JS */
-.lotteries-surface .btn.primary {
-  /* Keep coherence with site blues, but readable on light background */
-  border: 1px solid rgba(2, 132, 199, 0.35);
+/* Range slider: keep it neutral; we'll style thumb subtly */
+.lotteries-surface input[type="range"]{
+  width:100%;
+  height: 26px;
 }
 
 /* Error box tuned for light background */
-.lotteries-surface #lotteries-error {
-  background: rgba(239, 68, 68, 0.06);
+#lotteries-error{
+  background: rgba(239,68,68,.07);
 }
+
+/* "Back to Apps" small button-like link */
+.lotteries-link-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
+  padding: 6px 10px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(0, 17, 37, 0.75); /* --link */
+  background: var(--bg);
+
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.lotteries-link-btn:hover{
+  /* Lighter background */
+  background: var(--link);
+  border: 1px solid rgba(49, 145, 255, 0.75);
+  box-shadow: 0 2px 3px rgba(15,23,42,.10);
+  text-decoration: none;
+}
+
+.lotteries-link-btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(15,23,42,.12);
+}
+
+
+/* Primary CTA (Simulate): use site blue with subtle relief */
+.lotteries-cta{
+  width:100%;
+  margin-top: 14px;
+  padding: 12px 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(15,23,42,.55);
+  background: linear-gradient(180deg, rgba(15,23,42,1), rgba(11,18,32,1));
+
+  color: #ffffff;
+  font-weight: 750;
+  font-size: 16px;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 10px rgba(15,23,42,.14),
+    inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.lotteries-cta:hover{
+  filter: brightness(1.05);
+  box-shadow:
+    0 7px 12px rgba(15,23,42,.16),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.lotteries-cta:active{
+  transform: translateY(1px);
+  box-shadow:
+    0 4px 8px rgba(15,23,42,.14),
+    inset 0 2px 0 rgba(0,0,0,.16);
+}
+
+/* Tabs: minimal, readable, active state only via text color */
+.lotteries-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+
+  border-bottom: 1px solid rgba(15,23,42,.10);
+  padding-bottom: 10px;
+}
+
+.lotteries-tab{
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 6px 2px;
+
+  font-size: 15px;        /* bigger */
+  font-weight: 650;
+  color: rgba(15,23,42,.60); /* inactive: muted deep-blue */
+  cursor: pointer;
+
+  /* Hard reset to avoid inherited/glitchy shadows */
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+.lotteries-tab:hover{
+  color: rgba(15,23,42,.85);
+}
+
+.lotteries-tab.is-active{
+  color: var(--link);
+  font-weight: 800;
+}
+
+/* Range slider with site-consistent fill color */
+.lotteries-surface input[type="range"]{
+  --fill: 50%;
+  width:100%;
+  height: 26px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* WebKit track */
+.lotteries-surface input[type="range"]::-webkit-slider-runnable-track{
+  height: 8px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      to right,
+      var(--link) 0 var(--fill),
+      rgba(15,23,42,.18) var(--fill) 100%
+    );
+}
+
+/* WebKit thumb */
+.lotteries-surface input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid var(--link);
+  box-shadow: 0 2px 6px rgba(15,23,42,.18);
+}
+
+/* Firefox track */
+.lotteries-surface input[type="range"]::-moz-range-track{
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.18);
+}
+
+/* Firefox fill */
+.lotteries-surface input[type="range"]::-moz-range-progress{
+  height: 8px;
+  border-radius: 999px;
+  background: var(--link);
+}
+
+/* Firefox thumb */
+.lotteries-surface input[type="range"]::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid var(--link);
+  box-shadow: 0 2px 6px rgba(15,23,42,.18);
+}
+
+/* Lottery outputs layout */
+
+.lottery-panel-title{
+  font-size: 26px;
+  margin: 2px 0 14px 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.lottery-card{
+  background: #ffffff;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.lottery-card-title{
+  font-size: 16px;
+  font-weight: 850;
+  margin: 0 0 10px 0;
+}
+
+.lottery-bullets{
+  margin: 0;
+  padding-left: 18px;
+}
+
+.lottery-bullets li{
+  font-size: 16px;
+  line-height: 1.45;
+  margin: 6px 0;
+}
+
+.lottery-chart-block{
+  margin: 14px 0;
+}
+
+.lotteries-svg{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+@media (min-width: 1100px){
+  .lotteries-main{
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
+

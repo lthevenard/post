@@ -1,31 +1,12 @@
 // apps/lotteries/views/page.js
 // Renders the Lotteries app shell (sidebar + tabs) and exposes DOM helpers.
 
-/**
- * Renders the page structure and returns helpers for the app controller.
- *
- * The controller (index.js) is responsible for:
- *  - Wiring events (Simulate button, tab clicks).
- *  - Parsing/validating inputs.
- *  - Computing models and updating tab contents.
- *
- * @param {HTMLElement} mount
- * @param {{ lang: "pt" | "en" }} ctx
- * @returns {{
- *   els: Record<string, HTMLElement>,
- *   getRawInputs: () => { values1: string, probs1: string, values2: string, probs2: string, nMax: number },
- *   setError: (lines: string[]) => void,
- *   clearError: () => void,
- *   setActiveTab: (tabId: string) => void,
- * }}
- */
 export function renderPage(mount, { lang }) {
   const isEn = lang === "en";
-  const title = isEn ? "Lotteries & Expected Value" : "Loterias e Valor Esperado";
-  const back = isEn ? "Back to Apps" : "Voltar para Apps";
 
-  // Labels
   const labels = {
+    title: isEn ? "Lotteries & Expected Value" : "Loterias e Valor Esperado",
+    back: isEn ? "Back to Apps" : "Voltar para Apps",
     lottery1: isEn ? "Lottery 1" : "Loteria 1",
     lottery2: isEn ? "Lottery 2" : "Loteria 2",
     payoffs: isEn ? "Payoffs" : "Payoffs",
@@ -38,13 +19,9 @@ export function renderPage(mount, { lang }) {
     tabL2: isEn ? "Lottery 2" : "Loteria 2",
     comparisons: isEn ? "Simulation Comparisons" : "Comparações",
     instructions: isEn ? "Instructions" : "Instruções",
-    placeholder:
-      isEn
-        ? "This section will be populated in the next milestones (description, charts, and simulations)."
-        : "Esta seção será preenchida nas próximas etapas (descrição, gráficos e simulações).",
+    incorrect: isEn ? "Incorrect input" : "Entrada incorreta",
   };
 
-  // Defaults from the Shiny app.
   const defaults = {
     values1: "20; 40; 0",
     probs1: "0.25; 0.25; 0.5",
@@ -56,56 +33,54 @@ export function renderPage(mount, { lang }) {
   mount.innerHTML = `
     <section class="lotteries-fullbleed">
       <div class="lotteries-surface">
-        <header style="padding: 18px 18px 10px 18px; display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+        <header style="padding: 16px 18px 10px 18px; display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
           <div>
-            <h1 style="margin:0; line-height: 1.15;">${title}</h1>
-            <p style="margin:8px 0 0 0; opacity: .85;">
-              ${labels.placeholder}
+            <h1 style="margin:0; line-height:1.15;">${labels.title}</h1>
+            <p style="margin:8px 0 0 0; opacity:.85;">
+              ${isEn ? "Milestone B: theoretical description + EV + dispersion." : "Milestone B: descrição teórica + valor esperado + dispersão."}
             </p>
           </div>
-          <a href="#/${lang}/apps" class="btn" style="white-space:nowrap;">${back}</a>
+          <a href="#/${lang}/apps" class="lotteries-link-btn">${labels.back}</a>
         </header>
 
         <div class="lotteries-grid">
-          <!-- Sidebar -->
           <aside class="lotteries-sidebar">
             <div id="lotteries-error" style="display:none; margin-bottom: 12px; padding: 10px 12px; border: 1px solid rgba(220,38,38,.35); border-radius: 10px;">
-              <div style="font-weight: 700; margin-bottom: 6px; color: rgb(220,38,38);">${isEn ? "Incorrect input" : "Entrada incorreta"}</div>
+              <div style="font-weight: 800; margin-bottom: 6px; color: rgb(220,38,38);">${labels.incorrect}</div>
               <ul id="lotteries-error-list" style="margin:0; padding-left: 18px;"></ul>
             </div>
 
             <h3 style="margin: 0 0 10px 0;">${labels.lottery1}</h3>
-            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
-            <input id="values_1" type="text" value="${defaults.values1}" style="width:100%;" />
-            <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
-            <input id="probs_1" type="text" value="${defaults.probs1}" style="width:100%;" />
+            <label style="display:block; font-weight:650; margin: 8px 0 6px 0;">${labels.payoffs}</label>
+            <input id="values_1" type="text" value="${defaults.values1}" />
+            <label style="display:block; font-weight:650; margin: 10px 0 6px 0;">${labels.probs}</label>
+            <input id="probs_1" type="text" value="${defaults.probs1}" />
 
             <h3 style="margin: 16px 0 10px 0;">${labels.lottery2}</h3>
-            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.payoffs}</label>
-            <input id="values_2" type="text" value="${defaults.values2}" style="width:100%;" />
-            <label style="display:block; font-weight:600; margin: 10px 0 6px 0;">${labels.probs}</label>
-            <input id="probs_2" type="text" value="${defaults.probs2}" style="width:100%;" />
+            <label style="display:block; font-weight:650; margin: 8px 0 6px 0;">${labels.payoffs}</label>
+            <input id="values_2" type="text" value="${defaults.values2}" />
+            <label style="display:block; font-weight:650; margin: 10px 0 6px 0;">${labels.probs}</label>
+            <input id="probs_2" type="text" value="${defaults.probs2}" />
 
             <h3 style="margin: 16px 0 10px 0;">${labels.simulations}</h3>
-            <label style="display:block; font-weight:600; margin: 8px 0 6px 0;">${labels.nMax}</label>
-            <input id="simulation_n" type="range" min="100" max="1000" step="50" value="${defaults.nMax}" style="width:100%;" />
+            <label style="display:block; font-weight:650; margin: 8px 0 6px 0;">${labels.nMax}</label>
+            <input id="simulation_n" type="range" min="100" max="1000" step="50" value="${defaults.nMax}" />
             <div style="display:flex; justify-content:space-between; font-size: 12px; opacity: .85; margin-top: 4px;">
               <span>100</span>
               <span id="simulation_n_value">${defaults.nMax}</span>
               <span>1000</span>
             </div>
 
-            <button id="simulate_btn" class="btn primary" style="width:100%; margin-top: 14px;">${labels.simulate}</button>
+            <button id="simulate_btn" class="lotteries-cta" type="button">${labels.simulate}</button>
           </aside>
 
-          <!-- Main content -->
           <main class="lotteries-main">
-            <nav class="lotteries-tabs">
-              <button class="btn" data-tab="about">${labels.about}</button>
-              <button class="btn" data-tab="lottery1">${labels.tabL1}</button>
-              <button class="btn" data-tab="lottery2">${labels.tabL2}</button>
-              <button class="btn" data-tab="comparisons">${labels.comparisons}</button>
-              <button class="btn" data-tab="instructions">${labels.instructions}</button>
+            <nav class="lotteries-tabs" role="tablist" aria-label="Lotteries tabs">
+              <button class="lotteries-tab" data-tab="about" role="tab" aria-selected="false">${labels.about}</button>
+              <button class="lotteries-tab" data-tab="lottery1" role="tab" aria-selected="false">${labels.tabL1}</button>
+              <button class="lotteries-tab" data-tab="lottery2" role="tab" aria-selected="false">${labels.tabL2}</button>
+              <button class="lotteries-tab" data-tab="comparisons" role="tab" aria-selected="false">${labels.comparisons}</button>
+              <button class="lotteries-tab" data-tab="instructions" role="tab" aria-selected="false">${labels.instructions}</button>
             </nav>
 
             <section id="tab_about" data-tab-panel="about"></section>
@@ -129,7 +104,7 @@ export function renderPage(mount, { lang }) {
     nMax: mount.querySelector("#simulation_n"),
     nMaxValue: mount.querySelector("#simulation_n_value"),
     simulateBtn: mount.querySelector("#simulate_btn"),
-    tabButtons: Array.from(mount.querySelectorAll("button[data-tab]")),
+    tabButtons: Array.from(mount.querySelectorAll(".lotteries-tab")),
     tabPanels: Array.from(mount.querySelectorAll("[data-tab-panel]")),
     tabAbout: mount.querySelector("#tab_about"),
     tabLottery1: mount.querySelector("#tab_lottery1"),
@@ -138,20 +113,46 @@ export function renderPage(mount, { lang }) {
     tabInstructions: mount.querySelector("#tab_instructions"),
   };
 
-  // Seed tab contents with placeholders for now.
+  // Basic initial content (Milestone A).
   els.tabAbout.innerHTML = `
     <h2 style="margin-top:0;">${labels.about}</h2>
-    <p style="margin: 8px 0;">${labels.placeholder}</p>
+    <p style="margin: 8px 0;">
+      ${
+        isEn
+          ? "Click “Simulate” to validate inputs. This milestone prints parsed inputs as a quick test."
+          : "Clique em “Simular” para validar as entradas. Este milestone imprime os inputs interpretados como teste rápido."
+      }
+    </p>
   `;
-  els.tabLottery1.innerHTML = `<h2 style="margin-top:0;">${labels.tabL1}</h2><p>${labels.placeholder}</p>`;
-  els.tabLottery2.innerHTML = `<h2 style="margin-top:0;">${labels.tabL2}</h2><p>${labels.placeholder}</p>`;
-  els.tabComparisons.innerHTML = `<h2 style="margin-top:0;">${labels.comparisons}</h2><p>${labels.placeholder}</p>`;
-  els.tabInstructions.innerHTML = `<h2 style="margin-top:0;">${labels.instructions}</h2><p>${labels.placeholder}</p>`;
 
-  // Keep the slider label in sync.
+  els.tabInstructions.innerHTML = `
+    <h2 style="margin-top:0;">${labels.instructions}</h2>
+    <ul style="margin: 8px 0; padding-left: 18px;">
+      <li>${isEn ? "Use semicolons to separate numbers: 20; 40; 0" : "Use ponto-e-vírgula para separar números: 20; 40; 0"}</li>
+      <li>${isEn ? "Use '.' for decimals: 0.25; 0.5" : "Use '.' para decimais: 0.25; 0.5"}</li>
+      <li>${isEn ? "Probabilities must sum to 1." : "As probabilidades devem somar 1."}</li>
+    </ul>
+  `;
+
+  els.tabLottery1.innerHTML = `<h2 style="margin-top:0;">${labels.tabL1}</h2><p style="opacity:.8;">${isEn ? "Waiting for simulation…" : "Aguardando simulação…"}</p>`;
+  els.tabLottery2.innerHTML = `<h2 style="margin-top:0;">${labels.tabL2}</h2><p style="opacity:.8;">${isEn ? "Waiting for simulation…" : "Aguardando simulação…"}</p>`;
+  els.tabComparisons.innerHTML = `<h2 style="margin-top:0;">${labels.comparisons}</h2><p style="opacity:.8;">${isEn ? "Not implemented in Milestone A." : "Não implementado no Milestone A."}</p>`;
+
+  // Keep slider label and fill in sync.
+  function updateRangeFill() {
+    const min = Number(els.nMax.min);
+    const max = Number(els.nMax.max);
+    const val = Number(els.nMax.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    els.nMax.style.setProperty("--fill", `${pct}%`);
+  }
+
   els.nMax.addEventListener("input", () => {
     els.nMaxValue.textContent = String(Number(els.nMax.value));
+    updateRangeFill();
   });
+
+  updateRangeFill();
 
   function getRawInputs() {
     return {
@@ -181,15 +182,14 @@ export function renderPage(mount, { lang }) {
   function setActiveTab(tabId) {
     for (const btn of els.tabButtons) {
       const isActive = btn.dataset.tab === tabId;
-      btn.classList.toggle("primary", isActive);
+      btn.classList.toggle("is-active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
     }
     for (const panel of els.tabPanels) {
-      const isTarget = panel.dataset.tabPanel === tabId;
-      panel.hidden = !isTarget;
+      panel.hidden = panel.dataset.tabPanel !== tabId;
     }
   }
 
-  // Default tab.
   setActiveTab("about");
 
   return { els, getRawInputs, setError, clearError, setActiveTab };

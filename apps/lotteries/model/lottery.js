@@ -1,26 +1,10 @@
 // apps/lotteries/model/lottery.js
-// Lottery input validation and (later) core lottery description helpers.
+// Lottery input validation for Milestone A + description for Milestone B.
 
-// NOTE: In the repository tree, this file lives at: apps/lotteries/model/lottery.js
-// and the parser lives at: apps/shared/parsing/listParser.js
-// Therefore the relative import is "../../shared/parsing/listParser.js".
 import { parseNumberList } from "../../shared/parsing/listParser.js";
 
 export const MAX_OUTCOMES = 20;
 
-/**
- * Validates parsed lottery arrays.
- *
- * Rules mirror the original Shiny app:
- *  - Same length for values and probabilities.
- *  - Sum of probabilities equals 1.
- *  - Maximum length is 20.
- *  - Probabilities are decimals between 0 and 1.
- *
- * @param {number[]} values
- * @param {number[]} probs
- * @returns {{ ok: true } | { ok: false, errors: string[] }}
- */
 export function validateLottery(values, probs) {
   const errors = [];
 
@@ -40,7 +24,6 @@ export function validateLottery(values, probs) {
     errors.push(`Maximum number of outcomes is ${MAX_OUTCOMES}.`);
   }
 
-  // Probabilities must be within [0, 1].
   for (let i = 0; i < probs.length; i += 1) {
     const p = probs[i];
     if (!Number.isFinite(p)) {
@@ -52,7 +35,6 @@ export function validateLottery(values, probs) {
     }
   }
 
-  // Sum must equal 1 (use tolerance to avoid floating point issues).
   const sum = probs.reduce((acc, p) => acc + (Number.isFinite(p) ? p : 0), 0);
   const tol = 1e-9;
   if (Math.abs(sum - 1) > tol) {
@@ -62,13 +44,6 @@ export function validateLottery(values, probs) {
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
-/**
- * Parses and validates lottery inputs from strings.
- *
- * @param {string} valuesStr
- * @param {string} probsStr
- * @returns {{ ok: true, values: number[], probs: number[] } | { ok: false, errors: string[] }}
- */
 export function parseAndValidateLottery(valuesStr, probsStr) {
   const v = parseNumberList(valuesStr);
   const p = parseNumberList(probsStr);
@@ -84,14 +59,74 @@ export function parseAndValidateLottery(valuesStr, probsStr) {
   return { ok: true, values: v.values, probs: p.values };
 }
 
-// --- Placeholder exports for Milestone B (kept here so other modules can start importing).
+// ---------------------------
+// Milestone B helpers
+// ---------------------------
+
+function getResultNames(n) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  return alphabet.slice(0, n);
+}
+
+function cumulateProbabilities(probs) {
+  const out = [];
+  let acc = 0;
+  for (const p of probs) {
+    acc += p;
+    out.push(acc);
+  }
+  return out;
+}
+
+function expectedValue(values, probs) {
+  let ev = 0;
+  for (let i = 0; i < values.length; i += 1) ev += values[i] * probs[i];
+  return ev;
+}
+
+function theoreticalStdDev(values, probs, ev) {
+  let v = 0;
+  for (let i = 0; i < values.length; i += 1) {
+    const d = values[i] - ev;
+    v += probs[i] * d * d;
+  }
+  return Math.sqrt(v);
+}
 
 /**
- * Returns "A", "B", "C"... outcome labels.
- * @param {number} n
- * @returns {string[]}
+ * Groups identical payoff values to build a compact distribution for charting.
+ * @returns {{ value: number, prob: number }[]}
  */
-export function outcomeNames(n) {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return Array.from({ length: n }, (_, i) => alphabet[i] ?? `O${i + 1}`);
+function groupedDistribution(values, probs) {
+  const map = new Map();
+  for (let i = 0; i < values.length; i += 1) {
+    const key = values[i];
+    map.set(key, (map.get(key) ?? 0) + probs[i]);
+  }
+  return Array.from(map.entries())
+    .map(([value, prob]) => ({ value: Number(value), prob }))
+    .sort((a, b) => a.value - b.value);
 }
+
+/**
+ * Produces the "description object" similar to the Shiny app.
+ */
+export function describeLottery(values, probs) {
+  const n = values.length;
+  const names = getResultNames(n);
+  const cumProbs = cumulateProbabilities(probs);
+  const ev = expectedValue(values, probs);
+  const sd = theoreticalStdDev(values, probs, ev);
+  const dist = groupedDistribution(values, probs);
+
+  return {
+    resultNames: names,
+    values,
+    probs,
+    cumProbs,
+    expectedValue: ev,
+    stdDev: sd,
+    distribution: dist,
+  };
+}
+

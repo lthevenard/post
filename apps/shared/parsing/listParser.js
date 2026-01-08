@@ -24,9 +24,8 @@ export function parseNumberList(input) {
   }
 
   // Reject comma decimals early to avoid silent mis-parsing.
-  // This mirrors the Shiny app instruction: use dot, not comma.
   if (raw.includes(",")) {
-    return { ok: false, error: "Use '.' as decimal separator (commas are not allowed)." };
+    return { ok: false, error: "Use '.' as decimal separator and ';' to separate values (commas are not allowed)." };
   }
 
   const parts = raw
@@ -40,7 +39,6 @@ export function parseNumberList(input) {
 
   const values = [];
   for (const part of parts) {
-    // Number("-") is NaN, which is good for validation.
     const n = Number(part);
     if (!Number.isFinite(n)) {
       return { ok: false, error: `Invalid number: '${part}'.` };
@@ -49,15 +47,5 @@ export function parseNumberList(input) {
   }
 
   return { ok: true, values };
-}
-
-/**
- * Formats a list of numbers back into a semicolon-separated string.
- * @param {number[]} arr
- * @returns {string}
- */
-export function formatNumberList(arr) {
-  if (!Array.isArray(arr)) return "";
-  return arr.map((n) => String(n)).join("; ");
 }
 
