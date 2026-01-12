@@ -18,6 +18,24 @@
     "file": "posts/2025-09-hello-world.en.md"
   },
   {
+    "group": "2026-01-raccoon",
+    "slug": "2026-01-raccoon-pt",
+    "title": "Entre a lixeira da estupidez e a latrina dos sonhos despedaçados: a recapitulação do ano por Dave Barry",
+    "date": "2026-01-01",
+    "tags": ["política", "blogs"],
+    "lang": "pt",
+    "file": "posts/2026-01-raccoon.pt.md"
+  },
+  {
+    "group": "2026-01-raccoon",
+    "slug": "2026-01-raccoon-en",
+    "title": "Between the wastebasket of stupidity and the commode of broken dreams: Dave Barry's Year in Review",
+    "date": "2026-01-01",
+    "tags": ["politics", "blogs"],
+    "lang": "en",
+    "file": "posts/2026-01-raccoon.en.md"
+  },
+  {
     "group": "2026-01-chess",
     "slug": "2026-01-chess-pt",
     "title": "Xadrez, incerteza e filosofia de botequim",
@@ -52,5 +70,23 @@
     "tags": ["regulação", "participação pública", "complexidade"],
     "lang": "pt",
     "file": "posts/2026-01-gormley-complexity.pt.md"
+  },
+  {
+    "group": "2026-01-josh-smack-shack",
+    "slug": "2026-01-josh-smack-shack-en",
+    "title": "That Night We Went to Josh’s Smack Shack (And It Felt Like a Seinfeld Episode)",
+    "date": "2026-01-11",
+    "tags": ["washington", "culture", "personal stories"],
+    "lang": "en",
+    "file": "posts/2026-01-josh-smack-shack.en.md"
+  },
+  {
+    "group": "2026-01-josh-smack-shack",
+    "slug": "2026-01-josh-smack-shack-pt",
+    "title": "Aquela noite em que fomos ao Josh’s Smack Shack (e parecia um episódio de Seinfeld)",
+    "date": "2026-01-11",
+    "tags": ["washington", "cultura", "histórias pessoais"],
+    "lang": "pt",
+    "file": "posts/2026-01-josh-smack-shack.pt.md"
   }
 ]

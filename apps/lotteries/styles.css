@@ -625,3 +625,251 @@ simfreq-grid{
   padding-top: 20px;
   padding-bottom: 16px;
 }
+
+.lottery-explainer.is-collapsed p {
+  display: none;
+}
+
+.lottery-explainer.is-collapsed {
+  padding-bottom: 10px;
+}
+
+/* Clickable text toggle (used in Convergence explainer) */
+.lotteries-toggle-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--link);
+  cursor: pointer;
+  user-select: none;
+}
+
+.lotteries-toggle-link:hover {
+  text-decoration: underline;
+  opacity: 0.95;
+}
+
+/* Distribution bars: pointer + subtle hover */
+.lotteries-dist-svg .distbar {
+  cursor: help;
+}
+.lotteries-dist-svg .distbar:hover {
+  opacity: 1;
+}
+
+/* Floating tooltip */
+.lotteries-tooltip {
+  position: fixed;
+  z-index: 9999;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  background: var(--link);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+  font-size: 10px;
+  line-height: 1.25;
+  pointer-events: none; /* important: does not steal hover */
+  white-space: normal;
+}
+
+/* Lottery tab: collapsible Q&A line (no white box wrapper) */
+.lottery-reveal{
+  margin: 14px 0 10px 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(15,23,42,.16);
+}
+
+.lottery-reveal-head{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.lottery-reveal-title{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: rgba(15,23,42,.88);
+  letter-spacing: -0.01em;
+}
+
+.lottery-reveal-content{
+  margin-top: 10px;
+}
+
+/* collapsed hides only the content; header stays as a “line” */
+.lottery-reveal.is-collapsed .lottery-reveal-content{
+  display: none;
+}
+
+/* Convergence-like explainer: hide the whole body when collapsed */
+.lottery-explainer.is-collapsed .lottery-explainer-body{
+  display: none;
+}
+
+/* Simulation results table */
+
+.simtable-wrap{
+  margin-top: 8px;
+}
+
+.simtable{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border: 1px solid rgba(15,23,42,.12);
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.simtable thead th{
+  text-align: right;
+  padding: 10px 10px;
+  font-size: 12px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  opacity: .85;
+  border-bottom: 2px solid rgba(15,23,42,.18);
+  background: rgba(15,23,42,.04);
+}
+
+.simtable thead th:first-child{
+  text-align: right;
+}
+
+.simtable tbody td{
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(15,23,42,.10);
+  text-align: right;
+  vertical-align: top;
+}
+
+.simtable tbody tr:nth-child(even){
+  background: rgba(15,23,42,.03);
+}
+
+.simtable .num{
+  font-variant-numeric: tabular-nums;
+}
+
+/* Money coloring (requested) */
+.money.is-pos{ color: #16a34a; font-weight: 850; }
+.money.is-neg{ color: #dc2626; font-weight: 850; }
+.money.is-zero{ color: rgba(15,23,42,.75); font-weight: 750; }
+
+/* Pager */
+.simtable-pager{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.simtable-pageinfo{
+  font-size: 13px;
+  opacity: .85;
+}
+
+.simtable-btn{
+  appearance:none;
+  border: 1px solid rgba(15,23,42,.18);
+  background: #ffffff;
+  color: var(--bg);
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15,23,42,.06);
+}
+
+.simtable-btn:hover{
+  border-color: rgba(96,165,250,.55);
+  box-shadow: 0 2px 6px rgba(15,23,42,.10);
+}
+
+.simtable-btn:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.simtable-pager{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.simtable-pager-left,
+.simtable-pager-right{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+.simtable-pages{
+  display:flex;
+  gap: 6px;
+  align-items:center;
+  justify-content: center;
+  flex: 1 1 auto;
+}
+
+.simtable-dots{
+  opacity: .6;
+  padding: 0 4px;
+  user-select: none;
+}
+
+.simtable-page{
+  appearance:none;
+  border: 1px solid rgba(15,23,42,.18);
+  background: #ffffff;
+  color: var(--bg);
+  padding: 6px 9px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.simtable-page:hover{
+  border-color: rgba(96,165,250,.55);
+  box-shadow: 0 2px 6px rgba(15,23,42,.10);
+}
+
+.simtable-page.is-active{
+  background: var(--bg);
+  color: #ffffff;
+  border-color: rgba(15,23,42,.55);
+}
+
+.simtable-pageinfo{
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: .8;
+  text-align: center;
+}
+
+/* More vertical spacing around collapsible sections */
+.lottery-reveal{
+  margin: 22px 0 0 0;        /* space before each collapsible block */
+  padding-top: 14px;         /* keeps the top separator visually separated */
+}
+
+/* Give extra air between the 2nd collapsible and seed card */
+.lottery-sep{
+  margin: 26px 0 18px 0;
+  border-top: 1px solid rgba(15,23,42,.16);
+}
+
+/* Seed card: a bit more breathing room at the end */
+.lottery-sep + .lottery-card{
+  margin-top: 10; /* sep already provides top spacing */
+}

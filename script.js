@@ -42,7 +42,7 @@ const i18n = {
     toggle: '🇺🇸 English Version',
     homeTitle: 'Bem-vindo!',
     homeIntro:
-      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV</a> e minhas <a href="#/pt/publications">publicações</a> acadêmicas, e também um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, que uso em minhas aulas, conferências e outras apresentações.',
+      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV</a> e minhas <a href="#/pt/publications">publicações</a> acadêmicas, e também um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, além de <a href="#/pt/apps">aplicativos interativos</a> e dashboards que desenvolvo para fins de pesquisa, ensino e divulgação acadêmica.',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
     blogIntro: 'Textos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
@@ -80,7 +80,7 @@ const i18n = {
     toggle: '🇧🇷 Versão em Português',
     homeTitle: 'Welcome!',
     homeIntro:
-      'I’m <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/pt/blog">blog</a>, my <a href="#/pt/cv">CV</a> and academic <a href="#/pt/publications”>publications”</a>, as well as a repository of <a href="#/pt/slides">slides</a> (Marp), grouped by <a href="#/pt/projects”>project</a>, that I use for teaching, to present at academic conferences and similar activities.',
+      'I’m <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/en/blog">blog</a>, my <a href="#/en/cv">CV</a> and academic <a href="#/en/publications">publications</a>, as well as a repository of <a href="#/en/slides">slides</a> (Marp), grouped by <a href="#/en/projects">project</a>, along with <a href="#/en/apps">interactive apps</a> and research dashboards developed for teaching, research, and academic outreach.',
     latestPosts: 'Latest posts',
     backToBlog: '← Back to blog',
     blogIntro: 'Miscellaneous writings on projects I’m involved in. My main area of interest is the use of data science techniques—such as machine learning and large language models—to study and to improve government regulation.',
@@ -118,23 +118,30 @@ let current = { lang: 'pt', path: '/', query: '' };
 
 function parseHashOrRedirect() {
   const raw = location.hash.replace(/^#/, ''); // e.g. "/pt/blog?x=1"
+
+  // Use current.lang as fallback (preserves language when clicking hash links without /pt|/en)
+  const fallbackLang = SUPPORTED_LANGS.includes(current?.lang) ? current.lang : 'pt';
+
   if (!raw || raw === '/') {
-    location.replace('#/pt');
+    location.replace(`#/${fallbackLang}`);
     return null;
   }
+
   // Ensures format /<lang>/<path...>
   const match = raw.match(/^\/(pt|en)(\/[^?]*)?(\?.*)?$/);
   if (!match) {
-    // Possible hash without language (ex: "#/blog"); injects pt.
+    // Possible hash without language (ex: "#/blog"); injects fallbackLang.
     const fix = raw.startsWith('/') ? raw : '/' + raw;
-    location.replace('#/pt' + fix);
+    location.replace(`#/${fallbackLang}` + fix);
     return null;
   }
+
   const lang = match[1];
   const path = (match[2] || '/');
   const query = (match[3] || '');
   return { lang, path, query };
 }
+
 
 function navigate() {
   const parsed = parseHashOrRedirect();
@@ -164,7 +171,8 @@ function updateUIForLang(lang) {
   const map = {
     navHome: '', navBlog: 'blog', navCV: 'cv',
     navSlides: 'slides', navProjects: 'projects',
-    navPublications: 'publications'
+    navPublications: 'publications',
+    navApps: 'apps'
   };
   Object.entries(map).forEach(([id, p]) => {
     const a = document.getElementById(id);
@@ -328,38 +336,69 @@ function sortPostsNewestFirst(posts) {
 // ---- Pages
 async function renderHome(lang) {
   const t = i18n[lang];
+
+  // Hero image (WebP + PNG fallback)
+  const heroBase =
+    lang === "en"
+      ? "assets/img/hero-methodology-en"
+      : "assets/img/hero-methodology-pt";
+
+  const heroAlt =
+    lang === "en"
+      ? "Cartoon of two researchers joking about wrong conclusions and consistent methodology."
+      : "Charge com dois pesquisadores ironizando conclusões erradas e metodologia consistente.";
+
   setContent(`
     <section class="card prose">
       <h1>${t.homeTitle}</h1>
       <p>${t.homeIntro}</p>
     </section>
+
+    <section class="hero">
+      <figure class="hero__figure">
+        <picture>
+          <source srcset="${heroBase}.webp" type="image/webp" />
+          <img class="hero__img" src="${heroBase}.png" alt="${heroAlt}" loading="lazy" />
+        </picture>
+      </figure>
+    </section>
+
     <section class="card">
       <div class="list" id="latest"></div>
     </section>
   `);
 
   // Loads the last posts in the index (filtering by language)
-  const res = await fetch('posts/posts.json');
-  const posts = sortPostsNewestFirst((await res.json()).filter(p => p.lang === lang));
+  const res = await fetch("posts/posts.json");
+  const posts = sortPostsNewestFirst(
+    (await res.json()).filter((p) => p.lang === lang)
+  );
   const latest = posts.slice(0, 3);
-  const list = document.getElementById('latest');
+  const list = document.getElementById("latest");
+
   list.innerHTML = `
     <div class="list-item" style="background:transparent;border:none;padding:0">
       <div class="list-item-title">${t.latestPosts}</div>
     </div>
-    ${latest.map(p => `
+    ${latest
+      .map(
+        (p) => `
       <div class="list-item">
         <div>
           <div class="list-item-title">
             <a href="#/${lang}/post?slug=${encodeURIComponent(p.slug)}">${p.title}</a>
           </div>
-          <div class="muted" style="color:#9ca3af;font-size:.9rem">${p.date}${p.tags?.length ? ' · ' + p.tags.join(', ') : ''}</div>
+          <div class="muted" style="color:#9ca3af;font-size:.9rem">${p.date}${
+            p.tags?.length ? " · " + p.tags.join(", ") : ""
+          }</div>
         </div>
         <span class="badge">Blog</span>
       </div>
-    `).join('')}
+    `
+      )
+      .join("")}
     <div class="list-item">
-      <a href="#/${lang}/blog">${lang === 'pt' ? 'Ver todos os posts →' : 'See all posts →'}</a>
+      <a href="#/${lang}/blog">${lang === "pt" ? "Ver todos os posts →" : "See all posts →"}</a>
     </div>
   `;
 }

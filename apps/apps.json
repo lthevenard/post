@@ -2,11 +2,11 @@
   {
     "slug": "lotteries",
     "title": {
-      "pt": "Loterias e Valor Esperado",
-      "en": "Lotteries & Expected Value"
+      "pt": "Simulador de Loterias",
+      "en": "Lottery Simulator"
     },
     "description": {
-      "pt": "Simule loterias para entender valor esperado, dispersão e convergência da média.",
+      "pt": "Simule loterias para entender os conceitos de valor esperado, dispersão e convergência da média.",
       "en": "Simulate lotteries to understand expected value, dispersion, and convergence of sample means."
     },
     "tags": {

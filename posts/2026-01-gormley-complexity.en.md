@@ -1,5 +1,7 @@
 # The Complex Concept of Complexity: A Note on Gormley’s Typology
 
+![Illustration: Navigating complexity](/assets/posts/2026-gormley-complexity/box.png)
+
 One of the most elegant things about [William Gormley’s classic typology](https://www.journals.uchicago.edu/doi/10.2307/3234884) is its simplicity. By crossing *salience* (low vs. high) with *complexity* (low vs. high), Gormley gives us four ideal types of policymaking and rulemaking processes. It’s a neat framework, intuitive, and still very influential.
 
 But that elegance comes with a cost — and the weak point, in my view, is complexity.
@@ -21,6 +23,15 @@ A second difficulty is that complexity is rarely absolute. It is often experienc
 What appears highly complex from the perspective of regulators or technical experts may be understood in much simpler terms by other stakeholders. This does not necessarily reflect misunderstanding or ignorance. It often reflects the use of simplifying models — selective representations of reality that focus on what certain actors consider most relevant.
 
 Models, after all, work precisely because they reduce complexity. Like maps, they omit most details in order to highlight a few relationships that matter for a particular purpose. Highly technical issues can be framed, understood, and debated in surprisingly simple terms by specific groups. From this standpoint, complexity is at least partly a matter of perspective: complex for whom, and according to which criteria? Indeed, a process may look unbearably complex to insiders and yet appear perfectly intelligible — even obvious — to those experiencing its consequences.
+
+<div style="display: flex; justify-content: center;">
+  <img
+    src="/assets/posts/2026-gormley-complexity/maps.png"
+    alt="Illustration: maps and complexity."
+    style="width: 70%; max-width: 600px;"
+    loading="lazy"
+  />
+</div>
 
 ## 3. Complexity can be used strategically
 
@@ -45,6 +56,15 @@ This situation can be interpreted in different ways. One view is that the proble
 However, a more charitable interpretation is that consumers were focusing on what mattered most to them, and that expecting detailed engagement with contractual minutiae may be unreasonable from a democratic standpoint.
 
 Under this second reading, appeals to technical complexity risk serving as a way of sidelining politically meaningful concerns. The issue is not that expertise is unimportant, but that labeling a process as “too complex” may implicitly delegitimize forms of participation that are substantively reasonable, even if they are not technically sophisticated.
+
+<div style="display: flex; justify-content: center;">
+  <img
+    src="/assets/posts/2026-gormley-complexity/network.png"
+    alt="Illustration: complex networks."
+    style="width: 70%; max-width: 600px;"
+    loading="lazy"
+  />
+</div>
 
 ## A Cautious Takeaway
 

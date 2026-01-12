@@ -1,5 +1,7 @@
 # O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley
 
+![Ilustração: Navegando a complexidade](/assets/posts/2026-gormley-complexity/box.png)
+
 Um dos aspectos mais elegantes da [tipologia clássica de William Gormley](https://www.journals.uchicago.edu/doi/10.2307/3234884) é sua simplicidade. Ao cruzar *saliência* (baixa vs. alta) com *complexidade* (baixa vs. alta), Gormley nos oferece quatro tipos ideais de processos regulatórios e de formulação de políticas públicas. É um *framework* elegante, intuitivo e que continua sendo bastante influente.
 
 Mas essa elegância tem um custo — e o ponto fraco, a meu ver, está justamente na noção de complexidade.
@@ -21,6 +23,15 @@ Uma segunda dificuldade é que a complexidade raramente é absoluta. Ela costuma
 Aquilo que parece altamente complexo do ponto de vista de reguladores ou especialistas técnicos pode ser compreendido em termos muito mais simples por outros *stakeholders*. Isso não reflete necessariamente ignorância ou incompreensão. Muitas vezes, trata-se do uso de modelos simplificadores — representações seletivas da realidade que destacam aquilo que certos atores consideram mais relevante.
 
 Modelos funcionam justamente porque reduzem a complexidade. Assim como mapas, eles omitem a maior parte dos detalhes para evidenciar algumas relações que importam para um determinado propósito. Questões altamente técnicas podem ser enquadradas, entendidas e debatidas de forma surpreendentemente simples por grupos específicos. Sob essa perspectiva, a complexidade é ao menos parcialmente uma questão de ponto de vista: complexa para quem, e segundo quais critérios? Um processo pode parecer insuportavelmente complexo para os especialistas envolvidos e, ao mesmo tempo, perfeitamente inteligível — ou até óbvio — para aqueles que sentem diretamente seus efeitos.
+
+<div style="display: flex; justify-content: center;">
+  <img
+    src="/assets/posts/2026-gormley-complexity/maps.png"
+    alt="Ilustração: mapas e complexidade."
+    style="width: 70%; max-width: 600px;"
+    loading="lazy"
+  />
+</div>
 
 ## 3. A complexidade pode ser usada estrategicamente
 
@@ -45,6 +56,15 @@ Essa situação pode ser interpretada de maneiras diferentes. Uma primeira leitu
 No entanto, uma outra leitura, mais generosa, é a de que os consumidores estavam focados naquilo que mais importava para eles, e que esperar um engajamento detalhado com minúcias contratuais talvez seja pouco razoável do ponto de vista democrático.
 
 Sob essa segunda interpretação, apelos à complexidade técnica correm o risco de funcionar como uma forma de marginalizar preocupações politicamente relevantes. O problema não é que a expertise seja irrelevante, mas sim que rotular um processo como “complexo demais” pode acabar deslegitimando formas de participação que são substantivamente razoáveis, ainda que não tecnicamente sofisticadas.
+
+<div style="display: flex; justify-content: center;">
+  <img
+    src="/assets/posts/2026-gormley-complexity/network.png"
+    alt="Ilustração: redes complexas."
+    style="width: 70%; max-width: 600px;"
+    loading="lazy"
+  />
+</div>
 
 ## Uma conclusão cautelosa
 
