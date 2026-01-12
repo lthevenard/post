@@ -12,9 +12,9 @@ O fundador do Shack, Josh Muñoz, aparentemente teve a ideia enquanto jogava Fal
 
 **Chegamos lá — e a realidade bateu**
 
-Lá estávamos nós, co-orientador a reboque, dirigindo pelo que parecia ser o Triângulo das Bermudas de galpões abandonados (talvez seja só o distrito industrial de Rockville) por volta das 7 da noite. O Shack é basicamente uma janelinha em um espaço que lembra uma garagem — quase nenhuma estrutura, praticamente nenhum lugar para sentar, exceto uma única mesa de piquenique, e zero ambientação. Ah, e detalhe: nada de acompanhamentos também (eles estavam sem “fritas” até quarta-feira). Só os hambúrgueres mais incríveis do mundo (ou pelo menos era isso que a internet prometia).
+Lá estávamos nós, dirigindo pelo que parecia ser o Triângulo das Bermudas de galpões abandonados (talvez seja só o distrito industrial de Rockville) por volta das 7 da noite. O Shack é basicamente uma janelinha em um espaço que lembra uma garagem — quase nenhuma estrutura, praticamente nenhum lugar para sentar, exceto uma única mesa de piquenique, e zero ambientação. Ah, e detalhe: nada de acompanhamentos também (eles estavam sem “fritas” até quarta-feira). Só os hambúrgueres mais incríveis do mundo (ou pelo menos era isso que a internet prometia).
 
-O clima? Algo entre um food pop-up de guerrilha e uma negociação de contrabando em um drama noturno. Chegamos cedo o suficiente para a fila ainda não estar enorme, mas já havia gente esperando — bem agasalhada, checando o relógio, soltando olhares ocasionais que diziam: “isso é real mesmo?”. Em determinado momento, o casal à nossa frente, depois de esperar mais de 30 minutos apenas para conseguir fazer o pedido, desistiu e saiu em direção ao frio com um sarcástico “boa sorte”, como quem abandona uma fila em Seinfeld, no episódio do Soup Nazi (sem hambúrgueres para você!).
+O clima? Algo entre um food pop-up de guerrilha e uma negociação de contrabando em um drama noturno. Chegamos cedo o suficiente para a fila ainda não estar enorme, mas já havia gente esperando — bem agasalhada, checando o relógio, soltando olhares ocasionais que diziam: “onde é que eu vem me meter?”. Em determinado momento, o casal à nossa frente, depois de esperar mais de 30 minutos apenas para conseguir fazer o pedido, desistiu e saiu em direção ao frio com um sarcástico “boa sorte”, como quem abandona uma fila no episódio do Soup Nazi (sem hambúrgueres para você!).
 
 Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
 
@@ -30,7 +30,7 @@ Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
     <h2>O momento Kramer</h2>
     <hr>
     <p>
-        Pregada na parede ao lado da janelinha de pedidos, havia uma imagem do Kramer (sim, aquele Kramer). Era o retrato do episódio de Seinfeld em que eles fazem um quadro com a imagem dele. Honestamente, parecia que o universo estava brincando com a gente — toda aquela experiência era basicamente um episódio de Seinfeld: absurda, levemente esmagadora para a alma, e desproporcionalmente inflada pelo hype social.
+        Foi aí que eu percebi que, pregada na parede ao lado da janelinha de pedidos, havia uma imagem do Kramer (sim, esse Kramer). Era a imagem de um episódio de Seinfeld em que um artista faz pinta um quadro a óleo com um retrado dele. Honestamente, parecia que o universo estava brincando com a gente — toda aquela experiência era basicamente um episódio de Seinfeld: absurda, levemente esmagadora para a alma, e desproporcionalmente inflada pelo hype social.
     </p>
     <p>
         Alguns episódios — o do Soup Nazi, o da loja de iogurte sem calorias, o infame impasse do cookie preto-e-branco — sempre me pareceram exagerados. Over the top. Pouco realistas. Mas ali estava eu, em um estacionamento transformado em teatro do hambúrguer, vivendo o equivalente real daquelas situações — inclusive as estranhas normas sociais que surgem quando pessoas esperam na fila por algo que talvez (ou talvez não) “valha a pena”.
@@ -44,7 +44,7 @@ Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
 
 Depois do que pareceu ao mesmo tempo uma eternidade e um piscar de olhos, finalmente recebemos nossos pedidos. Nós dois pedimos o Bubba — três carnes smash, bacon de carne bovina caramelizado e bem tostado, molho da casa, cebola e picles. Era “sujo” (no melhor sentido possível), bagunçado, intenso e extremamente saboroso. Valeu a espera? Sinceramente? Provavelmente. Mas suspeito que metade desse prazer tenha vindo do quanto toda a situação era absurda, da companhia e do delírio coletivo de todo mundo tentando se manter aquecido.
 
-Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguardavam na fila — agora obrigadas a nos assistir devorando o hambúrguer enquanto conversávamos sobre o quão surreal tudo aquilo era.
+Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguardavam na fila — e que agora foram obrigadas a nos assistir devorando o hambúrguer enquanto conversávamos sobre o quão surreal tudo aquilo era.
 
 <br>
 
