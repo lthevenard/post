@@ -152,7 +152,7 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 
 .hero__figure {
   margin: 0 auto;
-  max-width: min(760px, 82vw);
+  max-width: min(580px, 58vw);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.08);
