@@ -1,6 +1,6 @@
 # That Night We Went to Josh’s Smack Shack (And It Felt Like a Seinfeld Episode)
 
-![Illustration: Line to Josh's Smack Shack](/assets/posts/2026-josh-smack-shack/line.png)
+![Illustration: Line to Josh's Smack Shack](./assets/posts/2026-josh-smack-shack/line.png)
 
 <br>
 
@@ -22,7 +22,7 @@ Behind us, the line swelled as the night deepened and temperatures dropped.
 
 <div class="image-text-block">
   <img
-    src="/assets/posts/2026-josh-smack-shack/kramer_6_en.png"
+    src="./assets/posts/2026-josh-smack-shack/kramer_6_en.png"
     alt="Ilustração: Ebaa, ganhei um jogo!"
     class="image-text-block__image"
     style="border: 2px solid white;"
@@ -52,7 +52,7 @@ We sat at that picnic table, surrounded by others still in line, who now had to 
 
 <div class="image-text-block">
   <img
-    src="/assets/posts/2026-josh-smack-shack/very_cool.001.jpeg"
+    src="./assets/posts/2026-josh-smack-shack/very_cool.001.jpeg"
     alt="Ilustração: Ebaa, ganhei um jogo!"
     class="image-text-block__image"
     style="border: 2px solid #22d3ee;"

@@ -1,6 +1,6 @@
 # Aquela noite em que fomos ao Josh’s Smack Shack (e parecia um episódio de Seinfeld)
 
-![Ilustração: Fila para o Josh's Smack Shack](/assets/posts/2026-josh-smack-shack/line.png)
+![Ilustração: Fila para o Josh's Smack Shack](./assets/posts/2026-josh-smack-shack/line.png)
 
 Se alguém tivesse me dito, na semana passada, que num sábado à noite eu estaria parado em um terreno industrial gelado em Maryland, esperando na fila por um hambúrguer, eu provavelmente teria rido. E, no entanto… foi exatamente isso que aconteceu quando eu e meu co-orientador fizemos a peregrinação até o Josh’s Smack Shack — o fenômeno viral dos smashburgers que vem levando pessoas a enfrentar horas de frio e confusão só para comer um hambúrguer.
 
@@ -20,7 +20,7 @@ Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
 
 <div class="image-text-block">
   <img
-    src="/assets/posts/2026-josh-smack-shack/kramer_6_pt.png"
+    src="./assets/posts/2026-josh-smack-shack/kramer_6_pt.png"
     alt="Ilustração: Kramer na fila"
     class="image-text-block__image"
     style="border: 2px solid white;"
@@ -50,7 +50,7 @@ Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguar
 
 <div class="image-text-block">
   <img
-    src="/assets/posts/2026-josh-smack-shack/very_cool.002.jpeg"
+    src="./assets/posts/2026-josh-smack-shack/very_cool.002.jpeg"
     alt="Foto: dois caras muito hipsters."
     class="image-text-block__image"
     style="border: 2px solid #22d3ee;"

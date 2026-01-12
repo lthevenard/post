@@ -340,8 +340,8 @@ async function renderHome(lang) {
   // Hero image (WebP + PNG fallback)
   const heroBase =
     lang === "en"
-      ? "assets/img/hero-methodology-en"
-      : "assets/img/hero-methodology-pt";
+      ? "./assets/img/hero-methodology-en"
+      : "./assets/img/hero-methodology-pt";
 
   const heroAlt =
     lang === "en"

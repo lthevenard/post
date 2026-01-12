@@ -1,6 +1,6 @@
 # Entre a lixeira da estupidez e a latrina dos sonhos despedaçados: a recapitulação do ano por Dave Barry
 
-![Illustration: chess in Plato's cave](/assets/posts/2026-raccoon/sprawled_2.png)
+![Illustration: chess in Plato's cave](./assets/posts/2026-raccoon/sprawled_2.png)
 
 Li hoje o post [The Year in Review](https://davebarry.substack.com/p/the-year-in-review), do Dave Barry, e recomendo muito a leitura. O texto é hilário, mas traz aquele riso que logo a gente percebe que é só um mecanismo de defesa.
 
@@ -10,7 +10,7 @@ A partir daí, o texto passa mês a mês recapitulando as sucessivas bizarrices 
 
 <div class="image-text-block">
   <img
-    src="/assets/posts/2026-raccoon/brewery_3.png"
+    src="./assets/posts/2026-raccoon/brewery_3.png"
     alt="Broken Dreams Brewery raccoon illustration"
     class="image-text-block__image"
   />
@@ -23,6 +23,6 @@ A partir daí, o texto passa mês a mês recapitulando as sucessivas bizarrices 
         Talvez por isso o guaxinim tenha virado símbolo. Porque ele representa o estado emocional de quem já passou do limite do tolerável e agora só está tentando se manter consciente no chão frio do presente. E o post do Dave vale muito a leitura. Rir ajuda! Mesmo que seja aquele riso meio torto, de quem ainda está tentando levantar...
     </p>
     <p><a href="https://davebarry.substack.com/p/the-year-in-review">> O post do Dave Barry.</a></p>
-    <p><a href="https://knewz.com/raccoon-goes-viral-getting-drunk-shut-liquor-store-passing-out-on-bathroom-floor/?utm_source=chatgpt.com">> A saga do guaxinim embreagado.</a></p>
+    <p><a href="https://knewz.com/raccoon-goes-viral-getting-drunk-shut-liquor-store-passing-out-on-bathroom-floor">> A saga do guaxinim embreagado.</a></p>
   </div>
 </div>

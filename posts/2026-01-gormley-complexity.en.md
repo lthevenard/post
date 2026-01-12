@@ -1,6 +1,6 @@
 # The Complex Concept of Complexity: A Note on Gormley’s Typology
 
-![Illustration: Navigating complexity](/assets/posts/2026-gormley-complexity/box.png)
+![Illustration: Navigating complexity](./assets/posts/2026-gormley-complexity/box.png)
 
 One of the most elegant things about [William Gormley’s classic typology](https://www.journals.uchicago.edu/doi/10.2307/3234884) is its simplicity. By crossing *salience* (low vs. high) with *complexity* (low vs. high), Gormley gives us four ideal types of policymaking and rulemaking processes. It’s a neat framework, intuitive, and still very influential.
 
@@ -26,7 +26,7 @@ Models, after all, work precisely because they reduce complexity. Like maps, the
 
 <div style="display: flex; justify-content: center;">
   <img
-    src="/assets/posts/2026-gormley-complexity/maps.png"
+    src="./assets/posts/2026-gormley-complexity/maps.png"
     alt="Illustration: maps and complexity."
     style="width: 70%; max-width: 600px;"
     loading="lazy"
@@ -59,7 +59,7 @@ Under this second reading, appeals to technical complexity risk serving as a way
 
 <div style="display: flex; justify-content: center;">
   <img
-    src="/assets/posts/2026-gormley-complexity/network.png"
+    src="./assets/posts/2026-gormley-complexity/network.png"
     alt="Illustration: complex networks."
     style="width: 70%; max-width: 600px;"
     loading="lazy"
