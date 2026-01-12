@@ -214,3 +214,53 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
   fill: var(--link);
   opacity: .85;
 }
+
+.image-text-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* imagem */
+.image-text-block__image {
+  width: min(360px, 42%);
+  height: auto;
+  flex: 0 0 auto;
+  border-radius: 12px; /* opcional */
+  max-width: 100%;
+}
+
+/* texto ocupa o resto */
+.image-text-block__text {
+  flex: 1 1 0;
+  min-width: 0; /* importantíssimo p/ evitar overflow em flex */
+}
+
+/* Mobile: empilha */
+@media (max-width: 700px) {
+  .image-text-block {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .image-text-block__image {
+    width: 100%;
+    max-width: 560px; /* opcional, pra não ficar gigante em tablets */
+    margin: 0 auto;   /* centraliza */
+  }
+}
+
+.image-text-block__text p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .image-text-block--text-first {
+    flex-direction: column-reverse;
+  }
+}
+
+.image-text-block { flex-wrap: wrap; }
+.image-text-block__image { min-width: 240px; }
+.image-text-block__text { min-width: 260px; }

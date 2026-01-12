@@ -18,7 +18,7 @@ O clima? Algo entre um food pop-up de guerrilha e uma negociação de contraband
 
 Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
 
-<div class="image-text-block">
+<div class="image-text-block image-text-block--text-first">
   <img
     src="./assets/posts/2026-josh-smack-shack/kramer_6_pt.png"
     alt="Ilustração: Kramer na fila"
@@ -35,7 +35,6 @@ Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
     <p>
         Alguns episódios — o do Soup Nazi, o da loja de iogurte sem calorias, o infame impasse do cookie preto-e-branco — sempre me pareceram exagerados. Over the top. Pouco realistas. Mas ali estava eu, em um estacionamento transformado em teatro do hambúrguer, vivendo o equivalente real daquelas situações — inclusive as estranhas normas sociais que surgem quando pessoas esperam na fila por algo que talvez (ou talvez não) “valha a pena”.
     </p>
-    <br><br>
   </div>
 </div>
 
@@ -64,7 +63,6 @@ Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguar
     <p>
         Da próxima vez que alguém disser que um lugar de comida está “viralizando”, vou perguntar primeiro se envolve risco de congelamento e uma foto do Kramer na parede. Se envolver, estou dentro.
     </p>
-    <br>
   </div>
 </div>
 

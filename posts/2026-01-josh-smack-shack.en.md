@@ -20,10 +20,10 @@ The vibe? Somewhere between a guerrilla food pop-up and a contraband exchange in
 
 Behind us, the line swelled as the night deepened and temperatures dropped.
 
-<div class="image-text-block">
+<div class="image-text-block image-text-block--text-first">
   <img
     src="./assets/posts/2026-josh-smack-shack/kramer_6_en.png"
-    alt="Ilustração: Ebaa, ganhei um jogo!"
+    alt="Illustration: Kramer"
     class="image-text-block__image"
     style="border: 2px solid white;"
   />
@@ -37,7 +37,6 @@ Behind us, the line swelled as the night deepened and temperatures dropped.
     <p>
         Some episodes — the Soup Nazi, the Yogurt Place with No Calories, the infamous black and white cookie standoff — always seemed exaggerated to me. Over the top. Not realistic. But there I was, in a parking-lot-turned-burger-theater, living out the real-world equivalent of those scenarios — right down to the bizarre social norms that emerge when people wait in line for something that may or may not be “worth it.”
     </p>
-    <br><br>
   </div>
 </div>
 
@@ -53,7 +52,7 @@ We sat at that picnic table, surrounded by others still in line, who now had to 
 <div class="image-text-block">
   <img
     src="./assets/posts/2026-josh-smack-shack/very_cool.001.jpeg"
-    alt="Ilustração: Ebaa, ganhei um jogo!"
+    alt="Illustration: Two hipster dudes"
     class="image-text-block__image"
     style="border: 2px solid #22d3ee;"
   />
@@ -66,7 +65,6 @@ We sat at that picnic table, surrounded by others still in line, who now had to 
     <p>
         Next time someone mentions going viral over a food item, I’ll ask them if it involved frostbite and a picture of Kramer on the wall first. If yes, count me in!
     </p>
-    <br>
   </div>
 </div>
 
