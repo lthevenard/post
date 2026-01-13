@@ -616,3 +616,27 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 @media (max-width: 899px){
   .hero-g__thumb{ cursor: default; }
 }
+
+.cv-subtitle{
+  color:var(--link);
+  border-bottom: 1px solid;
+}
+
+.cv-title{
+  color:#b9d6fa;
+}
+
+.cv-subtitle-text{
+  color:var(--link);
+  line-height: 150%;
+  border-bottom: 1px solid;
+}
+
+.cv-top {
+  font-family: "Times New Roman", Times, serif;
+  letter-spacing: 4px;
+  font-weight: 700;
+  font-size: 135%;
+  text-align: center;
+  margin-bottom: 12px;
+}

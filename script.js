@@ -37,6 +37,7 @@ const routes = {
 const ENABLE_SLIDE_LANGUAGE_SWITCH = false;
 
 const cache = {};
+
 async function getJSON(path) {
   if (cache[path]) return cache[path];
   const r = await fetch(path);
@@ -44,9 +45,33 @@ async function getJSON(path) {
   cache[path] = j;
   return j;
 }
+
+const PUBLICATIONS_BY_TYPE_PATH = {
+  'article': 'publications/articles.json',
+  'book-chapter': 'publications/book-chapters.json',
+  'report': 'publications/reports.json',
+  'op-ed': 'publications/op-eds.json',
+  'repo': 'publications/repos.json',
+};
+
+let _publicationsMergedCache = null;
+
+async function getAllPublications() {
+  if (_publicationsMergedCache) return _publicationsMergedCache;
+
+  const parts = await Promise.all(
+    Object.values(PUBLICATIONS_BY_TYPE_PATH).map(p => getJSON(p))
+  );
+
+  // avoids Array.prototype.flat() compatibility issues
+  _publicationsMergedCache = [].concat(...parts);
+  return _publicationsMergedCache;
+}
+
 function counterpartByGroup(list, group, otherLang) {
   return list.find(x => x.group && x.group === group && x.lang === otherLang);
 }
+
 function findPostBySlugAndLang(list, slug, lang) {
   return list.find(p => p.slug === slug && p.lang === lang);
 }
@@ -262,11 +287,11 @@ function updateUIForLang(lang) {
   const navMap = [
     ['navHome', 'home', ''],
     ['navBlog', 'blog', '/blog'],
-    ['navCV', 'cv', '/cv'],
+    ['navPublications', 'publications', '/publications'],
     ['navSlides', 'slides', '/slides'],
     ['navProjects', 'projects', '/projects'],
-    ['navPublications', 'publications', '/publications'],
     ['navApps', 'apps', '/apps'],
+    ['navCV', 'cv', '/cv'],
   ];
 
   for (const [id, key, suffix] of navMap) {
@@ -849,7 +874,7 @@ async function renderPublications(lang) {
     <section class="card" id="pubs"></section>
   `);
 
-  const all = await getJSON('publications/publications.json');
+  const all = await getAllPublications();
   const selected = selectHybrid(all, lang, keyForPub)
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
@@ -897,7 +922,7 @@ async function renderCV(lang) {
 
   setContent(`
     <section class="card prose">
-      <h1>${lang === 'pt' ? 'CV Acadêmico' : 'Academic CV'}</h1>
+      <p class="cv-top">${lang === 'pt' ? 'CURRÍCULO &nbsp;ACADÊMICO' : 'ACADEMIC &nbsp;CV'}</p>
       <div id="cv-body">Carregando…</div>
     </section>
     <section class="card prose" id="cv-pubs"></section>
@@ -906,7 +931,7 @@ async function renderCV(lang) {
 
   // Selected publications (cv:true)
   try {
-    const all = (await getJSON('publications/publications.json'))
+    const all = (await getAllPublications())
       .filter(p => p.cv === true); // only selected for CV
 
     // hybrid rules (pt/en) with publication keys
@@ -930,10 +955,10 @@ async function renderCV(lang) {
           return `<li>${parts.join('. ')}</li>`;
         }).join('');
         const secTitle = i18n[lang].pubsTypes[tp] || tp;
-        return `<h3>${secTitle}</h3><ul>${list}</ul>`;
+        return `<h3  class="cv-subtitle">${secTitle}</h3><ul>${list}</ul>`;
       }).join('');
 
-      wrap.innerHTML = `<h2>${i18n[lang].selectedPubsTitle}</h2>${sections}`;
+      wrap.innerHTML = `<h1 class="cv-title">${i18n[lang].selectedPubsTitle}</h2>${sections}`;
     }
   } catch (e) {
     // ignore errors while loading publications

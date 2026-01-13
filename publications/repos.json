@@ -1,0 +1,32 @@
+[
+  {
+    "type": "repo",
+    "title": "Decision Theory – Lottery Simulation",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-03-27",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/decision_theory_lottery",
+    "lang": "en",
+    "cv": false
+  },
+  {
+    "type": "repo",
+    "title": "Decision Theory Exercises",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-03-27",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/dt_exercises",
+    "lang": "en",
+    "cv": false
+  },
+  {
+    "type": "repo",
+    "title": "Dashboard – Produção Normativa da Receita Federal",
+    "authors": ["Lucas Thevenard"],
+    "date": "2024-07-31",
+    "publication": "GitHub",
+    "url": "https://github.com/lthevenard/dashboard_prod_normativa_da_receita",
+    "lang": "pt",
+    "cv": false
+  }
+]

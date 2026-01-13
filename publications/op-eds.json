@@ -1,0 +1,32 @@
+[
+  {
+    "type": "op-ed",
+    "title": "A Dispensa de AIR na Anvisa",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2022-01-01",
+    "publication": "Conjuntura Econômica (nº 76)",
+    "url": "https://periodicos.fgv.br/rce/article/view/85807/80907",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "How Many Are Too Few? Analyzing the Diversity of Regulatory Options Considered in Brazilian RIAs",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2025-03-27",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/how-many-are-too-few-analyzing-diversity-regulatory-options-considered-brazilian-rias7",
+    "lang": "en",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "Regulatory Impact Analysis in Brazil: An Assessment of Exemptions and Ex Post Reviews",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2024-10-23",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/regulatory-impact-analysis-brazil-assessment-exemptions-and-ex-post-reviews",
+    "lang": "en",
+    "cv": true
+  }
+]
