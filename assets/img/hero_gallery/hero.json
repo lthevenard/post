@@ -14,20 +14,28 @@
       "base": {
         "pt": "hero-methodology-pt",
         "en": "hero-methodology-en"
+      },
+      "description": {
+        "pt": "Metodologia impecável, conclusões desastrosas — mas com gráficos lindos. À medida que os procedimentos se tornam mais sofisticados, a tentação não é errar menos, mas errar com mais confiança. E quando o método vira fetiche, a responsabilidade intelectual costuma ser a primeira variável descartada.",
+        "en": "Impeccable methodology, disastrous conclusions — beautifully plotted. As procedures become more sophisticated, the temptation is not to be less wrong, but to be wrong with greater confidence. And when method turns into a fetish, intellectual responsibility is usually the first variable to be discarded."
       }
     },
     {
       "month": "2025-12",
       "archived": true,
       "title": {
-        "pt": "Caverna de Platão (xadrez)",
-        "en": "Plato’s Cave (chess)"
+        "pt": "Entre a lixeira da estupidez e a latrina dos sonhos despedaçados",
+        "en": "Between the wastebasket of stupidity and the commode of broken dreams"
       },
       "alt": {
-        "pt": "Ilustração da caverna de Platão com tema de xadrez.",
-        "en": "Plato’s cave illustration with a chess theme."
+        "pt": "Ilustração de um guaxinim bêbado.",
+        "en": "Cartoon of a drunk raccoon."
       },
-      "base": "hero-plato-cave"
+      "base": "hero-raccoon",
+      "description": {
+        "pt": "Baseada em uma fotografia real que viralizou, esta ilustração retrata um guaxinim desmaiado no chão de um banheiro após uma noite etílica improvável. A cena funciona como metáfora do esgotamento coletivo. O título da imagem é uma citação de um post de Dave Barry que menciona o episódio.",
+        "en": "Inspired by a real photograph that went viral, this illustration depicts a raccoon passed out on a bathroom floor after an improbable night of drinking. The image works as a metaphor for collective exhaustion. The title is a direct quote from an essay by Dave Barry which describes the episode."
+      }
     }
   ]
 }

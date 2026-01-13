@@ -18,6 +18,24 @@
     "file": "posts/2025-09-hello-world.en.md"
   },
   {
+    "group": "2025-12-chess",
+    "slug": "2025-12-chess-pt",
+    "title": "Xadrez, incerteza e filosofia de botequim",
+    "date": "2025-12-26",
+    "tags": ["epistemologia", "teoria da decisão", "xadrez"],
+    "lang": "pt",
+    "file": "posts/2025-12-chess.pt.md"
+  },
+  {
+    "group": "2025-12-chess",
+    "slug": "2025-12-chess-en",
+    "title": "Chess, Uncertainty, and Pub Philosophy",
+    "date": "2025-12-26",
+    "tags": ["epistemology", "decision theory", "chess"],
+    "lang": "en",
+    "file": "posts/2025-12-chess.en.md"
+  },
+  {
     "group": "2026-01-raccoon",
     "slug": "2026-01-raccoon-pt",
     "title": "Entre a lixeira da estupidez e a latrina dos sonhos despedaçados: a recapitulação do ano por Dave Barry",
@@ -34,24 +52,6 @@
     "tags": ["politics", "blogs"],
     "lang": "en",
     "file": "posts/2026-01-raccoon.en.md"
-  },
-  {
-    "group": "2026-01-chess",
-    "slug": "2026-01-chess-pt",
-    "title": "Xadrez, incerteza e filosofia de botequim",
-    "date": "2026-01-05",
-    "tags": ["epistemologia", "teoria da decisão", "xadrez"],
-    "lang": "pt",
-    "file": "posts/2026-01-chess.pt.md"
-  },
-  {
-    "group": "2026-01-chess",
-    "slug": "2026-01-chess-en",
-    "title": "Chess, Uncertainty, and Pub Philosophy",
-    "date": "2026-01-05",
-    "tags": ["epistemology", "decision theory", "chess"],
-    "lang": "en",
-    "file": "posts/2026-01-chess.en.md"
   },
   {
     "group": "2026-01-gormley-complexity",

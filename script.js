@@ -509,6 +509,37 @@ function heroSrcFromItem(item, lang) {
   return baseName.endsWith('.webp') ? (dir + baseName) : (dir + baseName + '.webp');
 }
 
+function formatMonthYear(ym, lang) {
+  // ym: "YYYY-MM"
+  if (!ym || typeof ym !== 'string') return '';
+
+  const m = ym.match(/^(\d{4})-(\d{2})$/);
+  if (!m) return ym;
+
+  const year = m[1];
+  const monthIdx = parseInt(m[2], 10) - 1;
+
+  const pt = [
+    'janeiro','fevereiro','março','abril','maio','junho',
+    'julho','agosto','setembro','outubro','novembro','dezembro'
+  ];
+  const en = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December'
+  ];
+
+  if (monthIdx < 0 || monthIdx > 11) return ym;
+
+  if (lang === 'pt') {
+    // "Dezembro de 2025"
+    const name = pt[monthIdx];
+    return name.charAt(0).toUpperCase() + name.slice(1) + ' de ' + year;
+  }
+
+  // "December 2025"
+  return en[monthIdx] + ' ' + year;
+}
+
 // ---- Pages
 async function renderHome(lang) {
   const t = i18n[lang];
@@ -552,7 +583,7 @@ async function renderHome(lang) {
       ${title ? `
         <div class="hero__meta">
           <span class="hero__caption-text">“${title}”</span>
-          <span class="hero__caption-sep">·</span>
+          <span class="hero__caption-sep">&nbsp; | &nbsp;</span>
           <a class="hero__archive-link" href="#/${lang}/illustrations">
             ${lang === 'pt' ? '> ver meses anteriores' : '> see previous months'}
           </a>
@@ -599,7 +630,6 @@ async function renderHome(lang) {
     </div>
   `;
 }
-
 
 async function renderBlogIndex(lang) {
   const t = i18n[lang];
@@ -668,7 +698,6 @@ async function renderBlogPost(lang, params) {
   document.getElementById('post').innerHTML = marked.parse(md, { breaks: true });
 }
 
-
 async function renderProjectsIndex(lang) {
   const t = i18n[lang];
   setContent(`
@@ -735,7 +764,6 @@ async function renderApps(lang, params, current) {
     await window.AppsRouter.renderAppsIndex(mount, { route });
   }
 }
-
 
 async function renderProjectPage(lang, params) {
   const slug = params.get('slug');
@@ -811,7 +839,6 @@ async function renderProjectPage(lang, params) {
   }).join('');
 }
 
-
 async function renderPublications(lang) {
   const t = i18n[lang];
   setContent(`
@@ -863,7 +890,6 @@ async function renderPublications(lang) {
   container.innerHTML = html || `<div class="list-item">${lang==='pt'?'Nenhuma publicação ainda.':'No publications yet.'}</div>`;
 }
 
-
 async function renderCV(lang) {
   const path = `cv/cv.${lang}.md`;
   const res = await fetch(path);
@@ -913,7 +939,6 @@ async function renderCV(lang) {
     // ignore errors while loading publications
 }
 }
-
 
 async function renderSlides(lang) {
   const t = i18n[lang];
@@ -992,7 +1017,6 @@ async function renderSlides(lang) {
   `;
 }
 
-
 async function renderArchivedSlides(lang) {
   const t = i18n[lang];
   setContent(`
@@ -1032,43 +1056,45 @@ async function renderArchivedSlides(lang) {
 }
 
 async function renderHeroGallery(lang) {
-  const pageTitle = lang === 'pt' ? 'Versões anteriores' : 'Previous versions';
+  const pageTitle = lang === 'pt' ? 'Ilustração do Mês' : 'Illustration of the Month';
   const intro = lang === 'pt'
-    ? 'Galeria de ilustrações de capa (“ilustração do mês”).'
-    : 'Gallery of cover illustrations (“illustration of the month”).';
+    ? 'Galeria de ilustrações de capa do site. Todas as ilustrações são criadas por mim, usando ferramentas de IA (ChatGPT, Gemini, etc.).'
+    : 'Gallery of the cover illustrations I use in my site. All illustrations are created by me using AI tools (ChatGPT, Gemini, etc.).';
 
   let catalog = { items: [] };
   try {
     catalog = await getHeroCatalog();
   } catch (e) {
-    // Sem catálogo: mostra página vazia com mensagem amigável.
     catalog = { items: [] };
   }
 
-  // Mostra só as arquivadas (versões anteriores)
   const itemsAll = Array.isArray(catalog?.items) ? catalog.items : [];
-  const items = itemsAll.filter(it => it && it.archived === true);
+  const items = itemsAll.filter(it => it);
 
-  // Ordena mais recente -> mais antigo (YYYY-MM)
   const sorted = [...items].sort((a, b) => String(b.month).localeCompare(String(a.month)));
 
-  const cards = sorted.map(it => {
-    const src = heroSrcFromItem(it, lang); // resolve pasta + .webp
-    const caption = heroTextForLang(it.title, lang, '');
-    const alt = heroTextForLang(it.alt, lang, caption || it.month || 'Hero image');
+  const cards = sorted.map((it, idx) => {
+    const src = heroSrcFromItem(it, lang);
+    const title = heroTextForLang(it.title, lang, '');
+    const desc = heroTextForLang(it.description, lang, '');
+    const alt = heroTextForLang(it.alt, lang, title || it.month || 'Hero image');
+    const niceMonth = formatMonthYear(it.month || '', lang);
 
     const media = src ? `
       <figure class="hero-g__figure">
-        <img class="hero-g__img" src="${src}" alt="${alt}" loading="lazy" />
+        <button class="hero-g__thumb" type="button" data-src="${src}" data-alt="${alt}">
+          <img class="hero-g__img" src="${src}" alt="${alt}" loading="lazy" />
+        </button>
       </figure>
     ` : '';
 
     return `
-      <article class="hero-g__card">
+      <article class="hero-g__card" data-idx="${idx}">
         ${media}
         <div class="hero-g__caption">
-          <div class="hero-g__month">${it.month || ''}</div>
-          <div class="hero-g__title">${caption || ''}</div>
+          <div class="hero-g__month">${niceMonth}</div>
+          <div class="hero-g__title">${title}</div>
+          ${desc ? `<div class="hero-g__desc">${desc}</div>` : ''}
         </div>
       </article>
     `;
@@ -1086,13 +1112,63 @@ async function renderHeroGallery(lang) {
     <section class="card prose">
       <h1>${pageTitle}</h1>
       <p>${intro}</p>
-      <p><a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a></p>
+      <p style="text-align:right;font-size:.8rem">
+        <a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a>
+      </p>
     </section>
 
     <section class="hero-g">
       ${cards || emptyState}
     </section>
+
+    <div class="hero-g__lightbox" id="heroLightbox" aria-hidden="true">
+      <button class="hero-g__lb-backdrop" type="button" aria-label="${lang === 'pt' ? 'Fechar' : 'Close'}"></button>
+      <div class="hero-g__lb-panel" role="dialog" aria-modal="true" aria-label="${lang === 'pt' ? 'Imagem ampliada' : 'Expanded image'}">
+        <button class="hero-g__lb-close" type="button" aria-label="${lang === 'pt' ? 'Fechar' : 'Close'}">×</button>
+        <img class="hero-g__lb-img" src="" alt="" />
+      </div>
+    </div>
   `);
+
+  // wiring lightbox
+  const lb = document.getElementById('heroLightbox');
+  const lbImg = lb ? lb.querySelector('.hero-g__lb-img') : null;
+  const btnClose = lb ? lb.querySelector('.hero-g__lb-close') : null;
+  const btnBackdrop = lb ? lb.querySelector('.hero-g__lb-backdrop') : null;
+
+  function openLightbox(src, alt) {
+    if (!lb || !lbImg) return;
+    lbImg.src = src;
+    lbImg.alt = alt || '';
+    lb.classList.add('is-open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+
+  function closeLightbox() {
+    if (!lb || !lbImg) return;
+    lb.classList.remove('is-open');
+    lb.setAttribute('aria-hidden', 'true');
+    // limpa src pra evitar “flash” ao trocar
+    lbImg.src = '';
+    lbImg.alt = '';
+    document.body.classList.remove('no-scroll');
+  }
+
+  document.querySelectorAll('.hero-g__thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const src = btn.getAttribute('data-src');
+      const alt = btn.getAttribute('data-alt');
+      if (src) openLightbox(src, alt);
+    });
+  });
+
+  if (btnClose) btnClose.addEventListener('click', closeLightbox);
+  if (btnBackdrop) btnBackdrop.addEventListener('click', closeLightbox);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lb && lb.classList.contains('is-open')) closeLightbox();
+  }, { once: true });
 }
 
 // Events
