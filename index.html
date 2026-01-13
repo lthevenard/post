@@ -25,11 +25,19 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="brand">
-      <a href="#/pt" class="brand-link" id="brandLink">Lucas Thevenard</a>
+      <div class="brand-row">
+        <a href="#/pt" class="brand-link" id="brandLink">Lucas Thevenard</a>
+        <a class="lang-link-mobile" id="langToggleMobile" href="#" aria-label="Switch language"> 🇺🇸 <span class="lang-code">EN</span></a>
+      </div>
+
       <span class="tagline" id="tagline">Regulação, pesquisa empírica e ciência de dados</span>
     </div>
+    <button id="navToggle" class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
     <nav class="nav" id="mainNav">
       <a href="#/pt" data-route="home" id="navHome">Início</a>
       <a href="#/pt/blog" data-route="blog" id="navBlog">Blog</a>
@@ -39,8 +47,9 @@
       <a href="#/pt/publications" data-route id="navPublications">Publicações</a>
       <a href="#/pt/apps" data-route="apps" id="navApps">Apps</a>
     </nav>
-    <button class="lang-btn" id="langToggle">See this page in English</button>
+    <button class="lang-btn" id="langToggle" type="button">See this page in English 🇺🇸</button>
   </header>
+
 
   <main id="app" class="container"></main>
 

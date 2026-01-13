@@ -2,6 +2,23 @@
 const app = document.getElementById('app');
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// --- Mobile hamburger toggle (header/nav)
+const siteHeader = document.getElementById('siteHeader');
+const navToggleBtn = document.getElementById('navToggle');
+
+function closeMobileNav() {
+  if (!siteHeader || !navToggleBtn) return;
+  siteHeader.classList.remove('nav-open');
+  navToggleBtn.setAttribute('aria-expanded', 'false');
+}
+
+if (siteHeader && navToggleBtn) {
+  navToggleBtn.addEventListener('click', () => {
+    const open = siteHeader.classList.toggle('nav-open');
+    navToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+
 const SUPPORTED_LANGS = ['pt','en'];
 const routes = {
   '': renderHome,
@@ -13,7 +30,8 @@ const routes = {
   'projects': renderProjectsIndex,
   'project': renderProjectPage,
   'apps': renderApps,
-  'archived': renderArchivedSlides
+  'archived': renderArchivedSlides,
+  'illustrations': renderHeroGallery,
 };
 
 const ENABLE_SLIDE_LANGUAGE_SWITCH = false;
@@ -148,6 +166,8 @@ function navigate() {
   if (!parsed) return; // already redirected
   current = parsed;
 
+  closeMobileNav();
+
   // Updates the UI for the current language (title, nav, button, lang atribute)
   updateUIForLang(current.lang);
 
@@ -159,67 +179,156 @@ function navigate() {
 }
 
 // ---- UI helpers
-function updateUIForLang(lang) {
-  const t = i18n[lang];
+let langToggleResizeBound = false;
 
-  document.documentElement.setAttribute('lang', lang);
-  document.title = t.title;
-
-  document.getElementById('brandLink').setAttribute('href', `#/${lang}`);
-  document.getElementById('tagline').innerHTML = t.tagline;
-
-  const map = {
-    navHome: '', navBlog: 'blog', navCV: 'cv',
-    navSlides: 'slides', navProjects: 'projects',
-    navPublications: 'publications',
-    navApps: 'apps'
-  };
-  Object.entries(map).forEach(([id, p]) => {
-    const a = document.getElementById(id);
-    a.textContent = i18n[lang].nav[id.replace('nav','').toLowerCase()];
-    a.setAttribute('href', `#/${lang}/${p}`.replace(/\/$/, ''));
-  });
-
+function setLangToggleLabel(lang) {
   const toggle = document.getElementById('langToggle');
-  toggle.textContent = t.toggle;
-  toggle.onclick = async () => {
-    const other = lang === 'pt' ? 'en' : 'pt';
-    const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
-    let targetHash = `#/${other}${current.path}${current.query}`;
+  if (!toggle) return;
 
-    if (seg === 'post') {
-      const posts = await getJSON('posts/posts.json');
-      const params = new URLSearchParams(current.query.replace(/^\?/, ''));
-      const slug = params.get('slug');
-      const here = findPostBySlugAndLang(posts, slug, lang);
-      if (here && here.group) {
-        const there = counterpartByGroup(posts, here.group, other);
-        targetHash = there ? `#/${other}/post?slug=${encodeURIComponent(there.slug)}` : `#/${other}/blog`;
-      }
-    } else if (seg === 'project') {
-      const [projects, slidesAll] = await Promise.all([
-        getJSON('projects/projects.json'),
-        getJSON('slides/slides.json')
-      ]);
-      const params = new URLSearchParams(current.query.replace(/^\?/, ''));
-      const slug = params.get('slug');
-      const here = findProjectBySlugAndLang(projects, slug, lang);
-      if (here && here.group) {
-        const there = counterpartByGroup(projects, here.group, other);
-        if (there) {
-          const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug);
-          targetHash = thereHasSlides ? `#/${other}/project?slug=${encodeURIComponent(there.slug)}` : `#/${other}/projects`;
-        } else {
-          targetHash = `#/${other}/projects`;
-        }
+  const t = i18n[lang];
+  const other = lang === 'pt' ? 'en' : 'pt';
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // desktop: texto completo; mobile: só bandeira do idioma alvo
+  toggle.textContent = isMobile ? (other === 'pt' ? '🇧🇷' : '🇺🇸') : t.toggle;
+
+  toggle.setAttribute(
+    'aria-label',
+    other === 'pt' ? 'Mudar para Português' : 'Switch to English'
+  );
+
+  // garante que o resize listener é registrado só uma vez
+  if (!langToggleResizeBound) {
+    langToggleResizeBound = true;
+    window.addEventListener('resize', () => setLangToggleLabel(current.lang));
+  }
+}
+
+async function computeOtherLangHash(lang) {
+  const other = lang === 'pt' ? 'en' : 'pt';
+  const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
+  let targetHash = `#/${other}${current.path}${current.query}`;
+
+  if (seg === 'post') {
+    const posts = await getJSON('posts/posts.json');
+    const params = new URLSearchParams(current.query.replace(/^\?/, ''));
+    const slug = params.get('slug');
+    const here = findPostBySlugAndLang(posts, slug, lang);
+    if (here && here.group) {
+      const there = counterpartByGroup(posts, here.group, other);
+      targetHash = there ? `#/${other}/post?slug=${encodeURIComponent(there.slug)}` : `#/${other}/blog`;
+    }
+  } else if (seg === 'project') {
+    const [projects, slidesAll] = await Promise.all([
+      getJSON('projects/projects.json'),
+      getJSON('slides/slides.json')
+    ]);
+    const params = new URLSearchParams(current.query.replace(/^\?/, ''));
+    const slug = params.get('slug');
+    const here = findProjectBySlugAndLang(projects, slug, lang);
+    if (here && here.group) {
+      const there = counterpartByGroup(projects, here.group, other);
+      if (there) {
+        const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug);
+        targetHash = thereHasSlides ? `#/${other}/project?slug=${encodeURIComponent(there.slug)}` : `#/${other}/projects`;
       } else {
         targetHash = `#/${other}/projects`;
       }
+    } else {
+      targetHash = `#/${other}/projects`;
     }
+  }
 
+  return targetHash;
+}
 
-    location.hash = targetHash;
-  };
+function updateUIForLang(lang) {
+  const t = i18n[lang];
+
+  // 1) atributo de idioma no HTML
+  document.documentElement.setAttribute('lang', lang);
+
+  // 2) brand + tagline
+  const brandLink = document.getElementById('brandLink');
+  if (brandLink) {
+    brandLink.textContent = t.brand ?? brandLink.textContent;
+    brandLink.setAttribute('href', `#/${lang}`);
+  }
+
+  const tagline = document.getElementById('tagline');
+  if (tagline && t.tagline) tagline.textContent = t.tagline;
+
+  // 3) labels e hrefs do menu (mantém sua lógica de rotas)
+  const navMap = [
+    ['navHome', 'home', ''],
+    ['navBlog', 'blog', '/blog'],
+    ['navCV', 'cv', '/cv'],
+    ['navSlides', 'slides', '/slides'],
+    ['navProjects', 'projects', '/projects'],
+    ['navPublications', 'publications', '/publications'],
+    ['navApps', 'apps', '/apps'],
+  ];
+
+  for (const [id, key, suffix] of navMap) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (t.nav && t.nav[key]) el.textContent = t.nav[key];
+    el.setAttribute('href', `#/${lang}${suffix}`);
+  }
+
+  // 4) marcar item ativo (se você já usava essa lógica, pode manter; aqui vai uma simples)
+  //    - home: path "/" ou "/home" (se existir)
+  //    - demais: primeira parte do path
+  const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
+  for (const [id, key] of navMap) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+
+    const isActive =
+      (key === 'home' && (seg === '' || seg === 'home')) ||
+      (key !== 'home' && seg === key);
+
+    el.classList.toggle('active', isActive);
+    el.setAttribute('aria-current', isActive ? 'page' : 'false');
+  }
+
+  // 5) troca de língua
+  const other = lang === 'pt' ? 'en' : 'pt';
+
+  // Desktop: mantém o botão como era antes (texto)
+  const toggleDesktop = document.getElementById('langToggle');
+  if (toggleDesktop) {
+    toggleDesktop.textContent = t.toggle; // ex.: "See this page in English" / "Versão em Português"
+    toggleDesktop.setAttribute(
+      'aria-label',
+      other === 'pt' ? 'Mudar para Português' : 'Switch to English'
+    );
+    toggleDesktop.onclick = async () => {
+      location.hash = await computeOtherLangHash(lang);
+    };
+  }
+
+  // Mobile: link compacto com bandeira + código (EN/PT)
+  const toggleMobile = document.getElementById('langToggleMobile');
+  if (toggleMobile) {
+    toggleMobile.innerHTML =
+      other === 'pt'
+        ? `🇧🇷 <span class="lang-code">PT</span>`
+        : `🇺🇸 <span class="lang-code">EN</span>`;
+
+    toggleMobile.setAttribute(
+      'aria-label',
+      other === 'pt' ? 'Mudar para Português' : 'Switch to English'
+    );
+
+    toggleMobile.onclick = async (e) => {
+      e.preventDefault();
+      location.hash = await computeOtherLangHash(lang);
+    };
+  }
+
+  // 6) (opcional) título do documento, se você usar algo assim no i18n
+  // if (t.siteTitle) document.title = t.siteTitle;
 }
 
 
@@ -333,20 +442,101 @@ function sortPostsNewestFirst(posts) {
   });
 }
 
+// --- Hero (illustration of the month)
+async function getHeroCatalog() {
+  return await getJSON('assets/img/hero_gallery/hero.json');
+}
+
+function ymNow() {
+  const d = new Date();
+  const y = String(d.getFullYear());
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  return `${y}-${m}`;
+}
+
+function pickHeroItem(catalog, ym) {
+  const items = Array.isArray(catalog?.items) ? catalog.items : [];
+  if (!items.length) return null;
+
+  const exact = items.find(it => it.month === ym);
+  if (exact) return exact;
+
+  // fallback: mais recente por YYYY-MM
+  const sorted = [...items].sort((a,b) => String(b.month).localeCompare(String(a.month)));
+  return sorted[0];
+}
+
+function heroTextForLang(obj, lang, fallback='') {
+  if (!obj) return fallback;
+  if (typeof obj === 'string') return obj;
+  if (typeof obj === 'object') return obj[lang] || obj.pt || obj.en || fallback;
+  return fallback;
+}
+
+// pega o "base name" sem path/sem extensão
+function heroBaseNameForLang(item, lang) {
+  if (!item) return null;
+  const b = item.base;
+  if (!b) return null;
+  if (typeof b === 'string') return b;
+  if (typeof b === 'object') return b[lang] || b.pt || b.en || null;
+  return null;
+}
+
+function heroBaseForLang(item, lang) {
+  if (!item || !item.base) return null;
+
+  const b = item.base;
+
+  // caso simples: uma única imagem (sem texto / sem variação por idioma)
+  if (typeof b === 'string') return b;
+
+  // caso com variação por idioma
+  if (typeof b === 'object') {
+    return b[lang] || b.pt || b.en || null;
+  }
+
+  return null;
+}
+
+// resolve o caminho final (pasta depende de archived)
+function heroSrcFromItem(item, lang) {
+  const baseName = heroBaseNameForLang(item, lang);
+  if (!baseName) return null;
+
+  const dir = item.archived ? './assets/img/hero_gallery/' : './assets/img/';
+  // garante .webp (caso você passe com extensão por acidente)
+  return baseName.endsWith('.webp') ? (dir + baseName) : (dir + baseName + '.webp');
+}
+
 // ---- Pages
 async function renderHome(lang) {
   const t = i18n[lang];
 
-  // Hero image (WebP + PNG fallback)
-  const heroBase =
-    lang === "en"
-      ? "./assets/img/hero-methodology-en"
-      : "./assets/img/hero-methodology-pt";
+  let heroItem = null;
+  try {
+    const catalog = await getHeroCatalog();
+    heroItem = pickHeroItem(catalog, ymNow());
+  } catch (e) {}
 
-  const heroAlt =
+  const fallbackItem = {
+    archived: false,
+    base: lang === 'en' ? 'hero-methodology-en' : 'hero-methodology-pt',
+    month: ymNow()
+  };
+
+  const item = heroItem || fallbackItem;
+
+  const src = heroSrcFromItem(item, lang); // já resolve assets/img vs hero_gallery + .webp
+  const alt = heroTextForLang(
+    item.alt,
+    lang,
     lang === "en"
-      ? "Cartoon of two researchers joking about wrong conclusions and consistent methodology."
-      : "Charge com dois pesquisadores ironizando conclusões erradas e metodologia consistente.";
+      ? "Cover illustration."
+      : "Ilustração de capa."
+  );
+  const title = heroTextForLang(item.title, lang, '');
+  const month = item.month || ymNow();
 
   setContent(`
     <section class="card prose">
@@ -356,11 +546,18 @@ async function renderHome(lang) {
 
     <section class="hero">
       <figure class="hero__figure">
-        <picture>
-          <source srcset="${heroBase}.webp" type="image/webp" />
-          <img class="hero__img" src="${heroBase}.png" alt="${heroAlt}" loading="lazy" />
-        </picture>
+        <img class="hero__img" src="${src}" alt="${alt}" loading="lazy" />
       </figure>
+
+      ${title ? `
+        <div class="hero__meta">
+          <span class="hero__caption-text">“${title}”</span>
+          <span class="hero__caption-sep">·</span>
+          <a class="hero__archive-link" href="#/${lang}/illustrations">
+            ${lang === 'pt' ? '> ver meses anteriores' : '> see previous months'}
+          </a>
+        </div>
+      ` : ''}
     </section>
 
     <section class="card">
@@ -834,7 +1031,69 @@ async function renderArchivedSlides(lang) {
   `;
 }
 
+async function renderHeroGallery(lang) {
+  const pageTitle = lang === 'pt' ? 'Versões anteriores' : 'Previous versions';
+  const intro = lang === 'pt'
+    ? 'Galeria de ilustrações de capa (“ilustração do mês”).'
+    : 'Gallery of cover illustrations (“illustration of the month”).';
 
+  let catalog = { items: [] };
+  try {
+    catalog = await getHeroCatalog();
+  } catch (e) {
+    // Sem catálogo: mostra página vazia com mensagem amigável.
+    catalog = { items: [] };
+  }
+
+  // Mostra só as arquivadas (versões anteriores)
+  const itemsAll = Array.isArray(catalog?.items) ? catalog.items : [];
+  const items = itemsAll.filter(it => it && it.archived === true);
+
+  // Ordena mais recente -> mais antigo (YYYY-MM)
+  const sorted = [...items].sort((a, b) => String(b.month).localeCompare(String(a.month)));
+
+  const cards = sorted.map(it => {
+    const src = heroSrcFromItem(it, lang); // resolve pasta + .webp
+    const caption = heroTextForLang(it.title, lang, '');
+    const alt = heroTextForLang(it.alt, lang, caption || it.month || 'Hero image');
+
+    const media = src ? `
+      <figure class="hero-g__figure">
+        <img class="hero-g__img" src="${src}" alt="${alt}" loading="lazy" />
+      </figure>
+    ` : '';
+
+    return `
+      <article class="hero-g__card">
+        ${media}
+        <div class="hero-g__caption">
+          <div class="hero-g__month">${it.month || ''}</div>
+          <div class="hero-g__title">${caption || ''}</div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  const emptyState = `
+    <div class="card">
+      <p style="color:var(--muted);margin:0">
+        ${lang === 'pt' ? 'Nenhuma ilustração arquivada ainda.' : 'No archived illustrations yet.'}
+      </p>
+    </div>
+  `;
+
+  setContent(`
+    <section class="card prose">
+      <h1>${pageTitle}</h1>
+      <p>${intro}</p>
+      <p><a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a></p>
+    </section>
+
+    <section class="hero-g">
+      ${cards || emptyState}
+    </section>
+  `);
+}
 
 // Events
 window.addEventListener('hashchange', navigate);

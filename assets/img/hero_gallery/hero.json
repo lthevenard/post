@@ -1,0 +1,33 @@
+{
+  "items": [
+    {
+      "month": "2026-01",
+      "archived": false,
+      "title": {
+        "pt": "Com grandes metodologias vêm grandes responsabilidades",
+        "en": "With great methodology comes great responsibility"
+      },
+      "alt": {
+        "pt": "Charge com dois pesquisadores ironizando conclusões erradas e metodologia consistente.",
+        "en": "Cartoon of two researchers joking about wrong conclusions and consistent methodology."
+      },
+      "base": {
+        "pt": "hero-methodology-pt",
+        "en": "hero-methodology-en"
+      }
+    },
+    {
+      "month": "2025-12",
+      "archived": true,
+      "title": {
+        "pt": "Caverna de Platão (xadrez)",
+        "en": "Plato’s Cave (chess)"
+      },
+      "alt": {
+        "pt": "Ilustração da caverna de Platão com tema de xadrez.",
+        "en": "Plato’s cave illustration with a chess theme."
+      },
+      "base": "hero-plato-cave"
+    }
+  ]
+}
