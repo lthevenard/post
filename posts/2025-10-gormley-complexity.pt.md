@@ -1,6 +1,6 @@
 # O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley
 
-![Ilustração: Navegando a complexidade](./assets/posts/2026-gormley-complexity/box.png)
+![Ilustração: Navegando a complexidade](./assets/posts/2025-gormley-complexity/box.png)
 
 Um dos aspectos mais elegantes da [tipologia clássica de William Gormley](https://www.journals.uchicago.edu/doi/10.2307/3234884) é sua simplicidade. Ao cruzar *saliência* (baixa vs. alta) com *complexidade* (baixa vs. alta), Gormley nos oferece quatro tipos ideais de processos regulatórios e de formulação de políticas públicas. É um *framework* elegante, intuitivo e que continua sendo bastante influente.
 
@@ -26,7 +26,7 @@ Modelos funcionam justamente porque reduzem a complexidade. Assim como mapas, el
 
 <div style="display: flex; justify-content: center;">
   <img
-    src="./assets/posts/2026-gormley-complexity/maps.png"
+    src="./assets/posts/2025-gormley-complexity/maps.png"
     alt="Ilustração: mapas e complexidade."
     style="width: 70%; max-width: 600px;"
     loading="lazy"
@@ -59,7 +59,7 @@ Sob essa segunda interpretação, apelos à complexidade técnica correm o risco
 
 <div style="display: flex; justify-content: center;">
   <img
-    src="./assets/posts/2026-gormley-complexity/network.png"
+    src="./assets/posts/2025-gormley-complexity/network.png"
     alt="Ilustração: redes complexas."
     style="width: 70%; max-width: 600px;"
     loading="lazy"

@@ -85,7 +85,7 @@ const i18n = {
     toggle: '🇺🇸 English Version',
     homeTitle: 'Bem-vindo!',
     homeIntro:
-      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, meu <a href="#/pt/cv">CV</a> e minhas <a href="#/pt/publications">publicações</a> acadêmicas, e também um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, além de <a href="#/pt/apps">aplicativos interativos</a> e dashboards que desenvolvo para fins de pesquisa, ensino e divulgação acadêmica.',
+      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, minhas <a href="#/pt/publications">publicações</a> acadêmicas, um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, alguns <a href="#/pt/apps">aplicativos interativos</a> e dashboards que desenvolvo para fins de pesquisa, ensino e divulgação acadêmica, assim como meu <a href="#/pt/cv">CV</a>.',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
     blogIntro: 'Textos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
@@ -123,7 +123,7 @@ const i18n = {
     toggle: '🇧🇷 Versão em Português',
     homeTitle: 'Welcome!',
     homeIntro:
-      'I’m <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/en/blog">blog</a>, my <a href="#/en/cv">CV</a> and academic <a href="#/en/publications">publications</a>, as well as a repository of <a href="#/en/slides">slides</a> (Marp), grouped by <a href="#/en/projects">project</a>, along with <a href="#/en/apps">interactive apps</a> and research dashboards developed for teaching, research, and academic outreach.',
+      'I’m <strong>Lucas Thevenard</strong> and this is my personal website, where I address topics related to my activities as a researcher and university professor. Here you can find my <a href="#/en/blog">blog</a>, my academic <a href="#/en/publications">publications</a>, a repository of <a href="#/en/slides">slides</a> (Marp), grouped by <a href="#/en/projects">project</a>, along with <a href="#/en/apps">interactive apps</a> and research dashboards developed for teaching, research, and academic outreach, as well as my <a href="#/en/cv">CV</a>.',
     latestPosts: 'Latest posts',
     backToBlog: '← Back to blog',
     blogIntro: 'Miscellaneous writings on projects I’m involved in. My main area of interest is the use of data science techniques—such as machine learning and large language models—to study and to improve government regulation.',
@@ -289,7 +289,6 @@ function updateUIForLang(lang) {
     ['navBlog', 'blog', '/blog'],
     ['navPublications', 'publications', '/publications'],
     ['navSlides', 'slides', '/slides'],
-    ['navProjects', 'projects', '/projects'],
     ['navApps', 'apps', '/apps'],
     ['navCV', 'cv', '/cv'],
   ];
@@ -971,11 +970,19 @@ async function renderSlides(lang) {
     <section class="card prose">
       <h1>Slides</h1>
       <p>${t.slidesIntro}</p>
+      <p>
+        <a href="#/${lang}/projects">
+          ${lang === 'pt'
+            ? 'Veja os slides agrupados por projetos →'
+            : 'See slides grouped by projects →'}
+        </a>
+      </p>
     </section>
     <section class="card">
       <div class="list" id="slides-list"></div>
     </section>
   `);
+
 
   const [allSlides, allProjects] = await Promise.all([
     getJSON('slides/slides.json'),

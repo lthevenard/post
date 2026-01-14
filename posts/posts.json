@@ -18,6 +18,24 @@
     "file": "posts/2025-09-hello-world.en.md"
   },
   {
+    "group": "2025-10-gormley-complexity",
+    "slug": "2025-10-gormley-complexity-en",
+    "title": "The Complex Concept of Complexity: A Note on Gormley’s Typology",
+    "date": "2025-10-23",
+    "tags": ["regulation", "public participation", "complexity"],
+    "lang": "en",
+    "file": "posts/2025-10-gormley-complexity.en.md"
+  },
+  {
+    "group": "2025-10-gormley-complexity",
+    "slug": "2025-10-gormley-complexity-pt",
+    "title": "O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley",
+    "date": "2025-10-23",
+    "tags": ["regulação", "participação pública", "complexidade"],
+    "lang": "pt",
+    "file": "posts/2025-10-gormley-complexity.pt.md"
+  },
+  {
     "group": "2025-12-chess",
     "slug": "2025-12-chess-pt",
     "title": "Xadrez, incerteza e filosofia de botequim",
@@ -52,24 +70,6 @@
     "tags": ["politics", "blogs"],
     "lang": "en",
     "file": "posts/2026-01-raccoon.en.md"
-  },
-  {
-    "group": "2026-01-gormley-complexity",
-    "slug": "2026-01-gormley-complexity-en",
-    "title": "The Complex Concept of Complexity: A Note on Gormley’s Typology",
-    "date": "2026-01-07",
-    "tags": ["regulation", "public participation", "complexity"],
-    "lang": "en",
-    "file": "posts/2026-01-gormley-complexity.en.md"
-  },
-  {
-    "group": "2026-01-gormley-complexity",
-    "slug": "2026-01-gormley-complexity-pt",
-    "title": "O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley",
-    "date": "2026-01-07",
-    "tags": ["regulação", "participação pública", "complexidade"],
-    "lang": "pt",
-    "file": "posts/2026-01-gormley-complexity.pt.md"
   },
   {
     "group": "2026-01-josh-smack-shack",
