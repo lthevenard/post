@@ -1,6 +1,20 @@
 [
   {
     "type": "book-chapter",
+    "subtype_pt": "Capítulo de Livro",
+    "subtype_en": "Book Chapter",
+    "title": "Os três pilares da melhoria regulatória",
+    "authors": ["Lucas Thevenard", "Natasha Schmitt Caccia Salinas"],
+    "date": "2024-07-05",
+    "publication": "Temas Atuais em Regulação e Governança (Parte I, p. 15-55)",
+    "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/os-tres-pilares-da-melhoria-regulatoria",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "book-chapter",
+    "subtype_pt": "Livro",
+    "subtype_en": "Book",
     "title": "Agências Reguladoras Estaduais: Pesquisa Empírica sobre sua Maturidade Institucional",
     "authors": ["Eduardo Jordão", "Lucas Thevenard", "Bernardo Schwaitzer"],
     "date": "2024-07-05",
@@ -8,5 +22,29 @@
     "url": "https://direitorio.fgv.br/publicacao/agencias-reguladoras-estaduais-pesquisa-empirica-sobre-sua-maturidade-institucional",
     "lang": "pt",
     "cv": true
+  },
+  {
+    "type": "book-chapter",
+    "subtype_pt": "Capítulo de Livro",
+    "subtype_en": "Book Chapter",
+    "title": "Propostas para assegurar a efetividade das consultas e audiências públicas nos processos regulatórios",
+    "authors": ["Lucas Thevenard", "Natasha Schmitt Caccia Salinas", "Patrícia Regina Pinheiro Sampaio"],
+    "date": "2024-04-11",
+    "publication": "QualiReg – Boas Práticas Regulatórias (Capítulo 4.1)",
+    "url": "https://repositorio.cgu.gov.br/bitstream/1/78223/1/Livro_Boas_Praticas_Regulatorias.pdf",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "book-chapter",
+    "subtype_pt": "Capítulo de Livro",
+    "subtype_en": "Book Chapter",
+    "title": "Coordenação Regulatória para Enfrentamento da Covid-19",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2020-10-10",
+    "publication": "Direito em Tempos de Crise - Covid 19 - Volume 3 - Democracia - Judicialização - Administrativo",
+    "url": "https://www.academia.edu/70445902/Coordenação_regulatória_para_enfrentamento_da_Covid_19",
+    "lang": "pt",
+    "cv": false
   }
 ]

@@ -1,4 +1,184 @@
 [
+    {
+    "type": "op-ed",
+    "title": "O desafio da sustentabilidade das agências reguladoras",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Caio Assumpção", "Jeane Santos Ribeiro"],
+    "date": "2025-09-19",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/o-desafio-da-sustentabilidade-das-agencias-reguladoras",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Entre teoria e prática: integração dos três pilares da melhoria regulatória",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2025-08-05",
+    "publication": "Consultor Jurídico (Conjur)",
+    "url": "https://www.conjur.com.br/2025-ago-05/entre-a-teoria-e-a-pratica-a-integracao-dos-tres-pilares-da-melhoria-regulatoria/",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Simplificação regulatória: entre o ideal normativo e a realidade institucional",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2025-07-08",
+    "publication": "Consultor Jurídico (Conjur)",
+    "url": "https://www.conjur.com.br/2025-jul-08/simplificacao-regulatoria-entre-o-ideal-normativo-e-a-realidade-institucional/",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "Quais os principais atores das arbitragens com o Poder Público?",
+    "authors": ["Eduardo Jordão", "Lucas Thevenard", "Nilo Sérgio Gaião Santos", "Soraya Maurity"],
+    "date": "2025-06-26",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/quais-os-principais-atores-das-arbitragens-com-o-poder-publico",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Arbitragens com o poder público: o que os dados revelam?",
+    "authors": ["Eduardo Jordão", "Soraya Maurity", "Nilo Sérgio Gaião Santos", "Lucas Thevenard"],
+    "date": "2025-05-15",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/arbitragens-com-o-poder-publico-o-que-os-dados-revelam",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Na identificação das alternativas regulatórias em uma AIR, 'menos não é mais'",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Flávio Saab"],
+    "date": "2025-02-18",
+    "publication": "Consultor Jurídico (Conjur)",
+    "url": "https://www.conjur.com.br/2025-fev-18/na-identificacao-das-alternativas-regulatorias-em-uma-air-menos-nao-e-mais/",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Polêmica do Pix, fake news e a necessária racionalização das normas da Receita Federal",
+    "authors": ["Carolina Amaral Tostes", "Lucas Thevenard", "Luiz Felipe Monteiro Seixas"],
+    "date": "2025-01-29",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/polemica-do-pix-fake-news-e-a-necessaria-racionalizacao-das-normas-da-receita-federal",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Qual a dimensão da produção normativa da Receita Federal?",
+    "authors": ["Lucas Thevenard", "Luiz Felipe Monteiro Seixas"],
+    "date": "2024-12-02",
+    "publication": "Estadão",
+    "url": "https://www.estadao.com.br/economia/dimensao-producao-normativa-receita-federal/?srsltid=AfmBOoquAzWDWLNEJiDSI7sxy3fNAcxXj8owmgzYlaq3JTPsp6XFBKoi",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Dispensas de AIR no Brasil e no mundo: reflexões a partir da prática da Anvisa",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2024-10-08",
+    "publication": "Consultor Jurídico (Conjur)",
+    "url": "https://www.conjur.com.br/2024-out-08/dispensas-de-air-no-brasil-e-no-mundo-reflexoes-a-partir-da-pratica-da-anvisa/",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Regulatory Impact Analysis in Brazil: An Assessment of Exemptions and Ex Post Reviews",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2024-10-23",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/regulatory-impact-analysis-brazil-assessment-exemptions-and-ex-post-reviews",
+    "lang": "en",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "Precisamos falar sobre as agências reguladoras estaduais",
+    "authors": ["Eduardo Jordão", "Lucas Thevenard", "Bernardo Padula Schwaitzer"],
+    "date": "2024-10-16",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/precisamos-falar-sobre-as-agencias-reguladoras-estaduais",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "IN RFB 2.216/24 e custos de conformidade em matéria tributária",
+    "authors": ["Carolina Amaral Tostes", "Luiz Felipe Monteiro Seixas", "Lucas Thevenard"],
+    "date": "2024-09-20",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/in-rfb-2-216-24-e-custos-de-conformidade-em-materia-tributaria",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Reforma regulatória sob revisão: cenário, tendências e perspectivas",
+    "authors": ["Lucas Thevenard", "Luiz Felipe Monteiro Seixas", "Natasha Schmitt Caccia Salinas"],
+    "date": "2024-03-29",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/reforma-regulatoria-sob-revisao-cenario-tendencias-e-perspectivas",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "A sub-representação dos políticos de centro no debate sobre fake news",
+    "authors": ["Eduardo Jordão", "Lucas Thevenard"],
+    "date": "2022-09-22",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/a-sub-representacao-dos-politicos-de-centro-no-debate-sobre-fake-news",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "A política regulatória precisa de supervisão",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2022-09-14",
+    "publication": "Valor Econômico",
+    "url": "https://valor.globo.com/opiniao/coluna/a-politica-regulatoria-precisa-de-supervisao.ghtml",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "Qual a frequência de atualização do rol de procedimentos da ANS?",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2022-08-31",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/qual-a-frequencia-de-atualizacao-do-rol-de-procedimentos-da-ans",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "Major Questions Doctrine: decisão da Suprema Corte coloca o tema da deferência novamente em pauta nos EUA",
+    "authors": ["Sérgio Guerra", "Lucas Thevenard", "Gabriela Borges"],
+    "date": "2022-08-11",
+    "publication": "FGV - Direito",
+    "url": "https://portal.fgv.br/artigos/major-questions-doctrine-decisao-suprema-corte-coloca-tema-deferencia-novamente-pauta-eua",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "A política regulatória brasileira em face das recentes recomendações da OCDE",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2022-04-02",
+    "publication": "Consultor Jurídico (Conjur)",
+    "url": "https://www.conjur.com.br/2022-abr-02/salinas-gomes-recentes-recomendacoes-ocde/",
+    "lang": "pt",
+    "cv": false
+  },
   {
     "type": "op-ed",
     "title": "A Dispensa de AIR na Anvisa",
@@ -11,22 +191,12 @@
   },
   {
     "type": "op-ed",
-    "title": "How Many Are Too Few? Analyzing the Diversity of Regulatory Options Considered in Brazilian RIAs",
+    "title": "O Estado regulador sob revisão: possíveis impactos do Decreto 10.229/20",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
-    "date": "2025-03-27",
-    "publication": "Regulatory Studies Center – Commenatries & Insights",
-    "url": "https://regulatorystudies.columbian.gwu.edu/how-many-are-too-few-analyzing-diversity-regulatory-options-considered-brazilian-rias7",
-    "lang": "en",
-    "cv": true
-  },
-  {
-    "type": "op-ed",
-    "title": "Regulatory Impact Analysis in Brazil: An Assessment of Exemptions and Ex Post Reviews",
-    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
-    "date": "2024-10-23",
-    "publication": "Regulatory Studies Center – Commenatries & Insights",
-    "url": "https://regulatorystudies.columbian.gwu.edu/regulatory-impact-analysis-brazil-assessment-exemptions-and-ex-post-reviews",
-    "lang": "en",
-    "cv": true
+    "date": "2020-02-08",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/o-estado-regulador-sob-revisao-possiveis-impactos-do-decreto-10-219-20",
+    "lang": "pt",
+    "cv": false
   }
 ]

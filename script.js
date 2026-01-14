@@ -85,7 +85,7 @@ const i18n = {
     toggle: '🇺🇸 English Version',
     homeTitle: 'Bem-vindo!',
     homeIntro:
-      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, minhas <a href="#/pt/publications">publicações</a> acadêmicas, um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, alguns <a href="#/pt/apps">aplicativos interativos</a> e dashboards que desenvolvo para fins de pesquisa, ensino e divulgação acadêmica, assim como meu <a href="#/pt/cv">CV</a>.',
+      'Sou o <strong>Lucas Thevenard</strong> e este é o meu site pessoal, onde trato de temas relacionados às minhas atividades como pesquisador e professor universitário. Aqui você encontra meu <a href="#/pt/blog">blog</a>, minhas <a href="#/pt/publications">publicações</a> acadêmicas, um repositório de <a href="#/pt/slides">slides</a> (Marp) agrupados por <a href="#/pt/projects">projetos</a>, alguns  <a href="#/pt/apps">aplicativos interativos</a> e dashboards que desenvolvo para fins de pesquisa, ensino e divulgação acadêmica, assim como meu <a href="#/pt/cv">CV</a>.',
     latestPosts: 'Últimos posts',
     backToBlog: '← Voltar ao blog',
     blogIntro: 'Textos diversos sobre projetos dos quais eu faço parte. Minha principal área de interesse é o uso de técnicas de ciência de dados, como machine learning e grandes modelos de linguagem, para estudar e aprimorar a regulação estatal.',
@@ -108,12 +108,13 @@ const i18n = {
     pubsTypes: {
       "article": "Artigos acadêmicos",
       "book-chapter": "Livros e capítulos",
-      "report": "Relatórios",
+      "report": "Relatórios de Pesquisa e Outros Trabalhos Acadêmicos",
       "op-ed": "Op-eds",
       "repo": "Repositórios / código"
     },
     openLink: 'Acessar',
     doi: 'DOI',
+    issn: 'ISSN',
     selectedPubsTitle: 'Publicações selecionadas'
   },
   en: {
@@ -146,12 +147,13 @@ const i18n = {
     pubsTypes: {
       "article": "Academic articles",
       "book-chapter": "Books & chapters",
-      "report": "Reports",
+      "report": "Reports and Other Academic Works",
       "op-ed": "Op-eds",
       "repo": "Repositories / code"
     },
     openLink: 'Access',
     doi: 'DOI',
+    issn: 'ISSN',
     selectedPubsTitle: 'Selected publications'
   }
 };
@@ -425,8 +427,29 @@ function resolvePdfHref(slide, { archived = false } = {}) {
   return `slides/${encodeURIComponent(slide.slug)}/${encodeURIComponent(slide.pdf)}`;
 }
 function keyForPub(p){
-  // priority: group > doi > url > title (fallback)
-  return p.group || (p.doi ? `doi:${p.doi}` : (p.url ? `url:${p.url}` : `title:${p.title}`));
+  // priority: group > doi > issn > url > title (fallback)
+  return p.group || (
+    p.doi ? `doi:${p.doi}` :
+    (p.issn ? `issn:${p.issn}` :
+      (p.url ? `url:${p.url}` : `title:${p.title}`)
+    )
+  );
+}
+
+function displayPubTitle(p, lang){
+  if (!p || !p.title) return '';
+
+  // Reports and books/chapters get subtype prefix (Publications page)
+  if (p.type !== 'report' && p.type !== 'book-chapter') return p.title;
+
+  const subtype =
+    lang === 'en'
+      ? (p.subtype_en || p.subtype_pt)
+      : (p.subtype_pt || p.subtype_en);
+
+  if (!subtype) return p.title;
+
+  return `${subtype}: ${p.title}`;
 }
 
 // --- Hybrid selection (pt/en)
@@ -886,19 +909,21 @@ async function renderPublications(lang) {
     const cards = items.map(p => {
       const authors = fmtAuthors(p.authors);
       const metaParts = [p.publication, p.date].filter(Boolean).join(' · ');
-      const doi = p.doi ? `<span class="meta">${t.doi}: ${p.doi}</span>` : '';
+      const idMeta = p.doi
+        ? `<span class="meta">${t.doi}: ${p.doi}</span>`
+        : (p.issn ? `<span class="meta">${t.issn}: ${p.issn}</span>` : '');
       const btn = p.url ? `<a class="badge" style="text-decoration:none" href="${p.url}" target="_blank" rel="noopener">${t.openLink}</a>` : '';
 
       return `
         <div class="list-item pub-card" style="flex-wrap:wrap; gap:10px">
           <div style="min-width:280px; max-width:700px">
             <div class="title">
-              ${p.title || ''}
+              ${displayPubTitle(p, lang)}
               ${flagBadge(p.lang)}
             </div>
             ${authors ? `<div class="authors">${authors}</div>` : ''}
             ${metaParts ? `<div class="meta">${metaParts}</div>` : ''}
-            ${doi}
+            ${idMeta}
           </div>
           <div style="display:flex; gap:10px; align-items:center">${btn}</div>
         </div>
@@ -939,6 +964,7 @@ async function renderCV(lang) {
 
     if (chosen.length) {
       const wrap = document.getElementById('cv-pubs');
+      const t = i18n[lang];
       const order = ['article','book-chapter','report','op-ed','repo'];
 
       const sections = order.map(tp => {
@@ -946,18 +972,35 @@ async function renderCV(lang) {
         if (!items.length) return '';
         const list = items.map(p => {
           const parts = [];
+          
+          if (p.type === 'report' || p.type === 'book-chapter') {
+            const subtype =
+              lang === 'en'
+                ? (p.subtype_en || p.subtype_pt)
+                : (p.subtype_pt || p.subtype_en);
+
+            if (subtype) parts.push(`<strong style="color:#9cc8ff">${subtype}</strong>`);
+          }
+
           const authors = fmtAuthors(p.authors);
           if (authors) parts.push(authors);
-          if (p.title)  parts.push(`“${p.title}”`);
+          if (p.title) parts.push(`“${p.title}”`);
+
           const tail = [p.publication, p.date].filter(Boolean).join(', ');
           if (tail) parts.push(tail);
+
+          const id = p.doi
+            ? `${t.doi}: ${p.doi}`
+            : (p.issn ? `${t.issn}: ${p.issn}` : '');
+          if (id) parts.push(id);
           return `<li>${parts.join('. ')}</li>`;
+
         }).join('');
         const secTitle = i18n[lang].pubsTypes[tp] || tp;
         return `<h3  class="cv-subtitle">${secTitle}</h3><ul>${list}</ul>`;
       }).join('');
 
-      wrap.innerHTML = `<h1 class="cv-title">${i18n[lang].selectedPubsTitle}</h2>${sections}`;
+      wrap.innerHTML = `<h1 class="cv-title">${i18n[lang].selectedPubsTitle}</h1>${sections}`;
     }
   } catch (e) {
     // ignore errors while loading publications

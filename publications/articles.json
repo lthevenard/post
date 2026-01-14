@@ -1,5 +1,27 @@
 [
-    {
+  {
+    "type": "article",
+    "title": "Ferramentas de melhoria regulatória no setor de seguros: estudo empírico e recomendações de aprimoramento",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Luiz Guilherme Cantarelli", "Luiza Szczerbacki Castello Branco"],
+    "date": "2025-09-17",
+    "publication": "Revista de Direito Administrativo",
+    "url": "https://periodicos.fgv.br/rda/article/view/94279",
+    "lang": "pt",
+    "issn": "0034-8007",
+    "cv": false
+  },
+  {
+    "type": "article",
+    "title": "Empirical analysis of binding precedent efficiency in Brazilian Supreme Court via case classification",
+    "authors": ["Raphaël Tinarrage", "Henrique Ennes", "Lucas Resck", "Lucas Thevenard", "Jean R. Ponciano", "Jorge Poco"],
+    "date": "2025-05-26",
+    "publication": "Artificial Intelligence and Law",
+    "url": "https://link.springer.com/article/10.1007/s10506-025-09458-6",
+    "lang": "en",
+    "doi": "https://doi.org/10.1007/s10506-025-09458-6",
+    "cv": false
+  },
+  {
     "type": "article",
     "title": "Open Exceptions: Why Does the Brazilian Health Regulatory Agency (ANVISA) Exempts RIA and Ex Post Reviews?",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
@@ -45,13 +67,35 @@
   },
   {
     "type": "article",
-    "title": "Empirical analysis of binding precedent efficiency in Brazilian Supreme Court via case classification",
-    "authors": ["Raphaël Tinarrage", "Henrique Ennes", "Lucas Resck", "Lucas Thevenard", "Jean R. Ponciano", "Jorge Poco"],
-    "date": "2023-12-11",
-    "publication": "Artificial Intelligence and Law",
-    "url": "hhttps://link.springer.com/article/10.1007/s10506-025-09458-6",
+    "title": "A produção normativa da Anvisa como referência para o Governo Federal em tempos de pandemia",
+    "authors": ["Lucas Thevenard"],
+    "date": "2021-09-24",
+    "publication": "Anais Sociology of Law IV: crise sanitária e regulações democráticas",
+    "url": "https://direitorio.fgv.br/sites/default/files/arquivos/a_producao_normativa_da_anvisa_como_refe.pdf",
+    "lang": "pt",
+    "issn": "2448-1696",
+    "cv": false
+  },
+  {
+    "type": "article",
+    "title": "As agências reguladoras em resposta à crise da COVID-19",
+    "authors": ["Sérgio Guerra", "Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2020-08-28",
+    "publication": "Revista de Administração Pública",
+    "url": "https://www.scielo.br/j/rap/a/cXjcx6hgZ4r5XN3t6rd7SSJ/abstract/?lang=pt",
+    "lang": "pt",
+    "doi": "https://doi.org/10.1590/0034-761220200321",
+    "cv": true
+  },
+  {
+    "type": "article",
+    "title": "Regulatory agencies in response to the COVID-19 crisis",
+    "authors": ["Sérgio Guerra", "Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
+    "date": "2020-08-28",
+    "publication": "Revista de Administração Pública",
+    "url": "https://www.scielo.br/j/rap/a/cXjcx6hgZ4r5XN3t6rd7SSJ/abstract/?lang=en",
     "lang": "en",
-    "doi": "https://doi.org/10.1007/s10506-025-09458-6",
+    "doi": "https://doi.org/10.1590/0034-761220200321",
     "cv": false
   }
 ]

@@ -4,6 +4,26 @@
       "month": "2026-01",
       "archived": false,
       "title": {
+        "pt": "A solução mais simples geralmente é a correta",
+        "en": "The simplest solution is usually the right one"
+      },
+      "alt": {
+        "pt": "Tirinha irônica sugerindo que a melhor forma de lidar com alucinações de uma IA é aceitando elas como corretas.",
+        "en": "Ironic comic strip suggesting that the best way to deal with AI hallucinations is to accept them as correct."
+      },
+      "base": {
+        "pt": "simplest-solution-pt",
+        "en": "simplest-solution-en"
+      },
+      "description": {
+        "pt": "Diante da incerteza, da ambiguidade ou da inconveniente ausência de realidade jurídica, o jargão técnico e a verossimilhança fazem a maior parte do trabalho. Se o documento parece oficial o suficiente, provavelmente é — e, se não for, os fiscais resolvem isso depois. Não superestime a acurácia: a autoridade estatal funciona melhor quando se apoia no cansaço procedimental e quando ninguém pára pra perguntar se a norma realmente existe. Afinal, quem realmente lê o Diário Oficial?",
+        "en": "When we are faced with uncertainty, ambiguity, or the inconvenient absence of legal reality, technical jargon and surface resemblance do most of the work. If it looks official enough, it probably is — and if it isn’t, enforcement can sort that out later. Accuracy is overrated: authority works best when it relies on procedural fatigue and nobody stops to ask whether the rule actually exists. After all, it's not like anyone actually reads the Federal Register anyway…"
+      }
+    },
+    {
+      "month": "2025-11",
+      "archived": true,
+      "title": {
         "pt": "Com grandes metodologias vêm grandes responsabilidades",
         "en": "With great methodology comes great responsibility"
       },

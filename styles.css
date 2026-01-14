@@ -643,3 +643,7 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
   text-align: center;
   margin-bottom: 12px;
 }
+
+#cv-pubs ul li {
+  margin-bottom: 1rem;
+}
