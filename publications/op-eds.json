@@ -27,7 +27,7 @@
     "publication": "Consultor Jurídico (Conjur)",
     "url": "https://www.conjur.com.br/2025-jul-08/simplificacao-regulatoria-entre-o-ideal-normativo-e-a-realidade-institucional/",
     "lang": "pt",
-    "cv": true
+    "cv": false
   },
   {
     "type": "op-ed",
@@ -48,6 +48,16 @@
     "url": "https://www.jota.info/opiniao-e-analise/artigos/arbitragens-com-o-poder-publico-o-que-os-dados-revelam",
     "lang": "pt",
     "cv": false
+  },
+  {
+    "type": "op-ed",
+    "title": "How Many Are Too Few? Analyzing the Diversity of Regulatory Options Considered in Brazilian RIAs",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Flávio Saab"],
+    "date": "2025-03-27",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/how-many-are-too-few-analyzing-diversity-regulatory-options-considered-brazilian-rias",
+    "lang": "en",
+    "cv": true
   },
   {
     "type": "op-ed",
@@ -77,7 +87,7 @@
     "publication": "Estadão",
     "url": "https://www.estadao.com.br/economia/dimensao-producao-normativa-receita-federal/?srsltid=AfmBOoquAzWDWLNEJiDSI7sxy3fNAcxXj8owmgzYlaq3JTPsp6XFBKoi",
     "lang": "pt",
-    "cv": false
+    "cv": true
   },
   {
     "type": "op-ed",
