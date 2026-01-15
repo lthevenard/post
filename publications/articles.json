@@ -56,6 +56,17 @@
   },
   {
     "type": "article",
+    "title": "Standards, regras e o modelo de normatização das compras públicas: contradições da proposta minimalista",
+    "authors": ["Lucas Thevenard"],
+    "date": "2023-04-24",
+    "publication": "Revista Eletrônica Direito e Política",
+    "url": "https://periodicos.univali.br/index.php/rdp/article/view/18386",
+    "lang": "pt",
+    "doi": "https://doi.org/10.14210/rdp.v18n1.p177-210",
+    "cv": false
+  },
+  {
+    "type": "article",
     "title": "The use and exemption of Regulatory Impact Assessment by the National Health Surveillance Agency",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard"],
     "date": "2021-12-06",
@@ -96,6 +107,39 @@
     "url": "https://www.scielo.br/j/rap/a/cXjcx6hgZ4r5XN3t6rd7SSJ/abstract/?lang=en",
     "lang": "en",
     "doi": "https://doi.org/10.1590/0034-761220200321",
+    "cv": false
+  },
+  {
+    "type": "article",
+    "title": "Economia comportamental e contratos de adesão",
+    "authors": ["Antônio José Maristrello Porto", "Lucas Thevenard"],
+    "date": "2012-04-01",
+    "publication": "Revista de Direito Empresarial – RDEmp",
+    "url": "https://www.scribd.com/document/504432835/2018-Contratos-Aula-02-LC-Economia-comportamental-e-contratos-de-adesao-Antonio-Porto-e-Lucas-Gomes",
+    "lang": "pt",
+    "issn": "2238-667X",
+    "cv": false
+  },
+  {
+    "type": "article",
+    "title": "Economic Analysis of Contract’s Social Function: critique and discussion",
+    "authors": ["Antônio José Maristrello Porto", "Lucas Thevenard"],
+    "date": "2010-11-30",
+    "publication": "Economic Analysis of Law Review",
+    "url": "https://portalrevistas.ucb.br/index.php/ealr/article/view/1%20EALR%20192",
+    "lang": "en",
+    "doi": "https://doi.org/10.18836/2178-0587/ealr.v1n2p196-212",
+    "cv": false
+  },
+  {
+    "type": "article",
+    "title": "Análise Econômica da Função Social dos Contratos: Críticas e aprofundamentos",
+    "authors": ["Antônio José Maristrello Porto", "Lucas Thevenard"],
+    "date": "2010-11-30",
+    "publication": "Economic Analysis of Law Review",
+    "url": "https://portalrevistas.ucb.br/index.php/ealr/article/view/1%20EALR%20192",
+    "lang": "pt",
+    "doi": "https://doi.org/10.18836/2178-0587/ealr.v1n2p196-212",
     "cv": false
   }
 ]

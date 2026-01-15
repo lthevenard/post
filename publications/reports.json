@@ -6,7 +6,7 @@
     "title": "Ferramentas de Melhoria Regulatória no Setor de Seguros",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Luiz Guilherme Cantarelli", "Luiza Szczerbacki Castello Branco"],
     "date": "2025-09-01",
-    "publication": "FGV Direito Rio",
+    "publication": "Regulação em Números – FGV Direito Rio",
     "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/ferramentas-de-melhoria-regulatoria-no-setor-de-seguros-policy-report",
     "lang": "pt",
     "cv": true
@@ -18,8 +18,32 @@
     "title": "Recursos em queda, obrigações em alta: A sustentabilidade da força de trabalho nas agências reguladoras",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Luiz Guilherme Cantarelli", "Luiza Szczerbacki Castello Branco"],
     "date": "2025-09-05",
-    "publication": "FGV Direito Rio",
+    "publication": "Regulação em Números – FGV Direito Rio",
     "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/recursos-em-queda-obrigacoes-em-alta-sustentabilidade-da-forca-de-trabalho-nas-agencias",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "report",
+    "subtype_pt": "Relatório",
+    "subtype_en": "Report",
+    "title": "Análise dos três anos de regulamentação da AIR no Brasil",
+    "authors": ["Natasha Schmitt Caccia Salinas", "Flávio Saab", "Lucas Thevenard"],
+    "date": "2024-08-10",
+    "publication": "Regulação em Números – FGV Direito Rio",
+    "url": "https://regulacaoemnumeros-direitorio.fgv.br/post/analise-dos-tres-anos-de-regulamentacao-da-air-no-brasil",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "report",
+    "subtype_pt": "Dissertação de Mestrado",
+    "subtype_en": "Master's Thesis",
+    "title": "Participação, linguagem e impacto dos grupos de interesse: análise quantitativa das contribuições recebidas pela Anatel",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-12-19",
+    "publication": "Repositório Acadêmico – FGV Direito Rio",
+    "url": "https://repositorio.fgv.br/items/8d482b3c-b5d9-4759-afa2-2307915bd2bf",
     "lang": "pt",
     "cv": true
   }

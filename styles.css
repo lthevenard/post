@@ -111,6 +111,168 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
 .pub-card .authors{color:var(--text)}
 .pub-card .meta{color:var(--muted); font-size:.9rem}
 
+/* Publications accordion (by type) */
+.pub-acc{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 18px 0;
+  overflow: hidden;
+}
+
+.pub-acc__summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.pub-acc__summary:hover{
+  background: rgba(255,255,255,.03);
+}
+
+.pub-acc__summary::-webkit-details-marker{ display:none; }
+
+.pub-acc__title{
+  font-weight: 850;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+.pub-acc__right{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pub-acc__count{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: .7rem;
+
+  white-space: nowrap;
+}
+
+.pub-acc__chev{
+  color: var(--accent);
+  font-size: 1.4rem;
+  transition: transform .15s ease;
+  transform: rotate(0deg);
+}
+
+.pub-acc[open] .pub-acc__chev{
+  transform: rotate(180deg);
+}
+
+.pub-acc[open] .pub-acc__summary{
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+}
+
+.pub-acc__body{
+  padding: 12px 14px 14px;
+}
+
+/* Mobile: compacta um pouco */
+@media (max-width: 700px){
+  .pub-acc__summary{ padding: 14px 14px; }
+  .pub-acc__body{ padding: 10px 12px 12px; }
+}
+
+/* Desktop: títulos e contador maiores (só PC) */
+@media (min-width: 900px){
+  .pub-acc__summary{ padding: 18px 20px; }
+  .pub-acc__title{ font-size: 1.45rem; }
+  .pub-acc__count{
+    min-width: 12px;
+    font-size: .9rem;
+  }
+  .pub-acc__chev{ font-size: 1.8rem; }
+}
+
+/* Publications: subtype separado do link (para hover não englobar subtype) */
+.pub-subtype{
+  font-weight: 850;
+  color: #9cc8ff; /* consistente com seu azul claro */
+  margin-right: 2px;
+}
+
+/* Publications: título vira link quando há URL */
+.pub-title-link{
+  color: var(--text);
+  text-decoration: none;
+}
+
+.pub-title-link:hover{
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.pub-title-text{
+  color: var(--text);
+}
+
+/* Publications: botão "Acessar" com hover (mais interativo) */
+.pub-access{
+  display:inline-block;
+  padding: 4px 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--border);
+  border: 1px solid rgba(255,255,255,.10);
+  text-decoration: none;
+  font-weight: 850;
+  font-size: .9rem;
+  transition: background .15s ease, color .15s ease, transform .05s ease;
+}
+
+.pub-access:hover{
+  background: #0099ff;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.pub-access:active{
+  transform: translateY(1px);
+}
+
+/* Desktop: botão maior (só PC) */
+@media (min-width: 900px){
+  .pub-access{
+    font-size: .8rem;
+    padding: 6px 8px;
+  }
+}
+
+/* Force publications cards to stack vertically (override .list-item flex) */
+.pub-card{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.pub-card .title,
+.pub-card .authors,
+.pub-card .meta{
+  display: block;
+  width: 100%;
+}
+
+.pub-actions{
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 /* Badges row (Apps index, etc.) */
 .badge-row{
   display:flex;

@@ -476,6 +476,22 @@ function selectHybrid(items, lang, keyFn){
   return out;
 }
 
+function pubTitleParts(p, lang){
+  if (!p || !p.title) return { subtype: '', title: '' };
+
+  // só report e book-chapter têm subtype na página de publicações
+  if (p.type !== 'report' && p.type !== 'book-chapter') {
+    return { subtype: '', title: p.title };
+  }
+
+  const subtype =
+    lang === 'en'
+      ? (p.subtype_en || p.subtype_pt || '')
+      : (p.subtype_pt || p.subtype_en || '');
+
+  return { subtype, title: p.title };
+}
+
 function sortPostsNewestFirst(posts) {
   // Tries to sort by date (ISO or parseable). If not parseable, falls back to string compare.
   return [...posts].sort((a, b) => {
@@ -898,46 +914,98 @@ async function renderPublications(lang) {
 
   const all = await getAllPublications();
   const selected = selectHybrid(all, lang, keyForPub)
-    .sort((a,b) => (a.date < b.date ? 1 : -1));
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 
-  const order = ['article','book-chapter','report','op-ed','repo'];
+  const order = ['article', 'book-chapter', 'report', 'op-ed', 'repo'];
   const container = document.getElementById('pubs');
 
   const html = order.map(tp => {
     const items = selected.filter(p => p.type === tp);
     if (!items.length) return '';
+
     const cards = items.map(p => {
       const authors = fmtAuthors(p.authors);
       const metaParts = [p.publication, p.date].filter(Boolean).join(' · ');
       const idMeta = p.doi
         ? `<span class="meta">${t.doi}: ${p.doi}</span>`
         : (p.issn ? `<span class="meta">${t.issn}: ${p.issn}</span>` : '');
-      const btn = p.url ? `<a class="badge" style="text-decoration:none" href="${p.url}" target="_blank" rel="noopener">${t.openLink}</a>` : '';
+
+      // helper já criado por você
+      const { subtype, title } = pubTitleParts(p, lang);
+
+      const titleNode = p.url
+        ? `<a class="pub-title-link" href="${p.url}" target="_blank" rel="noopener">${title}</a>`
+        : `<span class="pub-title-text">${title}</span>`;
+
+      const subtypeNode = subtype
+        ? `<span class="pub-subtype">${subtype}:</span> `
+        : '';
+
+      const btn = p.url
+        ? `<a class="pub-access" href="${p.url}" target="_blank" rel="noopener">${t.openLink}</a>`
+        : '';
 
       return `
-        <div class="list-item pub-card" style="flex-wrap:wrap; gap:10px">
-          <div style="min-width:280px; max-width:700px">
-            <div class="title">
-              ${displayPubTitle(p, lang)}
-              ${flagBadge(p.lang)}
-            </div>
-            ${authors ? `<div class="authors">${authors}</div>` : ''}
-            ${metaParts ? `<div class="meta">${metaParts}</div>` : ''}
-            ${idMeta}
+        <div class="list-item pub-card">
+          <div class="title">
+            ${subtypeNode}${titleNode}
+            ${flagBadge(p.lang)}
           </div>
-          <div style="display:flex; gap:10px; align-items:center">${btn}</div>
+          ${authors ? `<div class="authors">${authors}</div>` : ''}
+          ${metaParts ? `<div class="meta">${metaParts}</div>` : ''}
+          ${idMeta ? `<div class="meta">${idMeta}</div>` : ''}
+
+          ${btn ? `<div class="pub-actions">${btn}</div>` : ''}
         </div>
       `;
     }).join('');
 
+    // tudo fechado por padrão (sem atributo open)
     return `
-      <div class="prose"><h2>${t.pubsTypes[tp]}</h2></div>
-      <div class="list">${cards}</div>
+      <details class="pub-acc">
+        <summary class="pub-acc__summary">
+          <span class="pub-acc__title">${t.pubsTypes[tp]}</span>
+          <span class="pub-acc__right">
+            <span class="pub-acc__count">${items.length}</span>
+            <span class="pub-acc__chev" aria-hidden="true">▾</span>
+          </span>
+        </summary>
+
+        <div class="pub-acc__body">
+          <div class="list">${cards}</div>
+        </div>
+      </details>
     `;
   }).join('');
 
-  container.innerHTML = html || `<div class="list-item">${lang==='pt'?'Nenhuma publicação ainda.':'No publications yet.'}</div>`;
+  container.innerHTML =
+    html || `<div class="list-item">${lang === 'pt' ? 'Nenhuma publicação ainda.' : 'No publications yet.'}</div>`;
+
+  // Sanfona: ao abrir um, fecha os outros (mantém tudo colapsado no carregamento)
+  const acc = Array.from(container.querySelectorAll('details.pub-acc'));
+  acc.forEach(d => {
+    d.addEventListener('toggle', () => {
+      if (!d.open) return;
+      acc.forEach(other => { if (other !== d) other.open = false; });
+    });
+  });
 }
+
+
+function wirePublicationsAccordion(root) {
+  if (!root) return;
+  const acc = Array.from(root.querySelectorAll('details.pub-acc'));
+
+  acc.forEach(d => {
+    d.addEventListener('toggle', () => {
+      if (!d.open) return;
+      acc.forEach(other => {
+        if (other !== d) other.open = false;
+      });
+    });
+  });
+}
+
 
 async function renderCV(lang) {
   const path = `cv/cv.${lang}.md`;

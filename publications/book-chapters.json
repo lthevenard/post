@@ -1,6 +1,30 @@
 [
   {
     "type": "book-chapter",
+    "subtype_pt": "Livro",
+    "subtype_en": "Book",
+    "title": "Arbitragens com o Poder Público: dados sobre os casos da União e dos estados de RJ e SP",
+    "authors": ["Eduardo Jordão", "Lucas Thevenard", "Nilo Sérgio Gaião Santos", "Soraya Maurity"],
+    "date": "2025-05-09",
+    "publication": "Editora JusPodivim",
+    "url": "https://www.editorajuspodivm.com.br/arbitragens-com-poder-publico-dados-sobre-os-casos-da-uniao-e-dos-estados-de-rio-e-sp-2025?srsltid=AfmBOoqD4ZvrS5iMARSWuOmG2F5rnCYP2BE9_MNaSyxqxUD87Ap33KmC",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "book-chapter",
+    "subtype_pt": "Capítulo de Livro",
+    "subtype_en": "Book Chapter",
+    "title": "Propostas para assegurar a efetividade das consultas e audiências públicas nos processos regulatórios",
+    "authors": ["Lucas Thevenard", "Natasha Schmitt Caccia Salinas", "Patrícia Regina Pinheiro Sampaio"],
+    "date": "2024-04-11",
+    "publication": "QualiReg – Boas Práticas Regulatórias (Capítulo 4.1)",
+    "url": "https://repositorio.cgu.gov.br/bitstream/1/78223/1/Livro_Boas_Praticas_Regulatorias.pdf",
+    "lang": "pt",
+    "cv": true
+  },
+  {
+    "type": "book-chapter",
     "subtype_pt": "Capítulo de Livro",
     "subtype_en": "Book Chapter",
     "title": "Os três pilares da melhoria regulatória",
@@ -25,13 +49,25 @@
   },
   {
     "type": "book-chapter",
+    "subtype_pt": "Livro",
+    "subtype_en": "Book",
+    "title": "Estratégias contra as Fake News",
+    "authors": ["Eduardo Jordão", "Bernardo Schwaitzer", "Felipe Godoy", "Felipe Roquete", "Gianne Lima", "Guilherme Aleixo", "Julia Martel", "Lucas Thevenard"],
+    "date": "2022-09-19",
+    "publication": "Editora FGV",
+    "url": "https://repositorio.fgv.br/items/c6c30c01-6cd3-4bb2-831d-3670d5950e3e",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "book-chapter",
     "subtype_pt": "Capítulo de Livro",
     "subtype_en": "Book Chapter",
-    "title": "Propostas para assegurar a efetividade das consultas e audiências públicas nos processos regulatórios",
-    "authors": ["Lucas Thevenard", "Natasha Schmitt Caccia Salinas", "Patrícia Regina Pinheiro Sampaio"],
-    "date": "2024-04-11",
-    "publication": "QualiReg – Boas Práticas Regulatórias (Capítulo 4.1)",
-    "url": "https://repositorio.cgu.gov.br/bitstream/1/78223/1/Livro_Boas_Praticas_Regulatorias.pdf",
+    "title": "Fundamentos teóricos da participação social no âmbito das agências reguladoras independentes",
+    "authors": ["Lucas Thevenard"],
+    "date": "2022-03-22",
+    "publication": "Teoria do Estado Regulador V (Capítulo 9)",
+    "url": "https://direitorio.fgv.br/conhecimento/livrosteoria-do-estado-regulador-volume-v",
     "lang": "pt",
     "cv": true
   },
