@@ -985,8 +985,21 @@ simfreq-grid{
     background: #ffffff;
   }
   /* Give the surface more usable horizontal space on phones */
-  .lotteries-fullbleed{ padding: 14px 10px 18px 10px; }
-  .lotteries-surface{ width: calc(100vw - 20px); border-radius: 14px; }
+  .lotteries-fullbleed{
+    padding: 14px 10px 18px 10px;
+
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+
+    overflow-x: clip;
+  }
+  .lotteries-surface{
+    width: 100%;
+    max-width: 100%;
+    border-radius: 14px;
+  }
 
   /* Header: stack title + back button */
   .lotteries-header{
@@ -1025,6 +1038,22 @@ simfreq-grid{
     gap: 10px;
     padding-bottom: 10px;
     margin-bottom: 12px;
+
+    max-width: 100%;
+    min-width: 0;
+    overscroll-behavior-x: contain;
+
+    /* hint visual: fade nas bordas (mostra que tem mais abas) */
+    -webkit-mask-image: linear-gradient(90deg,
+      transparent 0,
+      #000 14px,
+      #000 calc(100% - 14px),
+      transparent 100%);
+    mask-image: linear-gradient(90deg,
+      transparent 0,
+      #000 14px,
+      #000 calc(100% - 14px),
+      transparent 100%);
   }
   .lotteries-tabs::-webkit-scrollbar{ height: 6px; }
   .lotteries-tab{
@@ -1064,7 +1093,15 @@ simfreq-grid{
   .simfreq-wrap{
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    min-width: 0;
   }
-  .simtable{ min-width: 560px; }
-  .simfreq-table{ min-width: 560px; }
+  .simtable{ min-width: max-content; }
+  .simfreq-table{ min-width: max-content; }
+  
+  .lotteries-surface,
+  .lotteries-grid,
+  .lotteries-main{
+    min-width: 0;
+  }
 }

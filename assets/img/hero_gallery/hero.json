@@ -1,8 +1,28 @@
 {
   "items": [
     {
-      "month": "2026-01",
+      "month": "2026-02",
       "archived": false,
+      "title": {
+        "pt": "Nunca desista das suas hipóteses",
+        "en": "Never give up on your hypotheses"
+      },
+      "alt": {
+        "pt": "Um pesquisador comemora um resultado p < 0.05 diante de um scatterplot (enviesado), ao lado de uma grande lixeira com testes rejeitados.",
+        "en": "A researcher celebrates a p < 0.05 result on a (biased) scatter plot, beside a huge bin of rejected tests."
+      },
+      "base": {
+        "pt": "statistical-significance-pt",
+        "en": "statistical-significance-en"
+      },
+      "description": {
+        "pt": "Com um número suficiente de regressões, testes de robustez, especificações alternativas, análises por subamostra e transformações criativas de variáveis, os dados inevitavelmente acabarão dizendo aquilo que você sempre soube ser verdade. Se o modelo não converge, tente outro. Se o resultado não é significativo, redefina os controles. Se o p-valor insiste em ficar acima de 0,05, aumente a amostra ou remova alguns outliers. Lembre-se: por trás de todo achado “estatisticamente significativo” há persistência, flexibilidade e um forte compromisso com as próprias hipóteses teóricas. Afinal, a ciência consiste em deixar as evidências falarem — de preferência no idioma que você já esperava ouvir.",
+        "en": "With enough regressions, robustness checks, alternative specifications, subsample analyses, and creative variable transformations, the data will eventually reveal what you already knew to be true. If the model does not converge, try another one. If the result is not significant, redefine the controls. If the p-value is stubbornly above 0.05, increase the sample, or remove a few outliers. Remember: behind every “statistically significant” finding lies persistence, flexibility, and a deep commitment to theoretical priors. Science is, after all, about letting the evidence speak — preferably in the language you were hoping to hear."
+      }
+    },
+    {
+      "month": "2026-01",
+      "archived": true,
       "title": {
         "pt": "A solução mais simples geralmente é a correta",
         "en": "The simplest solution is usually the right one"
