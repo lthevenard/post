@@ -35,8 +35,16 @@ export function renderConvergenceTab(container, { lang, N, seedUsed }){
       <p style="margin: 8px 0 0 0;">
         ${
           isEn
-            ? "Use the controls to adjust the animation step (that is, how much the value of N increases at each frame) and the animation speed, then click “Animate” to start. Notice how, for low values of N, frequencies fluctuate more intensely, but gradually stabilize around the theoretical probabilities as N increases."
-            : "Use os controles para escolher o intervalo da animação (isto é, de quanto em quanto o valor de N aumenta a cada passo) e a velocidade da animação, e clique em “Animar” para iniciar. Observe como, para valores baixos de N, as frequências oscilam mais intensamente, mas se estabilizam em torno das probabilidades teóricas à medida que N aumenta."
+            ? "Notice how, for low values of N, frequencies fluctuate more intensely, but gradually stabilize around the theoretical probabilities as N increases."
+            : "Observe como, para valores baixos de N, as frequências oscilam mais intensamente, mas se estabilizam em torno das probabilidades teóricas à medida que N aumenta."
+        }
+      </p>
+      
+      <p style="margin: 8px 0 0 0;">
+        ${
+          isEn
+            ? "Use the controls to adjust the animation step (that is, how much the value of N increases at each frame) and the animation speed, then click “Animate” to start."
+            : "Use os controles para escolher o intervalo da animação (isto é, de quanto em quanto o valor de N aumenta a cada passo) e a velocidade da animação, e clique em “Animar” para iniciar."
         }
       </p>
     </div>

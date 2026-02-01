@@ -371,12 +371,73 @@ function nicePad([minV, maxV], frac = 0.08) {
   return [minV - pad, maxV + pad];
 }
 
+function niceDomain([minV, maxV], targetSteps = 5) {
+  // Arredonda limites para valores “redondos” com steps 1-2-5 * 10^k
+  let lo = Math.min(minV, maxV);
+  let hi = Math.max(minV, maxV);
+
+  if (!isFinite(lo) || !isFinite(hi)) return [0, 1];
+
+  if (lo === hi) {
+    const pad = lo === 0 ? 1 : Math.abs(lo) * 0.1;
+    lo -= pad;
+    hi += pad;
+  }
+
+  const span = hi - lo;
+  const rawStep = span / Math.max(1, targetSteps);
+
+  // escolhe step “nice”: 1,2,5,10 × 10^k
+  const exp = Math.floor(Math.log10(rawStep));
+  const base = Math.pow(10, exp);
+  const f = rawStep / base;
+
+  let niceF;
+  if (f <= 1) niceF = 1;
+  else if (f <= 2) niceF = 2;
+  else if (f <= 5) niceF = 5;
+  else niceF = 10;
+
+  const step = niceF * base;
+
+  const niceMin = Math.floor(lo / step) * step;
+  const niceMax = Math.ceil(hi / step) * step;
+
+  return [niceMin, niceMax];
+}
+
 function fmtNum(x) {
   // mais estável visualmente nos tooltips
   const ax = Math.abs(x);
   if (ax >= 1000) return x.toFixed(0);
   if (ax >= 100) return x.toFixed(1);
   return x.toFixed(3);
+}
+
+function makeAxisTickFormatter(values) {
+  const maxAbs = Math.max(...values.map(v => Math.abs(v)));
+
+  // Choose ONE format for the whole axis, based on the highest magnitude
+  const mode =
+    (maxAbs >= 10000) ? "sci" :
+    (maxAbs >= 1000)  ? "int" :
+                        "dec";
+
+  return function fmtAxisTick(x) {
+    if (mode === "dec") {
+      const s = x.toFixed(1);
+      return s.endsWith(".0") ? s.slice(0, -2) : s;
+    }
+    if (mode === "int") {
+      return x.toFixed(0);
+    }
+    // sci
+    return x
+      .toExponential(1)
+      .replace("e+", "e")
+      .replace("E+", "e")
+      .replace("E", "e");
+  };
 }
 
 function escAttr(s) {
@@ -407,7 +468,7 @@ export function renderMeanScatterSVG(points, {
   // Dimensões (viewBox): responsivo com width:100% via CSS
   const W = 920;
   const H = 340;
-  const m = { l: 56, r: 18, t: 18, b: 44 };
+  const m = { l: 72, r: 18, t: 18, b: 44 };
 
   const xs = points.map((p) => p.N);
   const ys = points.map((p) => p.mean);
@@ -417,7 +478,11 @@ export function renderMeanScatterSVG(points, {
 
   let yMin = Math.min(...ys, expectedValue);
   let yMax = Math.max(...ys, expectedValue);
-  [yMin, yMax] = nicePad([yMin, yMax], 0.10);
+
+  [yMin, yMax] = nicePad([yMin, yMax], 0.05);
+
+  [yMin, yMax] = niceDomain([yMin, yMax], 5);
+
 
   const xScale = (x) => m.l + ((x - xMin) / (xMax - xMin || 1)) * (W - m.l - m.r);
   const yScale = (y) => m.t + (1 - (y - yMin) / (yMax - yMin || 1)) * (H - m.t - m.b);
@@ -428,7 +493,10 @@ export function renderMeanScatterSVG(points, {
   const mid = Math.round(xMax / 2);
   const xTicks = [xMin, mid, xMax].filter((v, i, a) => a.indexOf(v) === i);
 
-  const yTicks = [yMin, (yMin + yMax) / 2, yMax];
+  const yTicks = [yMin, expectedValue, yMax]
+    .filter((v, i, a) => a.findIndex((u) => Math.abs(u - v) < 1e-9) === i);
+  
+  const fmtYTick = makeAxisTickFormatter(yTicks);
 
   function hash01(i, N, mean) {
     // determinístico, retorna [0, 1)
@@ -494,7 +562,7 @@ export function renderMeanScatterSVG(points, {
       ${yTicks
         .map((v, i) => {
           const y = yScale(v);
-          const label = fmtNum(v);
+          const label = fmtYTick(v);
           return `
             <line class="disp-axis" x1="${m.l - 5}" y1="${y.toFixed(2)}" x2="${m.l}" y2="${y.toFixed(
               2
@@ -682,7 +750,7 @@ export function renderProfitPerTicketSVG(points, {
   // --- Layout ---
   const W = 520;
   const H = 300;
-  const m = { l: 56, r: 18, t: 18, b: 54 }; // b um pouco maior por causa dos labels do eixo X
+  const m = { l: 64, r: 18, t: 18, b: 54 }; // b um pouco maior por causa dos labels do eixo X
 
   // --- Domínios ---
   const xs = series.map((p) => p.N);

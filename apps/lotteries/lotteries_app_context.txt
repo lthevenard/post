@@ -1,0 +1,181 @@
+LOTTERIES APP — PROJECT CONTEXT (JavaScript)
+
+This document describes the current state, architecture, and purpose of the Lotteries app,
+a JavaScript-based simulator integrated into a personal static website.
+It is intended to preserve project continuity in future development and documentation.
+
+--------------------------------------------------
+1. GENERAL OVERVIEW
+--------------------------------------------------
+
+The Lotteries app is a vanilla JavaScript application embedded in a static website
+(GitHub Pages), accessible through internal routing:
+
+- #/pt/apps/lotteries
+- #/en/apps/lotteries
+
+The app allows users to define lotteries with discrete outcomes and probabilities
+and explore their properties through theoretical analysis and simulations.
+
+The main pedagogical goals of the app are:
+- to explain the meaning of expected value as a long-run average,
+- to illustrate dispersion, convergence, and risk,
+- to show why lotteries with the same expected value can exhibit very different risk profiles,
+- and to clarify when expected value is (and is not) an adequate guide for decision-making.
+
+--------------------------------------------------
+2. HIGH-LEVEL ARCHITECTURE
+--------------------------------------------------
+
+The app follows a strictly state-driven, modular architecture.
+
+Key principles:
+- Vanilla JavaScript only (no frameworks).
+- A single explicit state object as the source of truth.
+- No business logic reads directly from the DOM.
+- Clear separation between parsing, simulation, rendering, and UI wiring.
+- Deterministic simulations using seeded pseudo-random number generation.
+
+At a high level, the app works as a pipeline:
+
+1. State initialization
+2. Input wiring and synchronization
+3. Simulation pipeline
+4. Rendering pipeline
+5. Interactive controls (slider and animation)
+
+--------------------------------------------------
+3. FILE STRUCTURE (CURRENT)
+--------------------------------------------------
+
+apps/
+└─ lotteries/
+   ├─ index.js
+   │   App entry point.
+   │   Creates state, wires inputs, triggers simulation and rendering.
+   │
+   ├─ controller/
+   │   ├─ state.js
+   │   │   Defines the complete application state.
+   │   │
+   │   ├─ actions.js
+   │   │   Implements the simulation pipeline.
+   │   │   Reads inputs, resolves seed, runs simulations, writes results to state.
+   │   │
+   │   └─ render.js
+   │       Rendering pipeline.
+   │       Reads from state and updates the UI after successful simulation.
+   │
+   ├─ wiring/
+   │   ├─ tabs.js
+   │   │   Handles tab navigation.
+   │   │
+   │   ├─ inputs.js
+   │   │   Synchronizes user inputs with state.
+   │   │
+   │   ├─ seed.js
+   │   │   Manages automatic/manual seed selection.
+   │   │
+   │   └─ slider.js
+   │       Controls the convergence slider and animation.
+   │
+   ├─ views/
+   │   ├─ page.js
+   │   │   Renders the static UI shell and exposes DOM handles.
+   │   │
+   │   ├─ charts.js
+   │   │   SVG-based chart renderers (distributions, scatter plots, dispersion).
+   │   │
+   │   └─ tabs/
+   │       └─ lottery.js
+   │           Renders the Lottery tabs.
+   │       └─ dispersion.js
+   │           Renders the Dispersion tab.
+   │       └─ conversion.js
+   │           Renders the Conversion tab.
+   │
+   ├─ model/
+   │   ├─ lottery.js
+   │   │   Parsing, validation, and theoretical computations
+   │   │   (expected value, variance, standard deviation).
+   │   │
+   │   └─ simulation.js
+   │       Deterministic simulation engine using seeded RNG.
+   │       Builds cumulative simulation tables.
+   │
+   └─ styles.css
+       App-scoped styling.
+
+--------------------------------------------------
+4. STATE STRUCTURE
+--------------------------------------------------
+
+The application uses an explicit state object as its single source of truth.
+
+The state includes:
+- language selection,
+- raw user inputs (values, probabilities, N, seed settings),
+- resolved seed used in the simulation,
+- theoretical lottery descriptions,
+- cumulative simulation results,
+- UI-related simulation controls (selected N, animation state).
+
+All simulation and rendering logic depends exclusively on this state.
+
+--------------------------------------------------
+5. CORE FEATURES (CURRENT VERSION)
+--------------------------------------------------
+
+The current version of the app is fully functional and includes:
+
+- Definition of two lotteries with arbitrary discrete outcomes and probabilities.
+- Theoretical analysis:
+  - expected value,
+  - variance,
+  - standard deviation,
+  with clear pedagogical explanations in both Portuguese and English.
+- Deterministic simulations with reproducible results.
+- Visualization of:
+  - theoretical distributions,
+  - convergence of average outcomes,
+  - dispersion and convergence patterns,
+  - standardized dispersion comparisons across lotteries.
+- Interactive elements:
+  - convergence slider,
+  - play/stop animation,
+  - hover tooltips with detailed simulation information.
+- Contextual explanatory texts embedded directly in the interface,
+  guiding users on how to read and interpret each graph.
+
+--------------------------------------------------
+6. CURRENT PROJECT STATUS AND NEXT STEPS
+--------------------------------------------------
+
+The project has reached a first complete and stable version.
+
+The app is functionally complete from the perspective of:
+- simulation correctness,
+- conceptual consistency,
+- pedagogical clarity,
+- and internal architecture.
+
+The main next development priority is not new functionality,
+but improving usability on mobile devices.
+
+At present, the design works well on desktop screens,
+but the layout and visual density are not well adapted to smartphones.
+
+The next major step will therefore be to:
+- refactor layout and CSS for better mobile responsiveness,
+- rethink the presentation of charts and tables on small screens,
+- and improve overall accessibility and readability on mobile devices.
+
+--------------------------------------------------
+7. DESIGN PRINCIPLES TO PRESERVE
+--------------------------------------------------
+
+- State-driven architecture.
+- Deterministic and reproducible simulations.
+- Clear separation of concerns.
+- Pedagogical clarity over visual complexity.
+- No framework dependencies.

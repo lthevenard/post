@@ -107,33 +107,44 @@ export function renderLotteryTab(container, { lang, which, desc, distSvg, evSvg,
   const expHide = isEn ? "Hide explanation" : "Ocultar explicação";
 
   const evExplainerTitle = isEn
-    ? "How to compute the expected value (and what it means)"
-    : "Como calcular o valor esperado (e o que ele significa)";
+    ? "How to compute the expected value"
+    : "Como calcular o valor esperado";
 
   const sdExplainerTitle = isEn
-    ? "How to compute the standard deviation (and what it means)"
-    : "Como calcular o desvio padrão (e o que ele significa)";
+    ? "How to compute the standard deviation"
+    : "Como calcular o desvio padrão";
 
   const evExplainerBody = isEn
     ? `
       <p>
-        The expected value is the lottery’s <strong>long-run average payoff</strong>.
-        If you repeated the same lottery many times, the average payoff would tend to
-        \\(\\mathbb{E}[X]\\). It summarizes the lottery; it is not a guaranteed single-play result.
+        The expected value (\\(\\mathbb{E}[X]\\)) is the <strong>long-run average</strong> return of the lottery.
       </p>
       <p>
-        If payoffs are \\(x_1,\\dots,x_k\\) with probabilities \\(p_1,\\dots,p_k\\), then:
+        When the lottery is repeated many times, the average of the realized returns tends to \\(\\mathbb{E}[X]\\).
+        It is therefore a summary measure: it does not represent a guaranteed outcome in a single play.
+      </p>
+      <p>
+        To compute the expected value, we sum the possible outcomes across different states of the world,
+        each weighted by its corresponding probability.
+      </p>
+      <p>
+        Thus, if the outcomes are \\(x_1,\\dots,x_k\\), with probabilities \\(p_1,\\dots,p_k\\), we have:
       </p>
       <p>$$\\mathbb{E}[X] = \\sum_{i=1}^{k} x_i\\,p_i$$</p>
     `
     : `
       <p>
-        O valor esperado é a <strong>média de longo prazo</strong> do retorno da loteria.
-        Ao repetir a loteria muitas vezes, a média observada tende a \\(\\mathbb{E}[X]\\).
-        É uma medida-resumo; não é um resultado garantido em uma jogada.
+        O valor esperado (\\(\\mathbb{E}[X]\\)) é a <strong>média de longo prazo</strong> do retorno da loteria.
       </p>
       <p>
-        Se os retornos são \\(x_1,\\dots,x_k\\) com probabilidades \\(p_1,\\dots,p_k\\), então:
+        Ao repetir a loteria muitas vezes, a média dos retornos obtidos tenderá a \\(\\mathbb{E}[X]\\).
+        Trata-se, portanto, de uma medida-resumo: não é um resultado garantido em uma jogada.
+      </p>
+      <p>
+        Para calcular o valor esperado, somamos os resultados dos diferentes estados do mundo multiplicados pelas suas respectivas probabilidades.
+      </p>
+      <p>
+        Assim, se os resultados são \\(x_1,\\dots,x_k\\), com probabilidades \\(p_1,\\dots,p_k\\), então temos:
       </p>
       <p>$$\\mathbb{E}[X] = \\sum_{i=1}^{k} x_i\\,p_i$$</p>
     `;
@@ -141,23 +152,91 @@ export function renderLotteryTab(container, { lang, which, desc, distSvg, evSvg,
   const sdExplainerBody = isEn
     ? `
       <p>
-        The standard deviation measures how much outcomes <strong>spread out</strong>
-        around the mean. Same \\(\\mathbb{E}[X]\\) can still mean different risk (variability).
+        The standard deviation measures how much the lottery outcomes <strong>spread</strong>
+        around the expected value. As a result, two lotteries may have the same
+        \\(\\mathbb{E}[X]\\) and yet exhibit very different levels of risk.
       </p>
-      <p>Let \\(\\mu = \\mathbb{E}[X]\\). Variance:</p>
-      <p>$$\\mathrm{Var}(X) = \\sum_{i=1}^{k} (x_i - \\mu)^2\\,p_i$$</p>
-      <p>Standard deviation:</p>
-      <p>$$\\sigma(X) = \\sqrt{\\mathrm{Var}(X)}$$</p>
+
+      <p>
+        To understand this measure, we begin with the <strong>variance</strong>.
+        Let \\(\\mu = \\mathbb{E}[X]\\). The variance computes the average
+        <em>squared</em> distance between each possible outcome and the expected value,
+        weighted by the probability of each outcome.
+      </p>
+
+      <p>
+        Formally, the variance (\\(\\mathrm{Var}(X)\\)) is defined as:
+      </p>
+
+      <p>
+        $$\\mathrm{Var}(X) = \\sum_{i=1}^{k} (x_i - \\mu)^2\\,p_i$$
+      </p>
+
+      <p>
+        Squaring the deviations ensures that positive and negative deviations do not cancel out,
+        but it also has an important consequence: the variance is expressed in
+        <em>squared units</em>, which makes direct interpretation more difficult.
+      </p>
+
+      <p>
+        To address this issue, we define the <strong>standard deviation</strong>
+        as the square root of the variance:
+      </p>
+
+      <p>
+        $$\\sigma(X) = \\sqrt{\\mathrm{Var}(X)}$$
+      </p>
+
+      <p>
+        The standard deviation is expressed in the <strong>same units as the lottery outcomes</strong>
+        and can be interpreted as a typical measure of how far outcomes tend to lie
+        from the expected value. The larger the standard deviation, the greater the
+        dispersion—and, therefore, the higher the risk associated with the lottery.
+      </p>
     `
     : `
       <p>
-        O desvio padrão mede o quanto os resultados <strong>se espalham</strong>
-        em torno da média. Duas loterias podem ter o mesmo \\(\\mathbb{E}[X]\\) e riscos diferentes.
+        O desvio padrão mede o quanto os resultados da loteria <strong>se espalham</strong>
+        em torno do valor esperado. Assim, duas loterias podem ter o mesmo
+        \\(\\mathbb{E}[X]\\) e, ainda assim, apresentar níveis de risco bastante diferentes.
       </p>
-      <p>Seja \\(\\mu = \\mathbb{E}[X]\\). Variância:</p>
-      <p>$$\\mathrm{Var}(X) = \\sum_{i=1}^{k} (x_i - \\mu)^2\\,p_i$$</p>
-      <p>Desvio padrão:</p>
-      <p>$$\\sigma(X) = \\sqrt{\\mathrm{Var}(X)}$$</p>
+
+      <p>
+        Para entender essa medida, começamos pela <strong>variância</strong>.
+        Seja \\(\\mu = \\mathbb{E}[X]\\). A variância calcula a distância média
+        <em>ao quadrado</em> entre cada resultado possível e o valor esperado,
+        ponderada pelas probabilidades de cada resultado.
+      </p>
+
+      <p>
+        Formalmente, a variância (\\(\\mathrm{Var}(X)\\)) é definida como:
+      </p>
+
+      <p>
+        $$\\mathrm{Var}(X) = \\sum_{i=1}^{k} (x_i - \\mu)^2\\,p_i$$
+      </p>
+
+      <p>
+        O uso do quadrado garante que desvios positivos e negativos não se anulem,
+        mas tem uma consequência importante: a variância é medida em unidades
+        <em>quadradas</em>, o que dificulta sua interpretação direta.
+      </p>
+
+      <p>
+        Para contornar esse problema, definimos o <strong>desvio padrão</strong>
+        como a raiz quadrada da variância:
+      </p>
+
+      <p>
+        $$\\sigma(X) = \\sqrt{\\mathrm{Var}(X)}$$
+      </p>
+
+      <p>
+        O desvio padrão está na <strong>mesma unidade dos resultados da loteria</strong>
+        e pode ser interpretado como uma medida típica de quão distantes os resultados
+        costumam ficar do valor esperado. Quanto maior o desvio padrão, maior a
+        dispersão — e, portanto, maior o risco associado à loteria.
+      </p>
     `;
 
   const explainerHTML = (id, strongTitle, bodyHtml) => `

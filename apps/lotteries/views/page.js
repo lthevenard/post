@@ -146,7 +146,7 @@ export function renderPage(mount, { lang }) {
             <button id="simulate_btn" class="lotteries-cta" type="button">${labels.simulate}</button>
 
             <div class="lottery-card" style="margin-top: 12px;">
-              <div class="lottery-card-title">${isEn ? "Random seed" : "Seed aleatório"}</div>
+              <div class="lottery-card-title">${isEn ? "Seed" : "Seed"}</div>
 
               <div style="display:flex; flex-direction:column; gap:10px;">
                 <label style="display:flex; gap:8px; align-items:center; cursor:pointer;">
@@ -199,6 +199,7 @@ export function renderPage(mount, { lang }) {
   const els = {
     errorBox: mount.querySelector("#lotteries-error"),
     errorList: mount.querySelector("#lotteries-error-list"),
+    sidebar: mount.querySelector(".lotteries-sidebar"),
     values1: mount.querySelector("#values_1"),
     probs1: mount.querySelector("#probs_1"),
     values2: mount.querySelector("#values_2"),
@@ -269,6 +270,86 @@ export function renderPage(mount, { lang }) {
       </ul>
     </div>
   `;
+
+  // -----------------------------------------------------------------------
+  // Mobile-only DOM adaptation:
+  // Move the left "inputs" sidebar inside the Home tab panel.
+  //
+  // Why: in portrait mobile, those controls are typically set once, so they
+  // should live in the Home/Start flow instead of staying always visible.
+  //
+  // IMPORTANT: We use (pointer: coarse) to avoid affecting narrow desktop
+  // windows. Desktop layout remains unchanged.
+  // -----------------------------------------------------------------------
+
+  // Robust "mobile" detection:
+  // - width <= 980px (your chosen breakpoint)
+  // - AND a touch/phone-like interaction environment
+  const mqWidth = window.matchMedia("(max-width: 980px)");
+  const mqNoHover = window.matchMedia("(hover: none)");
+  const hasTouch = () =>
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+    ("ontouchstart" in window);
+
+  function isMobileLikeRestrictive() {
+    return mqWidth.matches && (mqNoHover.matches || hasTouch());
+  }
+  function isMobileLike() {
+    return mqWidth.matches;
+  }
+
+  const sidebarState = {
+    moved: false,
+    originalParent: null,
+    originalNextSibling: null,
+  };
+
+  function applyMobileSidebarPlacement() {
+
+    const isMobile = isMobileLike();
+
+    if (isMobile && !sidebarState.moved) {
+      // Save original placement so we can restore later.
+      sidebarState.originalParent = els.sidebar?.parentNode || null;
+      sidebarState.originalNextSibling = els.sidebar?.nextSibling || null;
+
+      // Move sidebar into Home tab (top).
+      if (els.sidebar && els.tabHome) {
+        els.tabHome.append(els.sidebar);
+        els.sidebar.classList.add("is-mobile-in-home");
+        sidebarState.moved = true;
+      }
+    }
+
+    if (!isMobile && sidebarState.moved) {
+      // Restore to original place (grid sidebar on desktop).
+      if (els.sidebar && sidebarState.originalParent) {
+        sidebarState.originalParent.insertBefore(
+          els.sidebar,
+          sidebarState.originalNextSibling
+        );
+      }
+      if (els.sidebar) els.sidebar.classList.remove("is-mobile-in-home");
+      sidebarState.moved = false;
+    }
+  }
+
+  // Apply once on load and on viewport changes.
+  applyMobileSidebarPlacement();
+  console.log("[lotteries] mobile?", isMobileLike(), {
+    sidebar: !!els.sidebar,
+    tabHome: !!els.tabHome,
+    moved: sidebarState.moved,
+    parent: els.sidebar?.parentElement?.className,
+  });
+
+  const bindMQ = (mq) => {
+    if (mq.addEventListener) mq.addEventListener("change", applyMobileSidebarPlacement);
+    else mq.addListener(applyMobileSidebarPlacement); // Safari fallback
+  };
+
+  bindMQ(mqWidth);
+  window.addEventListener("resize", applyMobileSidebarPlacement, { passive: true });
 
   els.tabAbout.innerHTML = `
     <h2 style="margin-top:0;">${labels.title_about}</h2>
@@ -344,6 +425,7 @@ export function renderPage(mount, { lang }) {
   }
 
   function setActiveTab(tabId) {
+    applyMobileSidebarPlacement();
     for (const btn of els.tabButtons) {
       const isActive = btn.dataset.tab === tabId;
       btn.classList.toggle("is-active", isActive);
@@ -352,9 +434,14 @@ export function renderPage(mount, { lang }) {
     for (const panel of els.tabPanels) {
       panel.hidden = panel.dataset.tabPanel !== tabId;
     }
+    if (isMobileLike()) {
+      const top = mount.getBoundingClientRect().top + window.scrollY - 8;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
   }
 
   setActiveTab("home");
+  applyMobileSidebarPlacement();
 
   return { els, setError, clearError, setActiveTab };
 }
