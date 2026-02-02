@@ -1,5 +1,6 @@
-// apps/lotteries/index.js
-// Lotteries app entry. Must export `mountApp(mount, { lang })` for the central router.
+// ============================================================================
+// Lotteries App Entry
+// ============================================================================
 
 import { renderPage } from "./views/page.js";
 import { createAppState } from "./controller/state.js";
@@ -9,6 +10,10 @@ import { wireTabs } from "./wiring/tabs.js";
 import { wireInputs } from "./wiring/inputs.js";
 import { wireSeed } from "./wiring/seed.js";
 
+/**
+ * Ensures the app stylesheet is loaded only once.
+ * @returns {void}
+ */
 function ensureAppStyles() {
   const id = "lotteries-app-styles";
   if (document.getElementById(id)) return;
@@ -20,6 +25,12 @@ function ensureAppStyles() {
   document.head.appendChild(link);
 }
 
+/**
+ * App entry point for the central router.
+ * @param {HTMLElement} mount
+ * @param {{lang: "pt"|"en"}} ctx
+ * @returns {Promise<void>}
+ */
 export async function mountApp(mount, { lang }) {
   ensureAppStyles();
 
@@ -42,7 +53,7 @@ export async function mountApp(mount, { lang }) {
 
     renderAfterSimulation(ui, state);
 
-    // comportamento atual: após simular, jogar para Lottery 1
+    // Current behavior: after simulating, switch to Lottery 1.
     ui.setActiveTab("lottery1");
   });
 }

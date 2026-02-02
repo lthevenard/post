@@ -1,9 +1,21 @@
-// apps/lotteries/wiring/slider.js
-// Isola TODA a lógica do slider + animação + render do bloco "simulation_outcomes".
-// Não re-simula: só lê simTable + descrições e atualiza UI.
+// ============================================================================
+// Convergence Slider Wiring
+// ============================================================================
 
 import { getRowForTickets } from "../model/simulation.js";
 
+/**
+ * Wires the convergence slider and animation controls.
+ * @param {object} params
+ * @param {HTMLElement} params.root
+ * @param {number} params.N
+ * @param {Array<object>} params.simTable1
+ * @param {Array<object>} params.simTable2
+ * @param {object} params.d1
+ * @param {object} params.d2
+ * @param {"pt"|"en"} params.lang
+ * @returns {{dispose: () => void}}
+ */
 export function wireSimulationSlider({
   root,         // ui.els.tabConvergence
   N,
@@ -24,33 +36,61 @@ export function wireSimulationSlider({
   const speedSelect = root.querySelector("#tickets_speed");
 
   if (!ticketsRange || !ticketsValue || !playBtn || !stopBtn || !outcomesMount || !stepSelect || !speedSelect) {
-    // Falhou encontrar elementos: não quebra o app, só não ativa o wiring.
+    // If elements are missing, abort wiring without breaking the app.
     return { dispose() {} };
   }
 
-  // --- helpers ---
+  // ------------------------------------------------------------------------
+  // Helpers
+  // ------------------------------------------------------------------------
+
+  /**
+   * Reads the animation step from the UI.
+   * @returns {number}
+   */
   function getAnimStep() {
     const v = Number(stepSelect.value || 1);
     return Number.isFinite(v) && v > 0 ? v : 1;
   }
 
+  /**
+   * Reads the animation delay from the UI.
+   * @returns {number}
+   */
   function getAnimDelay() {
     const v = Number(speedSelect.value || 350);
     return Number.isFinite(v) && v > 0 ? v : 350;
   }
 
+  /**
+   * Formats a probability as a percentage (1 decimal when needed).
+   * @param {number} p
+   * @returns {string}
+   */
   function fmtPct1(p) {
     const x = p * 100;
     const y = Math.round(x * 10) / 10;
     return Number.isInteger(y) ? `${y}%` : `${y.toFixed(1)}%`;
   }
 
+  /**
+   * Formats a payoff value with sign and color class.
+   * @param {number} v
+   * @returns {string}
+   */
   function payoffHTML(v) {
     const cls = v >= 0 ? "simfreq-payoff-pos" : "simfreq-payoff-neg";
     const sign = v > 0 ? "+" : "";
     return `<span class="${cls}">${sign}${v}</span>`;
   }
 
+  /**
+   * Builds the rows for the observed frequency table.
+   * @param {object} desc
+   * @param {object} row
+   * @param {number} tickets
+   * @returns {string}
+   */
   function buildRows(desc, row, tickets) {
     return desc.resultNames
       .map((name, i) => {
@@ -80,6 +120,13 @@ export function wireSimulationSlider({
       .join("");
   }
 
+  /**
+   * Builds the bar chart for observed vs theoretical frequencies.
+   * @param {object} desc
+   * @param {object} row
+   * @param {number} tickets
+   * @returns {string}
+   */
   function buildBars(desc, row, tickets) {
     return desc.resultNames
       .map((name, i) => {
@@ -101,6 +148,11 @@ export function wireSimulationSlider({
       .join("");
   }
 
+  /**
+   * Renders the outcome table + charts for a given N.
+   * @param {number} tickets
+   * @returns {void}
+   */
   function renderOutcomeTable(tickets) {
     const row1 = getRowForTickets(simTable1, tickets);
     const row2 = getRowForTickets(simTable2, tickets);
@@ -176,6 +228,10 @@ export function wireSimulationSlider({
     `;
   }
 
+  /**
+   * Syncs the slider value with the UI and renders outputs.
+   * @returns {void}
+   */
   function syncSimulationUI() {
     const min = Number(ticketsRange.min);
     const max = Number(ticketsRange.max);
@@ -189,7 +245,9 @@ export function wireSimulationSlider({
     renderOutcomeTable(v);
   }
 
-  // --- init ---
+  // ------------------------------------------------------------------------
+  // Initialization
+  // ------------------------------------------------------------------------
   ticketsRange.min = "1";
   ticketsRange.max = String(N);
   ticketsRange.step = "1";
@@ -198,9 +256,15 @@ export function wireSimulationSlider({
   ticketsRange.addEventListener("input", syncSimulationUI);
   syncSimulationUI();
 
-  // --- animation ---
+  // ------------------------------------------------------------------------
+  // Animation
+  // ------------------------------------------------------------------------
   let animationTimer = null;
 
+  /**
+   * Starts the animation loop.
+   * @returns {void}
+   */
   function onPlay() {
     if (animationTimer) return;
 
@@ -230,6 +294,10 @@ export function wireSimulationSlider({
     }, delay);
   }
 
+  /**
+   * Stops the animation loop.
+   * @returns {void}
+   */
   function onStop() {
     if (animationTimer) window.clearInterval(animationTimer);
     animationTimer = null;
@@ -241,7 +309,7 @@ export function wireSimulationSlider({
   return {
     dispose() {
       onStop();
-      // (Opcional) remover listeners se você quiser ser 100% limpo em remounts:
+      // Optional cleanup if full unmount behavior is needed:
       // ticketsRange.removeEventListener("input", syncSimulationUI);
       // playBtn.removeEventListener("click", onPlay);
       // stopBtn.removeEventListener("click", onStop);

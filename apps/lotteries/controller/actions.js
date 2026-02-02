@@ -1,5 +1,6 @@
-// apps/lotteries/controller/actions.js
-// Pipeline "compute": valida + simula + grava no state (sem mexer no DOM).
+// ============================================================================
+// Simulation Pipeline (Compute)
+// ============================================================================
 
 import { parseAndValidateLottery, describeLottery } from "../model/lottery.js";
 import {
@@ -8,13 +9,19 @@ import {
   isValidSeed5Digits,
 } from "../model/simulation.js";
 
+/**
+ * Runs the full simulation pipeline and updates state.
+ * @param {object} state
+ * @param {object} raw
+ * @returns {{ok: boolean, errors: string[]}}
+ */
 export function runSimulation(state, raw) {
   const isEn = state.lang === "en";
 
-  // 1) Persist raw inputs
+  // 1) Persist raw inputs.
   state.inputs = { ...raw };
 
-  // 2) Parse + validate both lotteries
+  // 2) Parse + validate both lotteries.
   const l1 = parseAndValidateLottery(raw.values1, raw.probs1);
   const l2 = parseAndValidateLottery(raw.values2, raw.probs2);
 
@@ -24,7 +31,7 @@ export function runSimulation(state, raw) {
 
   if (errors.length) return { ok: false, errors };
 
-  // 3) Resolve seed (auto/manual)
+  // 3) Resolve seed (auto/manual).
   let seedUsed;
   if (raw.seedMode === "manual") {
     const parsed = Number.parseInt(raw.seedManual, 10);
@@ -43,11 +50,11 @@ export function runSimulation(state, raw) {
     seedUsed = generateRandomSeed5Digits();
   }
 
-  // 4) Describe lotteries (theory)
+  // 4) Describe lotteries (theory).
   const d1 = describeLottery(l1.values, l1.probs);
   const d2 = describeLottery(l2.values, l2.probs);
 
-  // 5) Build simulation tables
+  // 5) Build simulation tables.
   const N = raw.nMax;
 
   const simTable1 = buildSimulationTable(
@@ -68,7 +75,7 @@ export function runSimulation(state, raw) {
     seedUsed
   );
 
-  // 6) Commit to state
+  // 6) Commit to state.
   state.seedUsed = seedUsed;
 
   state.lottery.d1 = d1;
@@ -77,7 +84,7 @@ export function runSimulation(state, raw) {
   state.lottery.simTable2 = simTable2;
   state.lottery.N = N;
 
-  // Reset UI-dependent simulation state
+  // Reset UI-dependent simulation state.
   state.simUI.selectedN = 1;
   state.simUI.isPlaying = false;
 

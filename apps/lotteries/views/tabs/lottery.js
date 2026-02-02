@@ -1,8 +1,27 @@
-// apps/lotteries/views/tabs/lottery.js
+// ============================================================================
+// Lottery Tabs Rendering
+// ============================================================================
 
+/**
+ * Formats a probability as a percentage string.
+ * @param {number} p
+ * @returns {string}
+ */
 function fmtPct(p){ return `${Math.round(p * 100)}%`; }
+
+/**
+ * Formats a number with 2 decimals (trimmed).
+ * @param {number} x
+ * @returns {string}
+ */
 function fmt2(x){ return (Math.round(x * 100) / 100).toString(); }
 
+/**
+ * Builds the outcome list HTML for a lottery.
+ * @param {object} desc
+ * @param {{lang: "pt"|"en"}} ctx
+ * @returns {string}
+ */
 function outcomeListHTML(desc, { lang }){
   const isEn = lang === "en";
 
@@ -24,6 +43,12 @@ function outcomeListHTML(desc, { lang }){
   }).join("");
 }
 
+/**
+ * Builds the solution box HTML for EV and standard deviation.
+ * @param {object} desc
+ * @param {{lang: "pt"|"en"}} ctx
+ * @returns {string}
+ */
 function solutionBoxHTML(desc, { lang }){
   const isEn = lang === "en";
   const evLine = isEn ? "Expected value" : "Valor esperado";
@@ -40,6 +65,11 @@ function solutionBoxHTML(desc, { lang }){
   `;
 }
 
+/**
+ * Attaches hover tooltips to distribution bars.
+ * @param {HTMLElement} root
+ * @returns {void}
+ */
 function wireDistributionTooltips(root) {
   const svg = root.querySelector("svg.lotteries-dist-svg");
   if (!svg) return;
@@ -47,7 +77,7 @@ function wireDistributionTooltips(root) {
   const bars = svg.querySelectorAll("rect.distbar[data-tooltip]");
   if (!bars.length) return;
 
-  // Create one shared tooltip per document (reused across tabs)
+  // Create one shared tooltip per document (reused across tabs).
   let tip = document.querySelector(".lotteries-tooltip");
   if (!tip) {
     tip = document.createElement("div");
@@ -79,10 +109,23 @@ function wireDistributionTooltips(root) {
     bar.addEventListener("mouseleave", hide);
   });
 
-  // Safety: if mouse leaves the SVG quickly
+  // Safety: if mouse leaves the SVG quickly.
   svg.addEventListener("mouseleave", hide);
 }
 
+/**
+ * Renders a lottery tab (theory + simulation).
+ * @param {HTMLElement} container
+ * @param {object} ctx
+ * @param {"pt"|"en"} ctx.lang
+ * @param {number} ctx.which
+ * @param {object} ctx.desc
+ * @param {string} ctx.distSvg
+ * @param {string} ctx.evSvg
+ * @param {Array<object>} ctx.simTable
+ * @param {number} ctx.seedUsed
+ * @returns {void}
+ */
 export function renderLotteryTab(container, { lang, which, desc, distSvg, evSvg, simTable, seedUsed }){
   const isEn = lang === "en";
 
@@ -91,7 +134,9 @@ export function renderLotteryTab(container, { lang, which, desc, distSvg, evSvg,
       ? (isEn ? "Analysis of the first lottery" : "Análise da primeira loteria")
       : (isEn ? "Analysis of the second lottery" : "Análise da segunda loteria");
 
-  // --------------------- Labels ---------------------
+  // -----------------------------------------------------------------------
+  // Labels
+  // -----------------------------------------------------------------------
   const qTitle = isEn
     ? "What are the expected value and standard deviation of this lottery?"
     : "Qual é o valor esperado e o desvio padrão dessa loteria?";

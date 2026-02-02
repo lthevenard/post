@@ -1,8 +1,13 @@
-// apps/lotteries/wiring/seed.js
-// Sincroniza state.inputs.seedMode + seedManual com a UI de seed.
+// ============================================================================
+// Seed Wiring
+// ============================================================================
 
-// apps/lotteries/wiring/seed.js
-
+/**
+ * Synchronizes seed UI controls with state.inputs.
+ * @param {object} ui
+ * @param {object} state
+ * @returns {{dispose: () => void}}
+ */
 export function wireSeed(ui, state) {
   const els = ui.els;
   const handlers = [];
@@ -14,7 +19,7 @@ export function wireSeed(ui, state) {
     }
   }
 
-  // init mode
+  // Initialize mode.
   if (els.seedModeManual?.checked) setMode("manual");
   else setMode("auto");
 
@@ -30,7 +35,7 @@ export function wireSeed(ui, state) {
     handlers.push(() => els.seedModeManual.removeEventListener("change", onManual));
   }
 
-  // manual seed value
+  // Manual seed value.
   if (els.seedManualInput) {
     state.inputs.seedManual = els.seedManualInput.value ?? "";
 
@@ -47,4 +52,3 @@ export function wireSeed(ui, state) {
     },
   };
 }
-

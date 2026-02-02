@@ -1,6 +1,12 @@
-// apps/lotteries/views/charts.js
-// SVG charts (no external libs). Returns SVG markup as a string.
+// ============================================================================
+// SVG Chart Renderers (No External Libraries)
+// ============================================================================
 
+/**
+ * Escapes text for safe SVG/HTML insertion.
+ * @param {string} s
+ * @returns {string}
+ */
 function esc(s) {
   return String(s)
     .replaceAll("&", "&amp;")
@@ -10,10 +16,23 @@ function esc(s) {
     .replaceAll("'", "&#39;");
 }
 
+/**
+ * Clamps a number between a and b.
+ * @param {number} x
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
 function clamp(x, a, b) {
   return Math.max(a, Math.min(b, x));
 }
 
+/**
+ * Produces a "nice" tick array from 0..maxVal.
+ * @param {number} maxVal
+ * @param {number} [n=4]
+ * @returns {Array<number>}
+ */
 function niceTicks(maxVal, n = 4) {
   // Produces ticks from 0..maxVal with a "nice" step.
   // For probabilities, maxVal usually <= 1.
@@ -37,12 +56,23 @@ function niceTicks(maxVal, n = 4) {
   return ticks;
 }
 
+/**
+ * Formats a probability as a percentage string.
+ * @param {number} p
+ * @returns {string}
+ */
 function fmtPct(p) {
   // For p in [0,1], show 0%, 25%, etc.
   if (!isFinite(p)) return "";
   return `${Math.round(p * 100)}%`;
 }
 
+/**
+ * Computes a "nice" step size for a numeric span.
+ * @param {number} span
+ * @param {number} [targetIntervals=5]
+ * @returns {number}
+ */
 function niceStep(span, targetIntervals = 5) {
   if (!isFinite(span) || span <= 0) return 1;
 
@@ -60,6 +90,13 @@ function niceStep(span, targetIntervals = 5) {
   return step;
 }
 
+/**
+ * Produces a "nice" tick array for a min/max range.
+ * @param {number} minVal
+ * @param {number} maxVal
+ * @param {number} [tickCount=6]
+ * @returns {Array<number>}
+ */
 function niceTicksRange(minVal, maxVal, tickCount = 6) {
   if (!isFinite(minVal) || !isFinite(maxVal)) return [-1, 0, 1];
 
@@ -80,7 +117,7 @@ function niceTicksRange(minVal, maxVal, tickCount = 6) {
   const niceHi = Math.ceil(hi / step) * step;
 
   const ticks = [];
-  // +eps para incluir o último tick
+  // +eps to include the last tick.
   for (let t = niceLo; t <= niceHi + step * 1e-9; t += step) {
     // evita -0
     const v = Math.abs(t) < 1e-12 ? 0 : t;
@@ -90,6 +127,12 @@ function niceTicksRange(minVal, maxVal, tickCount = 6) {
   return ticks;
 }
 
+/**
+ * Formats a number using decimals derived from the tick step.
+ * @param {number} x
+ * @param {number} step
+ * @returns {string}
+ */
 function fmtNiceNumber(x, step) {
   if (!isFinite(x)) return "";
   const aStep = Math.abs(step);
@@ -108,6 +151,12 @@ function fmtNiceNumber(x, step) {
 /**
  * Bar chart for a discrete probability distribution.
  * bars: [{ valueLabel: string, prob: number, title?: string }]
+ */
+/**
+ * Renders a bar chart for a discrete distribution.
+ * @param {Array<{valueLabel: string, prob: number, title?: string, tooltip?: string}>} bars
+ * @param {{title?: string, xLabel?: string, yLabel?: string}} [opts]
+ * @returns {string}
  */
 export function renderDistributionBarsSVG(bars, opts = {}) {
   const title = opts.title ?? "";
@@ -244,6 +293,13 @@ export function renderDistributionBarsSVG(bars, opts = {}) {
 }
 
 
+/**
+ * Renders the expected value + dispersion marker as SVG.
+ * @param {number} ev
+ * @param {number} sd
+ * @param {{title?: string, xTickLabel?: string}} [opts]
+ * @returns {string}
+ */
 export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
   const W = 980;
   const H = 260;
@@ -262,7 +318,7 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
   const yMin = mu - span;
   const yMax = mu + span;
 
-  // Headroom vertical (não encostar no topo/fundo)
+  // Vertical headroom (avoid touching top/bottom).
   const headroom = 0.90;
   const topPad = (plotH * (1 - headroom)) / 2;
 
@@ -277,7 +333,7 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
   const boxStroke = "rgba(15,23,42,.55)";
   const textFill = "rgba(15,23,42,.90)";
 
-  // Posição x fixa (linha vertical no "meio-esquerda", como antes)
+  // Fixed x position (vertical line slightly left of center, as before).
   const cx = x0 + plotW * 0.28;
 
   const yMu = y(mu);
@@ -307,7 +363,7 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
     })
     .join("");
 
-  // Linha vertical guia (faint) onde está o marcador
+  // Faint vertical guide line at the marker position.
   const vGuide = `
     <line x1="${cx}" y1="${y0}" x2="${cx}" y2="${y0 + plotH}" stroke="${faint}" />
   `;
@@ -359,20 +415,32 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
   `;
 }
 
-// ============================================================
-// Dispersion charts (SVG)
-// - renderMeanScatterSVG: pontos (N, mean) + linha EV
-// - renderMeanAbsDeviationSVG: linha de média |mean - EV| por N
-// ============================================================
+// ============================================================================
+// Dispersion Charts (SVG)
+// - renderMeanScatterSVG: points (N, mean) + EV reference line
+// - renderProfitPerTicketSVG: profit per ticket vs N
+// ============================================================================
 
+/**
+ * Expands a domain by a percentage padding.
+ * @param {[number, number]} range
+ * @param {number} [frac=0.08]
+ * @returns {[number, number]}
+ */
 function nicePad([minV, maxV], frac = 0.08) {
   const span = maxV - minV || 1;
   const pad = span * frac;
   return [minV - pad, maxV + pad];
 }
 
+/**
+ * Computes a "nice" min/max domain using 1-2-5 steps.
+ * @param {[number, number]} range
+ * @param {number} [targetSteps=5]
+ * @returns {[number, number]}
+ */
 function niceDomain([minV, maxV], targetSteps = 5) {
-  // Arredonda limites para valores “redondos” com steps 1-2-5 * 10^k
+  // Round bounds to 1-2-5 * 10^k steps.
   let lo = Math.min(minV, maxV);
   let hi = Math.max(minV, maxV);
 
@@ -387,7 +455,7 @@ function niceDomain([minV, maxV], targetSteps = 5) {
   const span = hi - lo;
   const rawStep = span / Math.max(1, targetSteps);
 
-  // escolhe step “nice”: 1,2,5,10 × 10^k
+  // Pick a "nice" step: 1,2,5,10 × 10^k.
   const exp = Math.floor(Math.log10(rawStep));
   const base = Math.pow(10, exp);
   const f = rawStep / base;
@@ -406,14 +474,24 @@ function niceDomain([minV, maxV], targetSteps = 5) {
   return [niceMin, niceMax];
 }
 
+/**
+ * Formats a number for tooltip readability.
+ * @param {number} x
+ * @returns {string}
+ */
 function fmtNum(x) {
-  // mais estável visualmente nos tooltips
+  // Visually stable formatting for tooltips.
   const ax = Math.abs(x);
   if (ax >= 1000) return x.toFixed(0);
   if (ax >= 100) return x.toFixed(1);
   return x.toFixed(3);
 }
 
+/**
+ * Creates a formatter based on the distribution of tick values.
+ * @param {Array<number>} values
+ * @returns {(x: number) => string}
+ */
 function makeAxisTickFormatter(values) {
   const maxAbs = Math.max(...values.map(v => Math.abs(v)));
 
@@ -440,6 +518,11 @@ function makeAxisTickFormatter(values) {
   };
 }
 
+/**
+ * Escapes text for SVG attributes.
+ * @param {string} s
+ * @returns {string}
+ */
 function escAttr(s) {
   return String(s)
     .replaceAll("&", "&amp;")
@@ -449,6 +532,18 @@ function escAttr(s) {
     .replaceAll("'", "&#039;");
 }
 
+/**
+ * Renders a scatter plot of mean returns vs N, with an EV reference line.
+ * @param {Array<{N: number, mean: number, profit?: number}>} points
+ * @param {object} opts
+ * @param {"pt"|"en"} opts.lang
+ * @param {string} opts.title
+ * @param {number} opts.expectedValue
+ * @param {string} opts.xLabel
+ * @param {string} opts.yLabel
+ * @param {string} opts.tableId
+ * @returns {string}
+ */
 export function renderMeanScatterSVG(points, {
   lang, title, expectedValue, xLabel, yLabel,
   xMin: xMinOpt, xMax: xMaxOpt,
@@ -499,7 +594,7 @@ export function renderMeanScatterSVG(points, {
   const fmtYTick = makeAxisTickFormatter(yTicks);
 
   function hash01(i, N, mean) {
-    // determinístico, retorna [0, 1)
+    // Deterministic, returns [0, 1).
     let x = (i + 1) >>> 0;
     x = (x ^ Math.imul(N >>> 0, 374761393)) >>> 0;
     x = (x ^ Math.imul((Math.floor(mean * 1000)) >>> 0, 668265263)) >>> 0;
@@ -592,130 +687,23 @@ export function renderMeanScatterSVG(points, {
   `;
 }
 
-function meanAbsDeviationByN(points, expectedValue) {
-  // Agrupa por N e calcula mean |mean - EV|
-  const byN = new Map();
-  for (const p of points) {
-    const dev = Math.abs(p.mean - expectedValue);
-    const cur = byN.get(p.N) || { sum: 0, n: 0 };
-    cur.sum += dev;
-    cur.n += 1;
-    byN.set(p.N, cur);
-  }
-  const series = Array.from(byN.entries())
-    .map(([N, { sum, n }]) => ({ N, dev: sum / (n || 1) }))
-    .sort((a, b) => a.N - b.N);
-
-  return series;
-}
-
-export function renderMeanAbsDeviationSVG(points, { lang, title, expectedValue, xLabel, yLabel }) {
-  const isEn = lang === "en";
-
-  const series = meanAbsDeviationByN(points, expectedValue);
-
-  const W = 520;
-  const H = 300;
-  const m = { l: 56, r: 18, t: 18, b: 44 };
-
-  const xs = series.map((p) => p.N);
-  const ys = series.map((p) => p.dev);
-
-  const xMin = Math.min(...xs);
-  const xMax = Math.max(...xs);
-
-  let yMin = Math.min(...ys);
-  let yMax = Math.max(...ys);
-  [yMin, yMax] = nicePad([yMin, yMax], 0.12);
-  yMin = Math.max(0, yMin); // desvio não é negativo
-
-  const xScale = (x) => m.l + ((x - xMin) / (xMax - xMin || 1)) * (W - m.l - m.r);
-  const yScale = (y) => m.t + (1 - (y - yMin) / (yMax - yMin || 1)) * (H - m.t - m.b);
-
-  // Path da linha
-  const d = series
-    .map((p, i) => {
-      const x = xScale(p.N);
-      const y = yScale(p.dev);
-      return `${i === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
-    })
-    .join(" ");
-
-  // ticks simples
-  const xTicks = [xMin, Math.round((xMin + xMax) / 2), xMax].filter(
-    (v, i, a) => a.indexOf(v) === i
-  );
-  const yTicks = [yMin, (yMin + yMax) / 2, yMax];
-
-  const pointsSvg = series
-    .map((p) => {
-      const cx = xScale(p.N);
-      const cy = yScale(p.dev);
-      const tip = isEn
-        ? `N=${p.N}, avg |mean−EV|=${fmtNum(p.dev)}`
-        : `N=${p.N}, média |média−VE|=${fmtNum(p.dev)}`;
-      return `
-        <circle class="disp-dot" cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="2.6">
-          <title>${escAttr(tip)}</title>
-        </circle>
-      `;
-    })
-    .join("");
-
-  return `
-    <svg class="disp-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escAttr(title)}">
-      <!-- axes -->
-      <line class="disp-axis" x1="${m.l}" y1="${H - m.b}" x2="${W - m.r}" y2="${H - m.b}"></line>
-      <line class="disp-axis" x1="${m.l}" y1="${m.t}" x2="${m.l}" y2="${H - m.b}"></line>
-
-      <!-- ticks + labels -->
-      ${xTicks
-        .map((v) => {
-          const x = xScale(v);
-          return `
-            <line class="disp-axis" x1="${x.toFixed(2)}" y1="${H - m.b}" x2="${x.toFixed(
-              2
-            )}" y2="${H - m.b + 5}"></line>
-            <text x="${x.toFixed(2)}" y="${H - m.b + 18}" font-size="11" text-anchor="middle" opacity="0.78">${v}</text>
-          `;
-        })
-        .join("")}
-
-      ${yTicks
-        .map((v) => {
-          const y = yScale(v);
-          const label = fmtNum(v);
-          return `
-            <line class="disp-axis" x1="${m.l - 5}" y1="${y.toFixed(2)}" x2="${m.l}" y2="${y.toFixed(
-              2
-            )}"></line>
-            <text x="${m.l - 8}" y="${(y + 4).toFixed(
-              2
-            )}" font-size="11" text-anchor="end" opacity="0.78">${escAttr(label)}</text>
-          `;
-        })
-        .join("")}
-
-      <!-- axis labels -->
-      <text x="${(W / 2).toFixed(0)}" y="${H - 10}" font-size="12" text-anchor="middle" opacity="0.85">${escAttr(
-        xLabel
-      )}</text>
-      <text x="14" y="${(H / 2).toFixed(
-        0
-      )}" font-size="12" text-anchor="middle" opacity="0.85" transform="rotate(-90 14 ${(H / 2).toFixed(
-        0
-      )})">${escAttr(yLabel)}</text>
-
-      <!-- line + points -->
-      <path d="${d}" fill="none" stroke="var(--link)" stroke-width="2.2" opacity="0.9"></path>
-      <g>${pointsSvg}</g>
-    </svg>
-  `;
-}
-
 // Profit/N = (Mean Returns − EV). Plota o valor "centrado" no zero vs N.
-// Aceita yMin/yMax externos para manter escala igual em dois gráficos.
+// Accepts external yMin/yMax to keep the same scale across two charts.
 
+/**
+ * Renders profit-per-ticket vs N as SVG.
+ * @param {Array<{N: number, profit: number}>} points
+ * @param {object} opts
+ * @param {"pt"|"en"} opts.lang
+ * @param {string} opts.title
+ * @param {string} opts.xLabel
+ * @param {string} opts.yLabel
+ * @param {number} opts.expectedValue
+ * @param {number} [opts.yMin]
+ * @param {number} [opts.yMax]
+ * @param {string} [opts.tableId]
+ * @returns {string}
+ */
 export function renderProfitPerTicketSVG(points, {
   lang, title, expectedValue, xLabel, yLabel,
   yMin: yMinOpt, yMax: yMaxOpt,
@@ -730,7 +718,7 @@ export function renderProfitPerTicketSVG(points, {
     `;
   }
 
-  // Série: (N, Profit/N) = (N, mean − EV)
+  // Series: (N, Profit/N) = (N, mean − EV).
   const series = points
     .map((p) => ({
       N: Number(p?.N ?? NaN),
@@ -752,14 +740,14 @@ export function renderProfitPerTicketSVG(points, {
   const H = 300;
   const m = { l: 64, r: 18, t: 18, b: 54 }; // b um pouco maior por causa dos labels do eixo X
 
-  // --- Domínios ---
+  // --- Domains ---
   const xs = series.map((p) => p.N);
   const ys = series.map((p) => p.y);
 
   const xMin = Math.min(...xs);
   const xMax = Math.max(...xs);
 
-  // Base Y (vindo de fora para manter mesma escala entre gráficos)
+  // Base Y (provided externally to keep the same scale between charts).
   const yMinBase = (yMinOpt ?? Math.min(...ys));
   const yMaxBase = (yMaxOpt ?? Math.max(...ys));
 
@@ -786,9 +774,9 @@ export function renderProfitPerTicketSVG(points, {
     yMax += p;
   }
 
-  // Ticks do X: mesma lógica dos outros charts (N)
+  // X ticks: same logic as the other charts (N).
   const xTicks0 = niceTicks(xMax, 6);     // inclui 0
-  const xTicksAll = xTicks0.filter((t) => t >= 1); // N começa em 1
+  const xTicksAll = xTicks0.filter((t) => t >= 1); // N starts at 1.
 
   // --- Escalas ---
   const xScale = (x) => m.l + ((x - xMin) / (xMax - xMin || 1)) * (W - m.l - m.r);
@@ -945,7 +933,7 @@ export function renderProfitPerTicketSVG(points, {
       <!-- title -->
       <text x="${m.l}" y="14" font-size="13" font-weight="600">${escAttr(title)}</text>
 
-      <!-- plot box (delimitação completa) -->
+      <!-- plot box (full boundary) -->
       <rect
         x="${m.l}"
         y="${m.t}"

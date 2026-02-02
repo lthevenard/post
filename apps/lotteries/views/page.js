@@ -1,18 +1,30 @@
-// apps/lotteries/views/page.js
-// Renders the Lotteries app shell (sidebar + tabs) and exposes DOM helpers.
+// ============================================================================
+// Page Shell & Layout
+// ============================================================================
 
-// --- KaTeX loader (one-time) -----------------------------------------------
-// Loads KaTeX + auto-render via CDN once, and exposes a global promise:
-// window.__lotteriesKatexReady
+// ============================================================================
+// KaTeX Loader (One-Time)
+// ============================================================================
+
+/**
+ * Loads KaTeX + auto-render via CDN once and exposes:
+ * window.__lotteriesKatexReady
+ * @returns {Promise<void>}
+ */
 function ensureKatexLoaded() {
-  // If already ready, return resolved promise
+  // If already ready, return a resolved promise.
   if (window.renderMathInElement) return Promise.resolve();
 
-  // If a load is already in progress, reuse it
+  // If a load is already in progress, reuse it.
   if (window.__lotteriesKatexReady) return window.__lotteriesKatexReady;
 
   const KATEX_VERSION = "0.16.9";
 
+  /**
+   * Loads a script tag and resolves when it finishes.
+   * @param {string} src
+   * @returns {Promise<void>}
+   */
   const loadScript = (src) =>
     new Promise((resolve, reject) => {
       const s = document.createElement("script");
@@ -23,8 +35,13 @@ function ensureKatexLoaded() {
       document.head.appendChild(s);
     });
 
+  /**
+   * Loads a CSS file if it isn't already present.
+   * @param {string} href
+   * @returns {void}
+   */
   const loadCSS = (href) => {
-    // avoid duplicates
+    // Avoid duplicates.
     const existing = [...document.querySelectorAll('link[rel="stylesheet"]')].some(
       (l) => l.href === href
     );
@@ -36,7 +53,7 @@ function ensureKatexLoaded() {
     document.head.appendChild(link);
   };
 
-  // Start loading (store promise globally)
+  // Start loading (store promise globally).
   window.__lotteriesKatexReady = (async () => {
     loadCSS(`https://cdn.jsdelivr.net/npm/katex@${KATEX_VERSION}/dist/katex.min.css`);
 
@@ -45,7 +62,7 @@ function ensureKatexLoaded() {
       `https://cdn.jsdelivr.net/npm/katex@${KATEX_VERSION}/dist/contrib/auto-render.min.js`
     );
 
-    // auto-render sets window.renderMathInElement
+    // Auto-render sets window.renderMathInElement.
     if (!window.renderMathInElement) {
       throw new Error("KaTeX loaded but renderMathInElement is not available.");
     }
@@ -54,11 +71,19 @@ function ensureKatexLoaded() {
   return window.__lotteriesKatexReady;
 }
 
-// --- Page renderer ----------------------------------------------------------
+// ============================================================================
+// Page Renderer
+// ============================================================================
+/**
+ * Renders the app shell and returns DOM handles + helpers.
+ * @param {HTMLElement} mount
+ * @param {{lang: "pt"|"en"}} ctx
+ * @returns {object}
+ */
 export function renderPage(mount, { lang }) {
-  // Load KaTeX once (non-blocking). Individual tabs will render math when ready.
+  // Load KaTeX once (non-blocking). Tabs will render math when ready.
   ensureKatexLoaded().catch(() => {
-    // Fail silently: app works without math rendering if CDN is blocked.
+    // Fail silently: the app works without math rendering if CDN is blocked.
   });
   const isEn = lang === "en";
 
@@ -271,19 +296,19 @@ export function renderPage(mount, { lang }) {
     </div>
   `;
 
-  // -----------------------------------------------------------------------
+  // ------------------------------------------------------------------------
   // Mobile-only DOM adaptation:
   // Move the left "inputs" sidebar inside the Home tab panel.
   //
   // Why: in portrait mobile, those controls are typically set once, so they
   // should live in the Home/Start flow instead of staying always visible.
   //
-  // IMPORTANT: We use (pointer: coarse) to avoid affecting narrow desktop
+  // Important: we use (pointer: coarse) to avoid affecting narrow desktop
   // windows. Desktop layout remains unchanged.
-  // -----------------------------------------------------------------------
+  // ------------------------------------------------------------------------
 
   // Robust "mobile" detection:
-  // - width <= 980px (your chosen breakpoint)
+  // - width <= 980px (chosen breakpoint)
   // - AND a touch/phone-like interaction environment
   const mqWidth = window.matchMedia("(max-width: 980px)");
   const mqNoHover = window.matchMedia("(hover: none)");
@@ -291,9 +316,17 @@ export function renderPage(mount, { lang }) {
     (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
     ("ontouchstart" in window);
 
+  /**
+   * Returns true when we should use the mobile-specific layout.
+   * @returns {boolean}
+   */
   function isMobileLikeRestrictive() {
     return mqWidth.matches && (mqNoHover.matches || hasTouch());
   }
+  /**
+   * Returns true when the viewport is within the mobile breakpoint.
+   * @returns {boolean}
+   */
   function isMobileLike() {
     return mqWidth.matches;
   }
@@ -304,6 +337,10 @@ export function renderPage(mount, { lang }) {
     originalNextSibling: null,
   };
 
+  /**
+   * Moves or restores the sidebar based on viewport size.
+   * @returns {void}
+   */
   function applyMobileSidebarPlacement() {
 
     const isMobile = isMobileLike();
@@ -336,13 +373,12 @@ export function renderPage(mount, { lang }) {
 
   // Apply once on load and on viewport changes.
   applyMobileSidebarPlacement();
-  console.log("[lotteries] mobile?", isMobileLike(), {
-    sidebar: !!els.sidebar,
-    tabHome: !!els.tabHome,
-    moved: sidebarState.moved,
-    parent: els.sidebar?.parentElement?.className,
-  });
 
+  /**
+   * Binds a media query change listener with Safari fallback.
+   * @param {MediaQueryList} mq
+   * @returns {void}
+   */
   const bindMQ = (mq) => {
     if (mq.addEventListener) mq.addEventListener("change", applyMobileSidebarPlacement);
     else mq.addListener(applyMobileSidebarPlacement); // Safari fallback
@@ -409,6 +445,11 @@ export function renderPage(mount, { lang }) {
 
   updateRangeFill();
 
+  /**
+   * Shows validation errors in the sidebar.
+   * @param {Array<string>} lines
+   * @returns {void}
+   */
   function setError(lines) {
     els.errorList.innerHTML = "";
     for (const line of lines) {
@@ -419,11 +460,20 @@ export function renderPage(mount, { lang }) {
     els.errorBox.style.display = "block";
   }
 
+  /**
+   * Clears validation errors.
+   * @returns {void}
+   */
   function clearError() {
     els.errorBox.style.display = "none";
     els.errorList.innerHTML = "";
   }
 
+  /**
+   * Activates a tab and updates the visible panel.
+   * @param {string} tabId
+   * @returns {void}
+   */
   function setActiveTab(tabId) {
     applyMobileSidebarPlacement();
     for (const btn of els.tabButtons) {

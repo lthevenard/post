@@ -1009,6 +1009,7 @@ simfreq-grid{
     padding: 14px 14px 8px 14px;
   }
   .lotteries-link-btn{ width: 100%; justify-content: center; }
+  .lotteries-header .lotteries-link-btn{ display: none; }
 
   /* Sidebar (inputs): more breathing room, larger touch targets */
   .lotteries-sidebar{ padding: 14px 14px 16px 14px; }

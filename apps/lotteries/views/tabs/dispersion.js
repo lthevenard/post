@@ -1,8 +1,14 @@
-// apps/lotteries/views/tabs/dispersion.js
-// Aba "Dispersão": explica + 2 scatters (um por loteria) + 2 gráficos comparativos (lado a lado) + seed box.
+// ============================================================================
+// Dispersion Tab Rendering
+// ============================================================================
 
 import { renderMeanScatterSVG, renderProfitPerTicketSVG } from "../charts.js";
 
+/**
+ * Escapes text for safe HTML insertion.
+ * @param {string} s
+ * @returns {string}
+ */
 function esc(s) {
   return String(s)
     .replaceAll("&", "&amp;")
@@ -12,10 +18,19 @@ function esc(s) {
     .replaceAll("'", "&#039;");
 }
 
+/**
+ * Wires tooltips for dispersion scatter plots.
+ * @param {HTMLElement} root
+ * @param {object} ctx
+ * @param {"pt"|"en"} ctx.lang
+ * @param {Array<object>} ctx.simTable1
+ * @param {Array<object>} ctx.simTable2
+ * @returns {void}
+ */
 function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
   const isEn = lang === "en";
 
-  // CSS (injetado 1x)
+  // CSS (injected once).
   const styleId = "disp-scatter-tooltip-style";
   if (!document.getElementById(styleId)) {
     const st = document.createElement("style");
@@ -62,7 +77,7 @@ function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
     document.head.appendChild(st);
   }
 
-  // Tooltip element (único)
+  // Single tooltip element (reused).
   let tip = document.querySelector(".disp-tooltip");
   if (!tip) {
     tip = document.createElement("div");
@@ -107,7 +122,7 @@ function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
     const meanLabel = isEn ? "Mean Returns" : "Resultado Médio";
     const profitLabel = isEn ? "Profit" : "Lucro";
 
-    // Outcome columns: tudo que não é coluna “meta”
+    // Outcome columns: everything except meta columns.
     const known = new Set(["Tickets", "Returns", "Mean Returns", "Profit"]);
     const outcomeKeys = Object.keys(row)
       .filter((k) => !known.has(k))
@@ -148,7 +163,7 @@ function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
 
     tip.style.display = "block";
 
-    // mede após display
+    // Measure after displaying.
     const r = tip.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -169,7 +184,7 @@ function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
     tip.style.display = "none";
   };
 
-  // Bind nos pontos do scatter (somente os que têm data-idx)
+  // Bind to scatter points (only those with data-idx).
   const dots = root.querySelectorAll('svg.disp-svg circle.disp-dot[data-idx][data-table]');
   dots.forEach((el) => {
     el.addEventListener("pointerenter", (ev) => {
@@ -187,10 +202,15 @@ function setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 }) {
     el.addEventListener("pointerleave", hide);
   });
 
-  // Se o usuário scrollar com tooltip aberta, melhor esconder
+  // Hide tooltip on scroll to avoid stale positioning.
   window.addEventListener("scroll", hide, { passive: true });
 }
 
+/**
+ * Computes the mean of an array.
+ * @param {Array<number>} arr
+ * @returns {number}
+ */
 function mean(arr){
   if (!arr.length) return 0;
   let s = 0;
@@ -198,8 +218,13 @@ function mean(arr){
   return s / arr.length;
 }
 
+/**
+ * Computes standard deviation for an array.
+ * @param {Array<number>} arr
+ * @returns {number}
+ */
 function stddev(arr){
-  // desvio-padrão populacional (suficiente para comparação visual)
+  // Population standard deviation (sufficient for visual comparison).
   if (arr.length <= 1) return 0;
   const m = mean(arr);
   let v = 0;
@@ -211,6 +236,13 @@ function stddev(arr){
   return Math.sqrt(v);
 }
 
+/**
+ * Computes a dispersion score for a subset of points.
+ * @param {Array<object>} pts
+ * @param {number} expectedValue
+ * @param {number} cutoffN
+ * @returns {number}
+ */
 function dispersionScore(pts, expectedValue, cutoffN){
   const low = pts
     .filter(p => Number.isFinite(p.N) && p.N <= cutoffN)
@@ -225,6 +257,12 @@ function dispersionScore(pts, expectedValue, cutoffN){
   return stddev(use);
 }
 
+/**
+ * Classifies relative dispersion between two lotteries.
+ * @param {number} sd1
+ * @param {number} sd2
+ * @returns {string}
+ */
 function classifyDispersion(sd1, sd2){
   const hi = Math.max(sd1, sd2);
   const lo = Math.min(sd1, sd2);
@@ -247,6 +285,19 @@ function classifyDispersion(sd1, sd2){
 }
 
 
+/**
+ * Renders the Dispersion tab.
+ * @param {HTMLElement} root
+ * @param {object} ctx
+ * @param {"pt"|"en"} ctx.lang
+ * @param {object} ctx.d1
+ * @param {object} ctx.d2
+ * @param {Array<object>} ctx.simTable1
+ * @param {Array<object>} ctx.simTable2
+ * @param {number} ctx.seedUsed
+ * @param {number} ctx.N
+ * @returns {void}
+ */
 export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, seedUsed, N }) {
   const isEn = lang === "en";
 
@@ -327,7 +378,7 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
 
   };
 
-  // Guard-rail: se ainda não tiver dados (por algum motivo), mantém a tab "viva".
+  // Guard rail: if data is missing, keep the tab alive.
   if (!Array.isArray(simTable1) || !Array.isArray(simTable2) || !simTable1.length || !simTable2.length) {
     root.innerHTML = `
       <h2 class="lottery-panel-title">${esc(t.title)}</h2>
@@ -340,7 +391,7 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
     rows
       .map((r, idx) => ({
         table,                 // 1 ou 2
-        idx,                   // índice da linha na simTable
+        idx,                   // Row index in simTable.
         N: Number(r?.Tickets ?? 0),
         mean: Number(r?.["Mean Returns"] ?? 0),
       }))
@@ -374,18 +425,18 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
     jitter: false,
   });
 
-  // --- Comparar dispersão (mesma escala de Y nos dois gráficos) ---
+  // --- Compare dispersion (same Y scale in both charts) ---
   // Profit/N = mean - EV
   const yVals1 = pts1.map((p) => p.mean - d1.expectedValue).filter(Number.isFinite);
   const yVals2 = pts2.map((p) => p.mean - d2.expectedValue).filter(Number.isFinite);
   const allY = [...yVals1, ...yVals2];
 
-  // fallback defensivo (caso ainda não tenha dados)
+  // Defensive fallback (in case data is still missing).
   const baseMin = allY.length ? Math.min(...allY) : -1;
   const baseMax = allY.length ? Math.max(...allY) :  1;
 
-  // --- Texto dinâmico: comparar intensidade da dispersão ---
-  // Foco nos N pequenos: usa até 20% do N máximo (mínimo 20), com teto em 200.
+  // --- Dynamic copy: compare dispersion intensity ---
+  // Focus on small N: up to 20% of max N (min 20), capped at 200.
   const cutoffN = Math.min(N, Math.max(20, Math.floor(N * 0.20)), 200);
 
   const sd1 = dispersionScore(pts1, d1.expectedValue, cutoffN);
@@ -397,7 +448,7 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
 
     const tpl = dispClass.caseId === 1 ? t.compareExplCase1 : t.compareExplCase2;
 
-    // {A}/{B} referem-se aos rótulos “1” e “2”
+    // {A}/{B} refer to the labels "1" and "2".
     return tpl
       .replaceAll("{A}", dispClass.A)
       .replaceAll("{B}", dispClass.B);
@@ -426,8 +477,8 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
   });
 
   // --- Layout ---
-  // Observação: uso "lottery-card" pra manter consistência visual com o resto do app.
-  // A explicação é colapsável via <details>.
+  // Note: use "lottery-card" for visual consistency with the rest of the app.
+  // The explanation is collapsible via <details>.
   root.innerHTML = `
     <h2 class="lottery-panel-title">${esc(t.title)}</h2>
 
@@ -518,7 +569,7 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
     try {
       saved = localStorage.getItem(key);
     } catch (_) {
-      // storage pode estar bloqueado; segue sem persistência
+      // Storage may be blocked; proceed without persistence.
       saved = null;
     }
 
@@ -534,7 +585,7 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
       try {
         localStorage.setItem(key, isCollapsed ? "1" : "0");
       } catch (_) {
-        // ignore: sem persistência
+        // Ignore: no persistence.
       }
 
       toggleEl.textContent = isCollapsed ? t.explToggleShow : t.explToggleHide;

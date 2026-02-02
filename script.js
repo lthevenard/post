@@ -1,11 +1,20 @@
-// script.js
+// ============================================================================
+// Bootstrap & DOM References
+// ============================================================================
+
 const app = document.getElementById('app');
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// --- Mobile hamburger toggle (header/nav)
+// ============================================================================
+// Header / Navigation
+// ============================================================================
 const siteHeader = document.getElementById('siteHeader');
 const navToggleBtn = document.getElementById('navToggle');
 
+/**
+ * Closes the mobile navigation menu if it is open.
+ * @returns {void}
+ */
 function closeMobileNav() {
   if (!siteHeader || !navToggleBtn) return;
   siteHeader.classList.remove('nav-open');
@@ -18,6 +27,10 @@ if (siteHeader && navToggleBtn) {
     navToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 }
+
+// ============================================================================
+// Routing & Configuration
+// ============================================================================
 
 const SUPPORTED_LANGS = ['pt','en'];
 const routes = {
@@ -36,8 +49,17 @@ const routes = {
 
 const ENABLE_SLIDE_LANGUAGE_SWITCH = false;
 
+// ============================================================================
+// Data Fetching & Caching
+// ============================================================================
+
 const cache = {};
 
+/**
+ * Fetches a JSON file with basic in-memory caching.
+ * @param {string} path
+ * @returns {Promise<any>}
+ */
 async function getJSON(path) {
   if (cache[path]) return cache[path];
   const r = await fetch(path);
@@ -56,6 +78,10 @@ const PUBLICATIONS_BY_TYPE_PATH = {
 
 let _publicationsMergedCache = null;
 
+/**
+ * Loads all publication files and merges them into a single list.
+ * @returns {Promise<Array<object>>}
+ */
 async function getAllPublications() {
   if (_publicationsMergedCache) return _publicationsMergedCache;
 
@@ -68,15 +94,31 @@ async function getAllPublications() {
   return _publicationsMergedCache;
 }
 
+/**
+ * Finds a counterpart item in the other language using a shared group id.
+ * @param {Array<object>} list
+ * @param {string} group
+ * @param {"pt"|"en"} otherLang
+ * @returns {object|undefined}
+ */
 function counterpartByGroup(list, group, otherLang) {
   return list.find(x => x.group && x.group === group && x.lang === otherLang);
 }
 
+/**
+ * Finds a post by slug and language.
+ * @param {Array<object>} list
+ * @param {string} slug
+ * @param {"pt"|"en"} lang
+ * @returns {object|undefined}
+ */
 function findPostBySlugAndLang(list, slug, lang) {
   return list.find(p => p.slug === slug && p.lang === lang);
 }
 
-// Strings UI
+// ============================================================================
+// UI Strings
+// ============================================================================
 const i18n = {
   pt: {
     title: 'Lucas Thevenard — Pesquisa, Blog, Slides',
@@ -158,13 +200,22 @@ const i18n = {
   }
 };
 
-// State of current navigation (to change language preserving the "same page")
+// ============================================================================
+// Navigation State & Hash Routing
+// ============================================================================
+
+// Keeps the current route to enable language switching within the same page.
 let current = { lang: 'pt', path: '/', query: '' };
 
+/**
+ * Parses the location hash and enforces the /<lang>/<path> format.
+ * Redirects when the hash is missing or invalid.
+ * @returns {{lang: "pt"|"en", path: string, query: string} | null}
+ */
 function parseHashOrRedirect() {
   const raw = location.hash.replace(/^#/, ''); // e.g. "/pt/blog?x=1"
 
-  // Use current.lang as fallback (preserves language when clicking hash links without /pt|/en)
+  // Use current.lang as fallback to preserve language when clicking hash links without /pt|/en.
   const fallbackLang = SUPPORTED_LANGS.includes(current?.lang) ? current.lang : 'pt';
 
   if (!raw || raw === '/') {
@@ -175,7 +226,7 @@ function parseHashOrRedirect() {
   // Ensures format /<lang>/<path...>
   const match = raw.match(/^\/(pt|en)(\/[^?]*)?(\?.*)?$/);
   if (!match) {
-    // Possible hash without language (ex: "#/blog"); injects fallbackLang.
+    // Hash without language (ex: "#/blog"); inject fallbackLang.
     const fix = raw.startsWith('/') ? raw : '/' + raw;
     location.replace(`#/${fallbackLang}` + fix);
     return null;
@@ -187,7 +238,10 @@ function parseHashOrRedirect() {
   return { lang, path, query };
 }
 
-
+/**
+ * Resolves the current route and renders the matching page.
+ * @returns {void}
+ */
 function navigate() {
   const parsed = parseHashOrRedirect();
   if (!parsed) return; // already redirected
@@ -195,42 +249,25 @@ function navigate() {
 
   closeMobileNav();
 
-  // Updates the UI for the current language (title, nav, button, lang atribute)
+  // Updates the UI for the current language (title, nav, button, lang attribute).
   updateUIForLang(current.lang);
 
-  // Resolves the route
+  // Resolve the route.
   const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0]; // '', 'blog', 'cv', ...
   const route = routes[seg] || renderNotFound;
   const params = new URLSearchParams(current.query.replace(/^\?/, ''));
   route(current.lang, params, current).catch(err => renderError(current.lang, err));
 }
 
-// ---- UI helpers
-let langToggleResizeBound = false;
+// ============================================================================
+// Language Switching & UI Updates
+// ============================================================================
 
-function setLangToggleLabel(lang) {
-  const toggle = document.getElementById('langToggle');
-  if (!toggle) return;
-
-  const t = i18n[lang];
-  const other = lang === 'pt' ? 'en' : 'pt';
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-  // desktop: texto completo; mobile: só bandeira do idioma alvo
-  toggle.textContent = isMobile ? (other === 'pt' ? '🇧🇷' : '🇺🇸') : t.toggle;
-
-  toggle.setAttribute(
-    'aria-label',
-    other === 'pt' ? 'Mudar para Português' : 'Switch to English'
-  );
-
-  // garante que o resize listener é registrado só uma vez
-  if (!langToggleResizeBound) {
-    langToggleResizeBound = true;
-    window.addEventListener('resize', () => setLangToggleLabel(current.lang));
-  }
-}
-
+/**
+ * Computes the hash for the same page in the other language.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<string>}
+ */
 async function computeOtherLangHash(lang) {
   const other = lang === 'pt' ? 'en' : 'pt';
   const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
@@ -269,13 +306,18 @@ async function computeOtherLangHash(lang) {
   return targetHash;
 }
 
+/**
+ * Updates all UI strings and navigation links for the current language.
+ * @param {"pt"|"en"} lang
+ * @returns {void}
+ */
 function updateUIForLang(lang) {
   const t = i18n[lang];
 
-  // 1) atributo de idioma no HTML
+  // 1) Set the HTML language attribute.
   document.documentElement.setAttribute('lang', lang);
 
-  // 2) brand + tagline
+  // 2) Brand + tagline.
   const brandLink = document.getElementById('brandLink');
   if (brandLink) {
     brandLink.textContent = t.brand ?? brandLink.textContent;
@@ -285,7 +327,7 @@ function updateUIForLang(lang) {
   const tagline = document.getElementById('tagline');
   if (tagline && t.tagline) tagline.textContent = t.tagline;
 
-  // 3) labels e hrefs do menu (mantém sua lógica de rotas)
+  // 3) Nav labels + hrefs (keeps the existing route structure).
   const navMap = [
     ['navHome', 'home', ''],
     ['navBlog', 'blog', '/blog'],
@@ -302,9 +344,9 @@ function updateUIForLang(lang) {
     el.setAttribute('href', `#/${lang}${suffix}`);
   }
 
-  // 4) marcar item ativo (se você já usava essa lógica, pode manter; aqui vai uma simples)
-  //    - home: path "/" ou "/home" (se existir)
-  //    - demais: primeira parte do path
+  // 4) Active item detection:
+  //    - home: path "/" or "/home"
+  //    - others: first path segment
   const seg = current.path === '/' ? '' : current.path.slice(1).split('/')[0];
   for (const [id, key] of navMap) {
     const el = document.getElementById(id);
@@ -318,13 +360,13 @@ function updateUIForLang(lang) {
     el.setAttribute('aria-current', isActive ? 'page' : 'false');
   }
 
-  // 5) troca de língua
+  // 5) Language switching.
   const other = lang === 'pt' ? 'en' : 'pt';
 
-  // Desktop: mantém o botão como era antes (texto)
+  // Desktop: full text button.
   const toggleDesktop = document.getElementById('langToggle');
   if (toggleDesktop) {
-    toggleDesktop.textContent = t.toggle; // ex.: "See this page in English" / "Versão em Português"
+    toggleDesktop.textContent = t.toggle;
     toggleDesktop.setAttribute(
       'aria-label',
       other === 'pt' ? 'Mudar para Português' : 'Switch to English'
@@ -334,7 +376,7 @@ function updateUIForLang(lang) {
     };
   }
 
-  // Mobile: link compacto com bandeira + código (EN/PT)
+  // Mobile: compact link with flag + language code.
   const toggleMobile = document.getElementById('langToggleMobile');
   if (toggleMobile) {
     toggleMobile.innerHTML =
@@ -353,15 +395,26 @@ function updateUIForLang(lang) {
     };
   }
 
-  // 6) (opcional) título do documento, se você usar algo assim no i18n
+  // 6) Optional document title hook (if defined in i18n).
   // if (t.siteTitle) document.title = t.siteTitle;
 }
 
 
+/**
+ * Replaces the main app container with new HTML.
+ * @param {string} html
+ * @returns {void}
+ */
 function setContent(html) {
   app.innerHTML = html;
 }
 
+/**
+ * Renders a generic error page.
+ * @param {"pt"|"en"} lang
+ * @param {Error|string} err
+ * @returns {void}
+ */
 function renderError(lang, err) {
   const t = i18n[lang];
   setContent(`
@@ -373,6 +426,11 @@ function renderError(lang, err) {
   `);
 }
 
+/**
+ * Renders a 404 page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 function renderNotFound(lang) {
   const t = i18n[lang];
   setContent(`
@@ -384,6 +442,16 @@ function renderNotFound(lang) {
   return Promise.resolve();
 }
 
+// ============================================================================
+// Shared Helpers
+// ============================================================================
+
+/**
+ * Returns a set of project slugs that have at least one active slide for a language.
+ * @param {Array<object>} slides
+ * @param {"pt"|"en"} lang
+ * @returns {Set<string>}
+ */
 function projectSlugsWithSlides(slides, lang) {
   const set = new Set();
   slides.forEach(s => {
@@ -392,42 +460,77 @@ function projectSlugsWithSlides(slides, lang) {
   return set;
 }
 
+/**
+ * Finds a project by slug and language.
+ * @param {Array<object>} list
+ * @param {string} slug
+ * @param {"pt"|"en"} lang
+ * @returns {object|undefined}
+ */
 function findProjectBySlugAndLang(list, slug, lang) {
   return list.find(p => p.slug === slug && p.lang === lang);
 }
 
+/**
+ * Formats an array of author names into a comma-separated string.
+ * @param {Array<string>} authors
+ * @returns {string}
+ */
 function fmtAuthors(authors) {
   if (!Array.isArray(authors) || !authors.length) return '';
   return authors.join(', ');
 }
 
-function safeSpan(value, cls='') {
-  return value ? `<span class="${cls}">${value}</span>` : '';
-}
 
-// --- Flags
+/**
+ * Returns a flag emoji for a language code.
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
 function langFlag(lang){ return lang === 'pt' ? '🇧🇷' : '🇺🇸'; }
+
+/**
+ * Returns a small HTML badge with the language flag.
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
 function flagBadge(lang){
   const title = lang === 'pt' ? 'Português' : 'English';
   return `<span class="flag-badge" title="${title}">${langFlag(lang)}</span>`;
 }
 
-// --- Keys to group equivalent itens by language
+/**
+ * Builds a stable key for slide equivalence across languages.
+ * @param {object} s
+ * @returns {string}
+ */
 function keyForSlide(s){
-  // group is canonical; if it doesn't exist, we fall back to slug/pdf (singleton)
+  // Group is canonical; if missing, fall back to slug/pdf (singleton).
   return s.group || s.slug || `pdf:${s.pdf}`;
 }
-// --- If a PDF URL is provided, use it; otherwise, build local path
+
+/**
+ * Resolves the PDF href for a slide (local or external).
+ * @param {object} slide
+ * @param {{archived?: boolean}} [opts]
+ * @returns {string}
+ */
 function resolvePdfHref(slide, { archived = false } = {}) {
-  // 1) If an external PDF URL is provided, use it
+  // 1) If an external PDF URL is provided, use it.
   if (slide.pdf_url) return slide.pdf_url;
 
-  // 2) Fallback: local PDF
+  // 2) Fallback: local PDF.
   if (archived) return `slides/archived/${encodeURIComponent(slide.pdf)}`;
   return `slides/${encodeURIComponent(slide.slug)}/${encodeURIComponent(slide.pdf)}`;
 }
+
+/**
+ * Builds a stable key for publication equivalence across languages.
+ * @param {object} p
+ * @returns {string}
+ */
 function keyForPub(p){
-  // priority: group > doi > issn > url > title (fallback)
+  // Priority: group > doi > issn > url > title (fallback).
   return p.group || (
     p.doi ? `doi:${p.doi}` :
     (p.issn ? `issn:${p.issn}` :
@@ -436,23 +539,13 @@ function keyForPub(p){
   );
 }
 
-function displayPubTitle(p, lang){
-  if (!p || !p.title) return '';
-
-  // Reports and books/chapters get subtype prefix (Publications page)
-  if (p.type !== 'report' && p.type !== 'book-chapter') return p.title;
-
-  const subtype =
-    lang === 'en'
-      ? (p.subtype_en || p.subtype_pt)
-      : (p.subtype_pt || p.subtype_en);
-
-  if (!subtype) return p.title;
-
-  return `${subtype}: ${p.title}`;
-}
-
-// --- Hybrid selection (pt/en)
+/**
+ * Applies the hybrid language selection rule to a list of items.
+ * @param {Array<object>} items
+ * @param {"pt"|"en"} lang
+ * @param {(item: object) => string} keyFn
+ * @returns {Array<object>}
+ */
 function selectHybrid(items, lang, keyFn){
   const byKey = new Map();
   for (const it of items){
@@ -465,21 +558,27 @@ function selectHybrid(items, lang, keyFn){
     const hasPT = arr.some(x => x.lang === 'pt');
     const hasEN = arr.some(x => x.lang === 'en');
     if (hasPT && hasEN){
-      // choose the current language version
+      // Choose the current language version.
       const chosen = arr.find(x => x.lang === lang);
       if (chosen) out.push(chosen);
     } else {
-      // if only one language exists => show in both versions
+      // If only one language exists, show it in both versions.
       out.push(arr[0]);
     }
   }
   return out;
 }
 
+/**
+ * Returns display parts for publication titles (subtype + title).
+ * @param {object} p
+ * @param {"pt"|"en"} lang
+ * @returns {{subtype: string, title: string}}
+ */
 function pubTitleParts(p, lang){
   if (!p || !p.title) return { subtype: '', title: '' };
 
-  // só report e book-chapter têm subtype na página de publicações
+  // Only report and book-chapter have subtypes on the publications page.
   if (p.type !== 'report' && p.type !== 'book-chapter') {
     return { subtype: '', title: p.title };
   }
@@ -492,24 +591,40 @@ function pubTitleParts(p, lang){
   return { subtype, title: p.title };
 }
 
+/**
+ * Sorts posts by date (newest first), with a safe string fallback.
+ * @param {Array<object>} posts
+ * @returns {Array<object>}
+ */
 function sortPostsNewestFirst(posts) {
-  // Tries to sort by date (ISO or parseable). If not parseable, falls back to string compare.
+  // Tries to sort by date (ISO or parseable). If not parseable, fall back to string compare.
   return [...posts].sort((a, b) => {
     const da = Date.parse(a.date);
     const db = Date.parse(b.date);
 
     if (!Number.isNaN(da) && !Number.isNaN(db)) return db - da;
 
-    // fallback (useful if the date comes as a comparable string, e.g., "2025-01-06")
+    // Fallback for comparable date strings (e.g., "2025-01-06").
     return String(b.date).localeCompare(String(a.date));
   });
 }
 
-// --- Hero (illustration of the month)
+// ============================================================================
+// Hero (Illustration of the Month)
+// ============================================================================
+
+/**
+ * Loads the hero gallery catalog.
+ * @returns {Promise<object>}
+ */
 async function getHeroCatalog() {
   return await getJSON('assets/img/hero_gallery/hero.json');
 }
 
+/**
+ * Returns the current year-month in YYYY-MM format.
+ * @returns {string}
+ */
 function ymNow() {
   const d = new Date();
   const y = String(d.getFullYear());
@@ -517,6 +632,12 @@ function ymNow() {
   return `${y}-${m}`;
 }
 
+/**
+ * Picks the hero item for a given month (fallback: latest by YYYY-MM).
+ * @param {object} catalog
+ * @param {string} ym
+ * @returns {object|null}
+ */
 function pickHeroItem(catalog, ym) {
   const items = Array.isArray(catalog?.items) ? catalog.items : [];
   if (!items.length) return null;
@@ -524,11 +645,18 @@ function pickHeroItem(catalog, ym) {
   const exact = items.find(it => it.month === ym);
   if (exact) return exact;
 
-  // fallback: mais recente por YYYY-MM
+  // Fallback: latest by YYYY-MM.
   const sorted = [...items].sort((a,b) => String(b.month).localeCompare(String(a.month)));
   return sorted[0];
 }
 
+/**
+ * Returns the localized text from a string or {pt,en} object.
+ * @param {string|object} obj
+ * @param {"pt"|"en"} lang
+ * @param {string} [fallback]
+ * @returns {string}
+ */
 function heroTextForLang(obj, lang, fallback='') {
   if (!obj) return fallback;
   if (typeof obj === 'string') return obj;
@@ -536,7 +664,12 @@ function heroTextForLang(obj, lang, fallback='') {
   return fallback;
 }
 
-// pega o "base name" sem path/sem extensão
+/**
+ * Returns the base filename (without path/extension) for the hero image.
+ * @param {object} item
+ * @param {"pt"|"en"} lang
+ * @returns {string|null}
+ */
 function heroBaseNameForLang(item, lang) {
   if (!item) return null;
   const b = item.base;
@@ -546,32 +679,28 @@ function heroBaseNameForLang(item, lang) {
   return null;
 }
 
-function heroBaseForLang(item, lang) {
-  if (!item || !item.base) return null;
 
-  const b = item.base;
-
-  // caso simples: uma única imagem (sem texto / sem variação por idioma)
-  if (typeof b === 'string') return b;
-
-  // caso com variação por idioma
-  if (typeof b === 'object') {
-    return b[lang] || b.pt || b.en || null;
-  }
-
-  return null;
-}
-
-// resolve o caminho final (pasta depende de archived)
+/**
+ * Resolves the final image path based on archive status and language.
+ * @param {object} item
+ * @param {"pt"|"en"} lang
+ * @returns {string|null}
+ */
 function heroSrcFromItem(item, lang) {
   const baseName = heroBaseNameForLang(item, lang);
   if (!baseName) return null;
 
   const dir = item.archived ? './assets/img/hero_gallery/' : './assets/img/';
-  // garante .webp (caso você passe com extensão por acidente)
+  // Ensure .webp (in case an extension is passed by accident).
   return baseName.endsWith('.webp') ? (dir + baseName) : (dir + baseName + '.webp');
 }
 
+/**
+ * Formats YYYY-MM into a localized month/year label.
+ * @param {string} ym
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
 function formatMonthYear(ym, lang) {
   // ym: "YYYY-MM"
   if (!ym || typeof ym !== 'string') return '';
@@ -594,7 +723,7 @@ function formatMonthYear(ym, lang) {
   if (monthIdx < 0 || monthIdx > 11) return ym;
 
   if (lang === 'pt') {
-    // "Dezembro de 2025"
+    // "December 2025" (pt format example).
     const name = pt[monthIdx];
     return name.charAt(0).toUpperCase() + name.slice(1) + ' de ' + year;
   }
@@ -603,7 +732,14 @@ function formatMonthYear(ym, lang) {
   return en[monthIdx] + ' ' + year;
 }
 
-// ---- Pages
+// ============================================================================
+// Pages
+// ============================================================================
+/**
+ * Renders the home page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderHome(lang) {
   const t = i18n[lang];
 
@@ -621,7 +757,7 @@ async function renderHome(lang) {
 
   const item = heroItem || fallbackItem;
 
-  const src = heroSrcFromItem(item, lang); // já resolve assets/img vs hero_gallery + .webp
+  const src = heroSrcFromItem(item, lang); // Resolves assets/img vs hero_gallery + .webp.
   const alt = heroTextForLang(
     item.alt,
     lang,
@@ -694,6 +830,11 @@ async function renderHome(lang) {
   `;
 }
 
+/**
+ * Renders the blog index page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderBlogIndex(lang) {
   const t = i18n[lang];
   setContent(`
@@ -721,6 +862,12 @@ async function renderBlogIndex(lang) {
   `).join('');
 }
 
+/**
+ * Renders a blog post page by slug.
+ * @param {"pt"|"en"} lang
+ * @param {URLSearchParams} params
+ * @returns {Promise<void>}
+ */
 async function renderBlogPost(lang, params) {
   const slug = params.get('slug');
   if (!slug) return renderNotFound(lang);
@@ -761,6 +908,11 @@ async function renderBlogPost(lang, params) {
   document.getElementById('post').innerHTML = marked.parse(md, { breaks: true });
 }
 
+/**
+ * Renders the projects index page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderProjectsIndex(lang) {
   const t = i18n[lang];
   setContent(`
@@ -808,6 +960,13 @@ async function renderProjectsIndex(lang) {
   `).join('');
 }
 
+/**
+ * Renders the Apps route (index or a specific app).
+ * @param {"pt"|"en"} lang
+ * @param {URLSearchParams} params
+ * @param {{path: string}} current
+ * @returns {Promise<void>}
+ */
 async function renderApps(lang, params, current) {
   const mount = document.getElementById("app");
 
@@ -816,7 +975,7 @@ async function renderApps(lang, params, current) {
     return;
   }
 
-  // Ex.: current.path = "/apps" or "/apps/lotteries"
+  // Example: current.path = "/apps" or "/apps/lotteries".
   const path = (current?.path || "/apps").replace(/\/+$/, "");
   const route = `/${lang}${path}`; // "/pt/apps" or "/pt/apps/lotteries"
 
@@ -828,6 +987,12 @@ async function renderApps(lang, params, current) {
   }
 }
 
+/**
+ * Renders a project detail page.
+ * @param {"pt"|"en"} lang
+ * @param {URLSearchParams} params
+ * @returns {Promise<void>}
+ */
 async function renderProjectPage(lang, params) {
   const slug = params.get('slug');
   if (!slug) return renderNotFound(lang);
@@ -840,7 +1005,7 @@ async function renderProjectPage(lang, params) {
   const project = findProjectBySlugAndLang(projects, slug, lang);
   if (!project) return renderNotFound(lang);
 
-  // only active slides for this project
+  // Only active slides for this project.
   const slides = slidesAll
     .filter(s => s.lang === lang && s.project === slug && !s.archive)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -849,7 +1014,7 @@ async function renderProjectPage(lang, params) {
 
   const t = i18n[lang];
 
-  // link to the sister project in the other language (if it has slides)
+  // Link to the sister project in the other language (if it has slides).
   const other = lang === 'pt' ? 'en' : 'pt';
   const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
   let switchLink = '';
@@ -902,6 +1067,11 @@ async function renderProjectPage(lang, params) {
   }).join('');
 }
 
+/**
+ * Renders the publications page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderPublications(lang) {
   const t = i18n[lang];
   setContent(`
@@ -930,7 +1100,7 @@ async function renderPublications(lang) {
         ? `<span class="meta">${t.doi}: ${p.doi}</span>`
         : (p.issn ? `<span class="meta">${t.issn}: ${p.issn}</span>` : '');
 
-      // helper já criado por você
+      // Helper already defined above.
       const { subtype, title } = pubTitleParts(p, lang);
 
       const titleNode = p.url
@@ -960,7 +1130,7 @@ async function renderPublications(lang) {
       `;
     }).join('');
 
-    // tudo fechado por padrão (sem atributo open)
+    // Keep all sections collapsed by default (no open attribute).
     return `
       <details class="pub-acc">
         <summary class="pub-acc__summary">
@@ -981,7 +1151,7 @@ async function renderPublications(lang) {
   container.innerHTML =
     html || `<div class="list-item">${lang === 'pt' ? 'Nenhuma publicação ainda.' : 'No publications yet.'}</div>`;
 
-  // Sanfona: ao abrir um, fecha os outros (mantém tudo colapsado no carregamento)
+  // Accordion behavior: opening one closes the others.
   const acc = Array.from(container.querySelectorAll('details.pub-acc'));
   acc.forEach(d => {
     d.addEventListener('toggle', () => {
@@ -992,21 +1162,13 @@ async function renderPublications(lang) {
 }
 
 
-function wirePublicationsAccordion(root) {
-  if (!root) return;
-  const acc = Array.from(root.querySelectorAll('details.pub-acc'));
-
-  acc.forEach(d => {
-    d.addEventListener('toggle', () => {
-      if (!d.open) return;
-      acc.forEach(other => {
-        if (other !== d) other.open = false;
-      });
-    });
-  });
-}
 
 
+/**
+ * Renders the CV page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderCV(lang) {
   const path = `cv/cv.${lang}.md`;
   const res = await fetch(path);
@@ -1021,12 +1183,12 @@ async function renderCV(lang) {
   `);
   document.getElementById('cv-body').innerHTML = marked.parse(md, { breaks: true });
 
-  // Selected publications (cv:true)
+  // Selected publications (cv:true).
   try {
     const all = (await getAllPublications())
-      .filter(p => p.cv === true); // only selected for CV
+      .filter(p => p.cv === true); // Only selected for CV.
 
-    // hybrid rules (pt/en) with publication keys
+    // Hybrid rules (pt/en) with publication keys.
     const chosen = selectHybrid(all, lang, keyForPub)
       .sort((a,b) => (a.date < b.date ? 1 : -1));
 
@@ -1071,10 +1233,15 @@ async function renderCV(lang) {
       wrap.innerHTML = `<h1 class="cv-title">${i18n[lang].selectedPubsTitle}</h1>${sections}`;
     }
   } catch (e) {
-    // ignore errors while loading publications
+    // Ignore errors while loading publications.
 }
 }
 
+/**
+ * Renders the slides page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderSlides(lang) {
   const t = i18n[lang];
   setContent(`
@@ -1100,14 +1267,14 @@ async function renderSlides(lang) {
     getJSON('projects/projects.json')
   ]);
 
-  // 1) removes archived slides
+  // 1) Remove archived slides.
   const active = allSlides.filter(s => !s.archive);
 
-  // 2) hybrid selection (pt/en) with slides keys
+  // 2) Hybrid selection (pt/en) with slide keys.
   const chosen = selectHybrid(active, lang, keyForSlide)
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
-  // badge to see project only if there is a project in the current language with ≥1 active slide
+  // Project badge only if there is a project in the current language with ≥1 active slide.
   const allowedProjects = projectSlugsWithSlides(active, lang);
 
   const other = lang === 'pt' ? 'en' : 'pt';
@@ -1160,6 +1327,11 @@ async function renderSlides(lang) {
   `;
 }
 
+/**
+ * Renders the archived slides page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderArchivedSlides(lang) {
   const t = i18n[lang];
   setContent(`
@@ -1186,7 +1358,7 @@ async function renderArchivedSlides(lang) {
     return;
   }
 
-  // concise listing: date — title → PDF
+  // Concise listing: date — title → PDF.
   el.innerHTML = `
     <ul>
       ${slides.map(s => {
@@ -1198,6 +1370,11 @@ async function renderArchivedSlides(lang) {
   `;
 }
 
+/**
+ * Renders the hero illustration gallery page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
 async function renderHeroGallery(lang) {
   const pageTitle = lang === 'pt' ? 'Ilustração do Mês' : 'Illustration of the Month';
   const intro = lang === 'pt'
@@ -1273,12 +1450,18 @@ async function renderHeroGallery(lang) {
     </div>
   `);
 
-  // wiring lightbox
+  // Wire up the lightbox.
   const lb = document.getElementById('heroLightbox');
   const lbImg = lb ? lb.querySelector('.hero-g__lb-img') : null;
   const btnClose = lb ? lb.querySelector('.hero-g__lb-close') : null;
   const btnBackdrop = lb ? lb.querySelector('.hero-g__lb-backdrop') : null;
 
+  /**
+   * Opens the lightbox with the given image.
+   * @param {string} src
+   * @param {string} alt
+   * @returns {void}
+   */
   function openLightbox(src, alt) {
     if (!lb || !lbImg) return;
     lbImg.src = src;
@@ -1288,11 +1471,15 @@ async function renderHeroGallery(lang) {
     document.body.classList.add('no-scroll');
   }
 
+  /**
+   * Closes the lightbox and clears the image.
+   * @returns {void}
+   */
   function closeLightbox() {
     if (!lb || !lbImg) return;
     lb.classList.remove('is-open');
     lb.setAttribute('aria-hidden', 'true');
-    // limpa src pra evitar “flash” ao trocar
+    // Clear src to avoid flash when switching.
     lbImg.src = '';
     lbImg.alt = '';
     document.body.classList.remove('no-scroll');
@@ -1314,6 +1501,8 @@ async function renderHeroGallery(lang) {
   }, { once: true });
 }
 
+// ============================================================================
 // Events
+// ============================================================================
 window.addEventListener('hashchange', navigate);
 window.addEventListener('load', navigate);

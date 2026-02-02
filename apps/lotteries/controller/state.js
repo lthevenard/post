@@ -1,11 +1,17 @@
-// apps/lotteries/controller/state.js
-// Centraliza o estado do app (mínimo), sem framework.
+// ============================================================================
+// App State
+// ============================================================================
 
+/**
+ * Creates the initial application state.
+ * @param {{lang: "pt"|"en"}} ctx
+ * @returns {object}
+ */
 export function createAppState({ lang }) {
   return {
     lang,
 
-    // Inputs (raw)
+    // Raw inputs
     inputs: {
       values1: "",
       probs1: "",
@@ -16,10 +22,10 @@ export function createAppState({ lang }) {
       seedManual: "",
     },
 
-    // Seed efetivamente usado na última simulação
+    // Seed actually used in the last simulation
     seedUsed: null,
 
-    // Resultados (pós-simulação)
+    // Post-simulation results
     lottery: {
       d1: null,
       d2: null,
@@ -28,7 +34,7 @@ export function createAppState({ lang }) {
       N: null,
     },
 
-    // Estado do slider/animação (pós-simulação)
+    // Slider/animation state (post-simulation)
     simUI: {
       selectedN: 1,
       step: 10,

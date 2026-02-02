@@ -1,10 +1,17 @@
-// apps/lotteries/model/lottery.js
-// Lottery input validation for Milestone A + description for Milestone B.
+// ============================================================================
+// Lottery Parsing & Theory
+// ============================================================================
 
 import { parseNumberList } from "../../shared/parsing/listParser.js";
 
 export const MAX_OUTCOMES = 20;
 
+/**
+ * Validates lottery values and probabilities.
+ * @param {Array<number>} values
+ * @param {Array<number>} probs
+ * @returns {{ok: boolean, errors?: string[]}}
+ */
 export function validateLottery(values, probs) {
   const errors = [];
 
@@ -44,6 +51,12 @@ export function validateLottery(values, probs) {
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
+/**
+ * Parses and validates lottery inputs from strings.
+ * @param {string} valuesStr
+ * @param {string} probsStr
+ * @returns {{ok: boolean, values?: number[], probs?: number[], errors?: string[]}}
+ */
 export function parseAndValidateLottery(valuesStr, probsStr) {
   const v = parseNumberList(valuesStr);
   const p = parseNumberList(probsStr);
@@ -59,15 +72,25 @@ export function parseAndValidateLottery(valuesStr, probsStr) {
   return { ok: true, values: v.values, probs: p.values };
 }
 
-// ---------------------------
-// Milestone B helpers
-// ---------------------------
+// ============================================================================
+// Helpers
+// ============================================================================
 
+/**
+ * Generates result labels A, B, C, ...
+ * @param {number} n
+ * @returns {Array<string>}
+ */
 function getResultNames(n) {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   return alphabet.slice(0, n);
 }
 
+/**
+ * Computes cumulative probabilities.
+ * @param {Array<number>} probs
+ * @returns {Array<number>}
+ */
 function cumulateProbabilities(probs) {
   const out = [];
   let acc = 0;
@@ -78,12 +101,25 @@ function cumulateProbabilities(probs) {
   return out;
 }
 
+/**
+ * Computes expected value for a discrete lottery.
+ * @param {Array<number>} values
+ * @param {Array<number>} probs
+ * @returns {number}
+ */
 function expectedValue(values, probs) {
   let ev = 0;
   for (let i = 0; i < values.length; i += 1) ev += values[i] * probs[i];
   return ev;
 }
 
+/**
+ * Computes theoretical standard deviation.
+ * @param {Array<number>} values
+ * @param {Array<number>} probs
+ * @param {number} ev
+ * @returns {number}
+ */
 function theoreticalStdDev(values, probs, ev) {
   let v = 0;
   for (let i = 0; i < values.length; i += 1) {
@@ -95,6 +131,8 @@ function theoreticalStdDev(values, probs, ev) {
 
 /**
  * Groups identical payoff values to build a compact distribution for charting.
+ * @param {Array<number>} values
+ * @param {Array<number>} probs
  * @returns {{ value: number, prob: number }[]}
  */
 function groupedDistribution(values, probs) {
@@ -109,7 +147,10 @@ function groupedDistribution(values, probs) {
 }
 
 /**
- * Produces the "description object" similar to the Shiny app.
+ * Produces the lottery description object for rendering.
+ * @param {Array<number>} values
+ * @param {Array<number>} probs
+ * @returns {object}
  */
 export function describeLottery(values, probs) {
   const n = values.length;
@@ -129,4 +170,3 @@ export function describeLottery(values, probs) {
     distribution: dist,
   };
 }
-

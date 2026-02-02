@@ -1,11 +1,24 @@
-// apps/lotteries/wiring/inputs.js
-// Mantém state.inputs sincronizado com os campos de texto + Nmax (slider/input).
+// ============================================================================
+// Inputs Wiring
+// ============================================================================
 
+/**
+ * Parses an integer safely with a fallback.
+ * @param {string|number} v
+ * @param {number} fallback
+ * @returns {number}
+ */
 function readIntSafe(v, fallback) {
   const x = Number.parseInt(String(v), 10);
   return Number.isFinite(x) ? x : fallback;
 }
 
+/**
+ * Synchronizes UI inputs with state.inputs.
+ * @param {object} ui
+ * @param {object} state
+ * @returns {{dispose: () => void}}
+ */
 export function wireInputs(ui, state) {
   const els = ui.els;
 
@@ -15,7 +28,7 @@ export function wireInputs(ui, state) {
     state.inputs[key] = value;
   }
 
-  // Text inputs
+  // Text inputs.
   const textBindings = [
     ["values1", els.values1],
     ["probs1", els.probs1],
@@ -34,7 +47,7 @@ export function wireInputs(ui, state) {
     handlers.push(() => el.removeEventListener("input", onInput));
   }
 
-  // N max (pode ser range ou number, depende da sua UI)
+  // N max (range or number input, depending on the UI).
   if (els.nMax) {
     state.inputs.nMax = readIntSafe(els.nMax.value, state.inputs.nMax);
 

@@ -1,7 +1,15 @@
-// Central apps router + lazy loader (skeleton only)
+// ============================================================================
+// Apps Router & Lazy Loading
+// ============================================================================
 
 import { loadAppsCatalog } from "./shared/catalog.js";
 
+/**
+ * Renders the Apps index page.
+ * @param {HTMLElement} mount
+ * @param {{route: string}} ctx
+ * @returns {Promise<void>}
+ */
 export async function renderAppsIndex(mount, { route }) {
   const lang = route.startsWith("/en") ? "en" : "pt";
   const apps = await loadAppsCatalog();
@@ -36,12 +44,18 @@ export async function renderAppsIndex(mount, { route }) {
   `;
 }
 
+/**
+ * Renders a specific app by slug.
+ * @param {HTMLElement} mount
+ * @param {{route: string}} ctx
+ * @returns {Promise<void>}
+ */
 export async function renderAppRoute(mount, { route }) {
   const lang = route.startsWith("/en") ? "en" : "pt";
   const slug = route.split("/").pop();
 
-  // Lazy load app entry
-  // NOTE: each app exports `mountApp(mount, { lang })`
+  // Lazy-load app entry.
+  // Note: each app exports `mountApp(mount, { lang })`.
   try {
     const mod = await import(`./${slug}/index.js`);
     if (!mod?.mountApp) throw new Error("App entry must export mountApp()");

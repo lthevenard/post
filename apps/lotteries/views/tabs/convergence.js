@@ -1,5 +1,16 @@
-// apps/lotteries/views/tabs/convergence.js
+// ============================================================================
+// Convergence Tab Rendering
+// ============================================================================
 
+/**
+ * Renders the Convergence tab.
+ * @param {HTMLElement} container
+ * @param {object} ctx
+ * @param {"pt"|"en"} ctx.lang
+ * @param {number} ctx.N
+ * @param {number} ctx.seedUsed
+ * @returns {void}
+ */
 export function renderConvergenceTab(container, { lang, N, seedUsed }){
   const isEn = lang === "en";
 
@@ -126,7 +137,7 @@ export function renderConvergenceTab(container, { lang, N, seedUsed }){
       </div>
     </div>
   `;
-  // Toggle: hide/show explainer text (pure UI; safe to bind after innerHTML)
+  // Toggle: hide/show explainer text (pure UI; safe to bind after innerHTML).
   const explainer = container.querySelector("#convergence-explainer");
   const toggleEl = container.querySelector("#toggle-convergence-explainer");
 

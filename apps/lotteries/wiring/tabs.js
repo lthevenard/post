@@ -1,5 +1,12 @@
-// apps/lotteries/wiring/tabs.js
+// ============================================================================
+// Tabs Wiring
+// ============================================================================
 
+/**
+ * Wires tab button clicks to switch panels.
+ * @param {object} ui
+ * @returns {{dispose: () => void}}
+ */
 export function wireTabs(ui){
   const handlers = [];
 
