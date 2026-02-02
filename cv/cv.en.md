@@ -10,7 +10,7 @@
 
 <h2 class="cv-subtitle-text"> Academic profile and research interests</h2>
 
-I am a researcher and PhD candidate in Regulatory Law, with a focus on the empirical analysis of regulatory processes, particularly mechanisms of public participation in regulatory agencies, regulatory impact analysis, and regulatory agendas.
+I am a researcher and university professor working in the field of Regulatory Law. I am a visiting researcher at the Regulatory Studies Center at George Washington University. As a member of FGV’s Regulation in Numbers project, I conduct research focused on the empirical analysis of regulatory processes, especially mechanisms of public participation in regulatory agencies, regulatory impact analysis, and regulatory agendas.
 
 I have a strong interest in quantitative and computational methods applied to law and public policy, including statistics, machine learning, and natural language processing (NLP), as well as in the use of these methods for policy evaluation, regulatory transparency, and institutional learning.
 

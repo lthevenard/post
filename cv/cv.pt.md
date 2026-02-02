@@ -10,7 +10,7 @@
 
 <h2 class="cv-subtitle-text"> Perfil acadêmico e interesses de pesquisa</h2>
 
-Sou pesquisador e doutorando em Direito da Regulação, com foco na análise empírica de processos regulatórios, especialmente mecanismos de participação social em agências reguladoras, análise de impacto regulatório e agendas regulatórias.
+Sou pesquisador e professor universitário, atuando na área do Direito da Regulação. Sou pesquisador visitante do Regulatory Studies Center da George Washington University. No âmbito do Projeto Regulação em Números da FGV, realizo pesquisas com foco na análise empírica de processos regulatórios, especialmente mecanismos de participação social em agências reguladoras, análise de impacto regulatório e agendas regulatórias.
 
 Tenho forte interesse em métodos quantitativos e computacionais aplicados ao direito e às políticas públicas, incluindo estatística, aprendizado de máquina e processamento de linguagem natural (NLP), bem como no uso desses métodos para avaliação de políticas, transparência regulatória e aprendizado institucional.
 

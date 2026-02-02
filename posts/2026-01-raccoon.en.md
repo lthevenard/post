@@ -1,6 +1,6 @@
 # Between the wastebasket of stupidity and the commode of broken dreams: Dave Barry's Year in Review
 
-![Illustration: chess in Plato's cave](./assets/posts/2026-raccoon/sprawled_2.png)
+![Illustration: The commode of broken dreams](./assets/posts/2026-raccoon/sprawled_2.png)
 
 I read The Year in Review by Dave Barry today, and I highly recommend it. The piece is hilarious—but it’s the kind of laughter that you quickly realize is really just a coping mechanism.
 
