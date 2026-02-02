@@ -51,5 +51,14 @@
       <category>regulação</category><category>dados</category><category>participação</category>
       <description><![CDATA[Hello, World]]></description>
     </item>
+
+    <item>
+      <title>Hello, World</title>
+      <link>https://lthevenard.github.io/#/pt/post?slug=2025-09-hello-world-pt</link>
+      <guid isPermaLink="true">https://lthevenard.github.io/#/pt/post?slug=2025-09-hello-world-pt</guid>
+      <pubDate>Thu, 25 Sep 2025 00:00:00 GMT</pubDate>
+      <category>regulação</category><category>dados</category><category>participação</category>
+      <description><![CDATA[Hello, World]]></description>
+    </item>
   </channel>
 </rss>
