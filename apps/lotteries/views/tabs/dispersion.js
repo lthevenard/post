@@ -496,18 +496,32 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
         </span>
       </div>
 
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP1)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP2)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP3)}</p>
+      <div class="lottery-explainer-body">
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP1)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP2)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.explP3)}</p>
+      </div>
     </div>
 
-    <div class="lottery-card">
-      <h3 class="lottery-card-title">${esc(t.scatterSection)}</h3>
+    <div class="lottery-card lottery-explainer" id="dispersion-scatter-explainer">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <h3 class="lottery-card-title" style="margin:0;">${esc(t.scatterSection)}</h3>
+        <span
+          id="toggle-dispersion-scatter"
+          class="lotteries-toggle-link"
+          role="button"
+          tabindex="0"
+        >
+          ${esc(t.explToggleHide)}
+        </span>
+      </div>
 
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP1)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP2)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP3)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;"><b>${esc(isEn ? "Tip:" : "Dica:")}</b> ${esc(isEn ? t.scatterExplTip.replace(/^Tip:\s*/,"") : t.scatterExplTip.replace(/^Dica:\s*/,""))}</p>
+      <div class="lottery-explainer-body">
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP1)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP2)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.scatterExplP3)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;"><b>${esc(isEn ? "Tip:" : "Dica:")}</b> ${esc(isEn ? t.scatterExplTip.replace(/^Tip:\s*/,"") : t.scatterExplTip.replace(/^Dica:\s*/,""))}</p>
+      </div>
 
 
       <div class="disp-chart" style="margin-top: 10px;">
@@ -521,13 +535,25 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
       </div>
     </div>
 
-    <div class="lottery-card">
-      <h3 class="lottery-card-title">${esc(t.compareSection)}</h3>
+    <div class="lottery-card lottery-explainer" id="dispersion-compare-explainer">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <h3 class="lottery-card-title" style="margin:0;">${esc(t.compareSection)}</h3>
+        <span
+          id="toggle-dispersion-compare"
+          class="lotteries-toggle-link"
+          role="button"
+          tabindex="0"
+        >
+          ${esc(t.explToggleHide)}
+        </span>
+      </div>
 
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP1)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(compareCaseSentence)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP2)}</p>
-      <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP3)}</p>
+      <div class="lottery-explainer-body">
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP1)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(compareCaseSentence)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP2)}</p>
+        <p style="margin: 8px 0 0 0; opacity:.9;">${esc(t.compareExplP3)}</p>
+      </div>
 
       <div class="disp-grid">
         <div class="disp-chart">
@@ -560,14 +586,14 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
   `;
 
   // Toggle: hide/show explainer text (same behavior as Convergence tab)
-  const explainer = root.querySelector("#dispersion-explainer");
-  const toggleEl = root.querySelector("#toggle-dispersion-explainer");
+  const wireExplainerToggle = (explainerId, toggleId, storageKey) => {
+    const explainer = root.querySelector(explainerId);
+    const toggleEl = root.querySelector(toggleId);
+    if (!explainer || !toggleEl) return;
 
-  if (explainer && toggleEl) {
-    const key = "lotteries.dispersionExplainerCollapsed";
     let saved = null;
     try {
-      saved = localStorage.getItem(key);
+      saved = localStorage.getItem(storageKey);
     } catch (_) {
       // Storage may be blocked; proceed without persistence.
       saved = null;
@@ -583,14 +609,18 @@ export function renderDispersionTab(root, { lang, d1, d2, simTable1, simTable2, 
 
       const isCollapsed = explainer.classList.contains("is-collapsed");
       try {
-        localStorage.setItem(key, isCollapsed ? "1" : "0");
+        localStorage.setItem(storageKey, isCollapsed ? "1" : "0");
       } catch (_) {
         // Ignore: no persistence.
       }
 
       toggleEl.textContent = isCollapsed ? t.explToggleShow : t.explToggleHide;
     });
-  }
+  };
+
+  wireExplainerToggle("#dispersion-explainer", "#toggle-dispersion-explainer", "lotteries.dispersionExplainerCollapsed");
+  wireExplainerToggle("#dispersion-scatter-explainer", "#toggle-dispersion-scatter", "lotteries.dispersionScatterCollapsed");
+  wireExplainerToggle("#dispersion-compare-explainer", "#toggle-dispersion-compare", "lotteries.dispersionCompareCollapsed");
 
   setupDispersionScatterTooltips(root, { lang, simTable1, simTable2 });
 }
