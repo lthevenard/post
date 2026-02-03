@@ -551,6 +551,10 @@ simfreq-grid{
   line-height: 1.35;
 }
 
+.simfreq-label-short{
+  display: none;
+}
+
 .simfreq-num{
   text-align: right;
   font-weight: 850;
@@ -1120,7 +1124,29 @@ simfreq-grid{
     min-width: 0;
   }
   .simtable{ min-width: max-content; }
-  .simfreq-table{ min-width: max-content; }
+  .simfreq-table{
+    min-width: 0;
+    table-layout: fixed;
+    width: 100%;
+    font-size: 13px;
+  }
+  .simfreq-table th:nth-child(1),
+  .simfreq-table td:nth-child(1){
+    width: 70%;
+  }
+  .simfreq-table th:nth-child(2),
+  .simfreq-table td:nth-child(2){
+    width: 30%;
+  }
+  .simfreq-outcome{
+    word-break: break-word;
+  }
+  .simfreq-label-full{
+    display: none;
+  }
+  .simfreq-label-short{
+    display: inline;
+  }
   
   .lotteries-surface,
   .lotteries-grid,

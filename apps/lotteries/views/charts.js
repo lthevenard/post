@@ -368,7 +368,7 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
     <line x1="${cx}" y1="${y0}" x2="${cx}" y2="${y0 + plotH}" stroke="${faint}" />
   `;
 
-  // Marcador: whisker vertical (μ±σ) + whiskers horizontais + ponto em μ
+  // Marker: vertical whisker (μ±σ) + horizontal whiskers + point at μ.
   const col = "rgb(220,38,38)";
 
   const marker = sigma > 0
@@ -382,14 +382,14 @@ export function renderExpectedValueSVG(ev, sd, { title, xTickLabel } = {}) {
       <circle cx="${cx}" cy="${yMu}" r="7" fill="${col}" />
     `;
 
-  // Texto ao lado do ponto: μ e σ
+  // Text next to the point: μ and σ.
   const infoText = `
     <text x="${cx + 28}" y="${yMu + 4}" font-size="13" font-weight="850" fill="${textFill}">
       μ=${esc(mu.toFixed(1))}${sigma > 0 ? `, σ=${esc(sigma.toFixed(1))}` : ""}
     </text>
   `;
 
-  // Tick/label simples no eixo x (apenas para “ancorar” visualmente a loteria)
+  // Simple x-axis tick/label to visually anchor the lottery.
   const xTick = `
     <line x1="${cx}" y1="${y0 + plotH}" x2="${cx}" y2="${y0 + plotH + 8}" stroke="${axisTickStroke}" />
     <text x="${cx}" y="${y0 + plotH + 26}" text-anchor="middle"
@@ -738,7 +738,7 @@ export function renderProfitPerTicketSVG(points, {
   // --- Layout ---
   const W = 520;
   const H = 300;
-  const m = { l: 64, r: 18, t: 18, b: 54 }; // b um pouco maior por causa dos labels do eixo X
+  const m = { l: 64, r: 18, t: 18, b: 54 }; // Slightly larger bottom margin for X-axis labels.
 
   // --- Domains ---
   const xs = series.map((p) => p.N);
@@ -794,7 +794,7 @@ export function renderProfitPerTicketSVG(points, {
     return Math.max(left, Math.min(right, x));
   };
 
-  // --- Linha e pontos ---
+  // --- Line and points ---
   const d = series
     .map((p, i) => {
       const x = clampToPlotX(xScale(p.N));
@@ -854,7 +854,7 @@ export function renderProfitPerTicketSVG(points, {
     `;
   }).join("");
 
-  // Linha do zero (mais forte), se estiver dentro do range
+  // Zero line (stronger) if it falls within the range.
   const yZeroLineSvg =
     (0 > yMin && 0 < yMax)
       ? (() => {

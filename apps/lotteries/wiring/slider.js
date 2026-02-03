@@ -103,15 +103,19 @@ export function wireSimulationSlider({
         const resultLabel = isEn ? "Outcome" : "Resultado";
         const paysLabel = isEn ? "pays" : "paga";
         const chanceLabel = isEn ? "chance" : "de chance";
+        const shortLabel = `${name}: ${payoffHTML(v)} · ${fmtPct1(p)}`;
 
         return `
           <tr>
             <td class="simfreq-outcome">
-              ${resultLabel} <strong>${name}</strong> ${paysLabel}
-              <strong>${payoffHTML(v)}</strong>
-              ${isEn ? "with a" : "com"}
-              <strong>${fmtPct1(p)}</strong>
-              ${chanceLabel}.
+              <span class="simfreq-label-full">
+                ${resultLabel} <strong>${name}</strong> ${paysLabel}
+                <strong>${payoffHTML(v)}</strong>
+                ${isEn ? "with a" : "com"}
+                <strong>${fmtPct1(p)}</strong>
+                ${chanceLabel}.
+              </span>
+              <span class="simfreq-label-short">${shortLabel}</span>
             </td>
             <td class="simfreq-num">${freqPct}%</td>
           </tr>
@@ -203,8 +207,14 @@ export function wireSimulationSlider({
             <table class="simfreq-table">
               <thead>
                 <tr>
-                  <th style="text-align:left;">${isEn ? "Results" : "Resultados"}</th>
-                  <th style="text-align:right;">${isEn ? "Observed freq." : "Freq. observada"}</th>
+                  <th style="text-align:left;">
+                    <span class="simfreq-label-full">${isEn ? "Results" : "Resultados"}</span>
+                    <span class="simfreq-label-short">${isEn ? "Outcome" : "Resultado"}</span>
+                  </th>
+                  <th style="text-align:right;">
+                    <span class="simfreq-label-full">${isEn ? "Observed freq." : "Freq. observada"}</span>
+                    <span class="simfreq-label-short">${isEn ? "Freq." : "Freq."}</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>${rows1}</tbody>
@@ -216,8 +226,14 @@ export function wireSimulationSlider({
             <table class="simfreq-table">
               <thead>
                 <tr>
-                  <th style="text-align:left;">${isEn ? "Results" : "Resultados"}</th>
-                  <th style="text-align:right;">${isEn ? "Observed freq." : "Freq. observada"}</th>
+                  <th style="text-align:left;">
+                    <span class="simfreq-label-full">${isEn ? "Results" : "Resultados"}</span>
+                    <span class="simfreq-label-short">${isEn ? "Outcome" : "Resultado"}</span>
+                  </th>
+                  <th style="text-align:right;">
+                    <span class="simfreq-label-full">${isEn ? "Observed freq." : "Freq. observada"}</span>
+                    <span class="simfreq-label-short">${isEn ? "Freq." : "Freq."}</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>${rows2}</tbody>
@@ -267,6 +283,9 @@ export function wireSimulationSlider({
    */
   function onPlay() {
     if (animationTimer) return;
+
+    // Bring the outcomes section into view so the animation is visible.
+    outcomesMount.scrollIntoView({ behavior: "smooth", block: "start" });
 
     const step0 = getAnimStep();
     const min0 = Number(ticketsRange.min);

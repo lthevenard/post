@@ -94,6 +94,61 @@ code,pre{background:#0b1220;border:1px solid var(--border);border-radius:10px;pa
   margin-top: 8px;
 }
 
+/* Apps index: open button */
+.apps-item{
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.apps-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+.apps-row .primary{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.apps-open-btn{
+  margin-left: auto;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #16a34a, #0f7a35);
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.apps-open-btn:hover{
+  background: #22c55e;
+  text-decoration: none;
+}
+
+@media (max-width: 768px){
+  .apps-item{
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .apps-row{
+    flex-wrap: wrap;
+  }
+  .apps-open-btn{
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    align-self: center;
+  }
+}
+
 /* Prose */
 .prose h1,.prose h2,.prose h3{margin:1.2em 0 .4em}
 .prose h1{font-size:1.8rem}

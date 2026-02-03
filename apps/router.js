@@ -20,17 +20,22 @@ export async function renderAppsIndex(mount, { route }) {
     : "Ferramentas interativas hospedadas dentro deste site.";
 
   const list = apps.map(a => `
-    <li class="list-item stacked">
-      <div class="primary">
-        <a href="#/${lang}/apps/${a.slug}">
-          <strong>${a.title[lang] || a.title.pt}</strong>
-        </a>
-        <div class="muted">${a.description[lang] || a.description.pt}</div>
-        <div class="badge-row">
-          ${(a.tags?.[lang] || a.tags?.pt || [])
-            .map(t => `<span class="badge">${t}</span>`)
-            .join("")}
+    <li class="list-item stacked apps-item">
+      <div class="apps-row">
+        <div class="primary">
+          <a href="#/${lang}/apps/${a.slug}">
+            <strong>${a.title[lang] || a.title.pt}</strong>
+          </a>
+          <div class="muted">${a.description[lang] || a.description.pt}</div>
+          <div class="badge-row">
+            ${(a.tags?.[lang] || a.tags?.pt || [])
+              .map(t => `<span class="badge">${t}</span>`)
+              .join("")}
+          </div>
         </div>
+        <a class="apps-open-btn" href="#/${lang}/apps/${a.slug}">
+          ${lang === "pt" ? "Abrir" : "Open"}
+        </a>
       </div>
     </li>
   `).join("");
