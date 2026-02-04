@@ -5,8 +5,17 @@
     <link>https://lthevenard.github.io/#/pt/blog</link>
     <description>Posts sobre regulação, AIR/ARR, participação e NLP</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 11 Jan 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 25 Jan 2026 00:00:00 GMT</lastBuildDate>
     
+    <item>
+      <title>Quando o estagiário vira chefe</title>
+      <link>https://lthevenard.github.io/#/pt/post?slug=2026-02-AI-intern-pt</link>
+      <guid isPermaLink="true">https://lthevenard.github.io/#/pt/post?slug=2026-02-AI-intern-pt</guid>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 GMT</pubDate>
+      <category>IA</category><category>administração pública</category><category>melhoria regulatória</category>
+      <description><![CDATA[Quando o estagiário vira chefe]]></description>
+    </item>
+
     <item>
       <title>Aquela noite em que fomos ao Josh’s Smack Shack (e parecia um episódio de Seinfeld)</title>
       <link>https://lthevenard.github.io/#/pt/post?slug=2026-01-josh-smack-shack-pt</link>
@@ -41,15 +50,6 @@
       <pubDate>Thu, 23 Oct 2025 00:00:00 GMT</pubDate>
       <category>regulação</category><category>participação pública</category><category>complexidade</category>
       <description><![CDATA[O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley]]></description>
-    </item>
-
-    <item>
-      <title>Hello, World</title>
-      <link>https://lthevenard.github.io/#/pt/post?slug=2025-09-hello-world-pt</link>
-      <guid isPermaLink="true">https://lthevenard.github.io/#/pt/post?slug=2025-09-hello-world-pt</guid>
-      <pubDate>Thu, 25 Sep 2025 00:00:00 GMT</pubDate>
-      <category>regulação</category><category>dados</category><category>participação</category>
-      <description><![CDATA[Hello, World]]></description>
     </item>
 
     <item>
