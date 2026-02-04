@@ -19,6 +19,30 @@
         "Probability"
       ]
     },
-    "status": "skeleton"
+    "status": "version 1.0",
+    "posted": true
+  },
+  {
+    "slug": "exercises",
+    "title": {
+      "pt": "Exercícios de Teoria da Decisão",
+      "en": "Decision Theory Exercises"
+    },
+    "description": {
+      "pt": "Resolva exercícios de decisões sob ignorância usando métodos clássicos da teoria da decisão.",
+      "en": "Solve decision-under-ignorance exercises using classic decision theory methods."
+    },
+    "tags": {
+      "pt": [
+        "Teoria da Decisão",
+        "Ignorância"
+      ],
+      "en": [
+        "Decision Theory",
+        "Ignorance"
+      ]
+    },
+    "status": "skeleton",
+    "posted": false
   }
 ]

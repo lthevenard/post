@@ -1,101 +1,44 @@
 [
   {
-    "group": "2025-09-hello-world",
-    "slug": "2025-09-hello-world-pt",
-    "title": "Hello, World",
-    "date": "2025-09-25",
-    "tags": ["regulação", "dados", "participação"],
+    "group": "2026-02-AI-intern",
+    "slug": "2026-02-AI-intern-pt",
+    "title": "Quando o estagiário vira chefe",
+    "date": "2026-01-25",
+    "tags": [
+      "IA",
+      "administração pública",
+      "melhoria regulatória"
+    ],
     "lang": "pt",
-    "file": "posts/2025-09-hello-world.pt.md"
+    "posted": false,
+    "file": "posts/2026-02-AI-intern.pt.md"
   },
   {
     "group": "2026-02-AI-intern",
     "slug": "2026-02-AI-intern-en",
     "title": "When the Intern Becomes the Boss",
     "date": "2026-01-25",
-    "tags": ["AI", "public administration", "better regulation"],
+    "tags": [
+      "AI",
+      "public administration",
+      "better regulation"
+    ],
     "lang": "en",
+    "posted": false,
     "file": "posts/2026-02-AI-intern.en.md"
-  },
-  {
-    "group": "2025-09-hello-world",
-    "slug": "2025-09-hello-world-pt",
-    "title": "Hello, World",
-    "date": "2025-09-25",
-    "tags": ["regulação", "dados", "participação"],
-    "lang": "pt",
-    "file": "posts/2025-09-hello-world.pt.md"
-  },
-  {
-    "group": "2025-09-hello-world",
-    "slug": "2025-09-hello-world-en",
-    "title": "Hello, World",
-    "date": "2025-09-25",
-    "tags": ["regulation", "data", "participation"],
-    "lang": "en",
-    "file": "posts/2025-09-hello-world.en.md"
-  },
-  {
-    "group": "2025-10-gormley-complexity",
-    "slug": "2025-10-gormley-complexity-en",
-    "title": "The Complex Concept of Complexity: A Note on Gormley’s Typology",
-    "date": "2025-10-23",
-    "tags": ["regulation", "public participation", "complexity"],
-    "lang": "en",
-    "file": "posts/2025-10-gormley-complexity.en.md"
-  },
-  {
-    "group": "2025-10-gormley-complexity",
-    "slug": "2025-10-gormley-complexity-pt",
-    "title": "O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley",
-    "date": "2025-10-23",
-    "tags": ["regulação", "participação pública", "complexidade"],
-    "lang": "pt",
-    "file": "posts/2025-10-gormley-complexity.pt.md"
-  },
-  {
-    "group": "2025-12-chess",
-    "slug": "2025-12-chess-pt",
-    "title": "Xadrez, incerteza e filosofia de botequim",
-    "date": "2025-12-26",
-    "tags": ["epistemologia", "teoria da decisão", "xadrez"],
-    "lang": "pt",
-    "file": "posts/2025-12-chess.pt.md"
-  },
-  {
-    "group": "2025-12-chess",
-    "slug": "2025-12-chess-en",
-    "title": "Chess, Uncertainty, and Pub Philosophy",
-    "date": "2025-12-26",
-    "tags": ["epistemology", "decision theory", "chess"],
-    "lang": "en",
-    "file": "posts/2025-12-chess.en.md"
-  },
-  {
-    "group": "2026-01-raccoon",
-    "slug": "2026-01-raccoon-pt",
-    "title": "Entre a lixeira da estupidez e a latrina dos sonhos despedaçados: a recapitulação do ano por Dave Barry",
-    "date": "2026-01-01",
-    "tags": ["política", "blogs"],
-    "lang": "pt",
-    "file": "posts/2026-01-raccoon.pt.md"
-  },
-  {
-    "group": "2026-01-raccoon",
-    "slug": "2026-01-raccoon-en",
-    "title": "Between the wastebasket of stupidity and the commode of broken dreams: Dave Barry's Year in Review",
-    "date": "2026-01-01",
-    "tags": ["politics", "blogs"],
-    "lang": "en",
-    "file": "posts/2026-01-raccoon.en.md"
   },
   {
     "group": "2026-01-josh-smack-shack",
     "slug": "2026-01-josh-smack-shack-en",
     "title": "That Night We Went to Josh’s Smack Shack (And It Felt Like a Seinfeld Episode)",
     "date": "2026-01-11",
-    "tags": ["washington", "culture", "personal stories"],
+    "tags": [
+      "washington",
+      "culture",
+      "personal stories"
+    ],
     "lang": "en",
+    "posted": true,
     "file": "posts/2026-01-josh-smack-shack.en.md"
   },
   {
@@ -103,8 +46,123 @@
     "slug": "2026-01-josh-smack-shack-pt",
     "title": "Aquela noite em que fomos ao Josh’s Smack Shack (e parecia um episódio de Seinfeld)",
     "date": "2026-01-11",
-    "tags": ["washington", "cultura", "histórias pessoais"],
+    "tags": [
+      "washington",
+      "cultura",
+      "histórias pessoais"
+    ],
     "lang": "pt",
+    "posted": true,
     "file": "posts/2026-01-josh-smack-shack.pt.md"
+  },
+  {
+    "group": "2026-01-raccoon",
+    "slug": "2026-01-raccoon-pt",
+    "title": "Entre a lixeira da estupidez e a latrina dos sonhos despedaçados: a recapitulação do ano por Dave Barry",
+    "date": "2026-01-01",
+    "tags": [
+      "política",
+      "blogs"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2026-01-raccoon.pt.md"
+  },
+  {
+    "group": "2026-01-raccoon",
+    "slug": "2026-01-raccoon-en",
+    "title": "Between the wastebasket of stupidity and the commode of broken dreams: Dave Barry's Year in Review",
+    "date": "2026-01-01",
+    "tags": [
+      "politics",
+      "blogs"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2026-01-raccoon.en.md"
+  },
+  {
+    "group": "2025-12-chess",
+    "slug": "2025-12-chess-pt",
+    "title": "Xadrez, incerteza e filosofia de botequim",
+    "date": "2025-12-26",
+    "tags": [
+      "epistemologia",
+      "teoria da decisão",
+      "xadrez"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2025-12-chess.pt.md"
+  },
+  {
+    "group": "2025-12-chess",
+    "slug": "2025-12-chess-en",
+    "title": "Chess, Uncertainty, and Pub Philosophy",
+    "date": "2025-12-26",
+    "tags": [
+      "epistemology",
+      "decision theory",
+      "chess"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2025-12-chess.en.md"
+  },
+  {
+    "group": "2025-10-gormley-complexity",
+    "slug": "2025-10-gormley-complexity-en",
+    "title": "The Complex Concept of Complexity: A Note on Gormley’s Typology",
+    "date": "2025-10-23",
+    "tags": [
+      "regulation",
+      "public participation",
+      "complexity"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2025-10-gormley-complexity.en.md"
+  },
+  {
+    "group": "2025-10-gormley-complexity",
+    "slug": "2025-10-gormley-complexity-pt",
+    "title": "O complexo conceito de “complexidade”: uma nota sobre a tipologia de Gormley",
+    "date": "2025-10-23",
+    "tags": [
+      "regulação",
+      "participação pública",
+      "complexidade"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2025-10-gormley-complexity.pt.md"
+  },
+  {
+    "group": "2025-09-hello-world",
+    "slug": "2025-09-hello-world-pt",
+    "title": "Hello, World",
+    "date": "2025-09-25",
+    "tags": [
+      "regulação",
+      "dados",
+      "participação"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2025-09-hello-world.pt.md"
+  },
+  {
+    "group": "2025-09-hello-world",
+    "slug": "2025-09-hello-world-en",
+    "title": "Hello, World",
+    "date": "2025-09-25",
+    "tags": [
+      "regulation",
+      "data",
+      "participation"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2025-09-hello-world.en.md"
   }
 ]

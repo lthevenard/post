@@ -5,6 +5,16 @@
 import { loadAppsCatalog } from "./shared/catalog.js";
 
 /**
+ * Returns true when an app should be visible on the site.
+ * Defaults to true when the field is missing.
+ * @param {object} app
+ * @returns {boolean}
+ */
+function isAppPosted(app) {
+  return app?.posted !== false;
+}
+
+/**
  * Renders the Apps index page.
  * @param {HTMLElement} mount
  * @param {{route: string}} ctx
@@ -12,7 +22,7 @@ import { loadAppsCatalog } from "./shared/catalog.js";
  */
 export async function renderAppsIndex(mount, { route }) {
   const lang = route.startsWith("/en") ? "en" : "pt";
-  const apps = await loadAppsCatalog();
+  const apps = (await loadAppsCatalog()).filter(isAppPosted);
 
   const title = lang === "en" ? "Apps" : "Apps";
   const intro = lang === "en"
@@ -58,6 +68,19 @@ export async function renderAppsIndex(mount, { route }) {
 export async function renderAppRoute(mount, { route }) {
   const lang = route.startsWith("/en") ? "en" : "pt";
   const slug = route.split("/").pop();
+
+  const catalog = await loadAppsCatalog();
+  const app = catalog.find(a => a.slug === slug);
+  if (!app || !isAppPosted(app)) {
+    mount.innerHTML = `
+      <section class="card">
+        <h1>App not found</h1>
+        <p>Slug: <code>${slug}</code></p>
+        <p><a href="#/${lang}/apps">Back to Apps</a></p>
+      </section>
+    `;
+    return;
+  }
 
   // Lazy-load app entry.
   // Note: each app exports `mountApp(mount, { lang })`.

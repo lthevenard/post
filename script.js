@@ -116,6 +116,16 @@ function findPostBySlugAndLang(list, slug, lang) {
   return list.find(p => p.slug === slug && p.lang === lang);
 }
 
+/**
+ * Returns true when a post should be visible in listings.
+ * Defaults to true when the field is missing.
+ * @param {object} post
+ * @returns {boolean}
+ */
+function isPostPublished(post) {
+  return post?.posted !== false;
+}
+
 // ============================================================================
 // UI Strings
 // ============================================================================
@@ -280,7 +290,9 @@ async function computeOtherLangHash(lang) {
     const here = findPostBySlugAndLang(posts, slug, lang);
     if (here && here.group) {
       const there = counterpartByGroup(posts, here.group, other);
-      targetHash = there ? `#/${other}/post?slug=${encodeURIComponent(there.slug)}` : `#/${other}/blog`;
+      targetHash = (there && isPostPublished(there))
+        ? `#/${other}/post?slug=${encodeURIComponent(there.slug)}`
+        : `#/${other}/blog`;
     }
   } else if (seg === 'project') {
     const [projects, slidesAll] = await Promise.all([
@@ -798,7 +810,7 @@ async function renderHome(lang) {
   // Loads the last posts in the index (filtering by language)
   const res = await fetch("posts/posts.json");
   const posts = sortPostsNewestFirst(
-    (await res.json()).filter((p) => p.lang === lang)
+    (await res.json()).filter((p) => p.lang === lang && isPostPublished(p))
   );
   const latest = posts.slice(0, 3);
   const list = document.getElementById("latest");
@@ -847,7 +859,7 @@ async function renderBlogIndex(lang) {
     </section>
   `);
   const res = await fetch('posts/posts.json');
-  const posts = sortPostsNewestFirst((await res.json()).filter(p => p.lang === lang));
+  const posts = sortPostsNewestFirst((await res.json()).filter(p => p.lang === lang && isPostPublished(p)));
   const list = document.getElementById('blog-list');
   list.innerHTML = posts.map(p => `
     <div class="list-item">
@@ -874,7 +886,7 @@ async function renderBlogPost(lang, params) {
 
   const posts = await getJSON('posts/posts.json');
   const item = findPostBySlugAndLang(posts, slug, lang);
-  if (!item) {
+  if (!item || !isPostPublished(item)) {
     const msg = lang === 'pt' ? 'Post não disponível em português.' : 'Post not available in English.';
     setContent(`
       <section class="card prose">
