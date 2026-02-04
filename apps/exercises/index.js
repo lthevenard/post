@@ -703,14 +703,19 @@ function renderPage(mount, { lang }) {
       ? "Practice Decision Theory and Game Theory problems with guided solution methods."
       : "Pratique problemas de Teoria da Decisão e Teoria dos Jogos com métodos de solução guiados.",
     backToHome: isEn ? "Select a different exercise" : "Selecionar outro exercício",
+    backToHomeAbout: isEn ? "Select an exercise" : "Selecionar um exercício",
     homeTitle: isEn ? "Choose an exercise" : "Escolha um exercício",
     homeSubtitle: isEn
       ? "Select a practice mode to begin. New exercise types can be added here."
       : "Selecione uma modalidade para começar. Novos tipos de exercício podem ser adicionados aqui.",
     homeIgnorance: isEn ? "Decisions under ignorance" : "Decisões sob ignorância",
-    homeGameTheory: isEn ? "Game theory exercises" : "Exercícios de teoria dos jogos",
+    homeIgnoranceBadge: isEn ? "Solution methods" : "MÉTODOS DE SOLUÇÃO",
+    homeIgnoranceIcon: isEn ? "DT" : "TD",
+    homeGameTheory: isEn ? "Game Theory" : "Teoria dos Jogos",
     homeGameTheoryBadge: isEn ? "Nash equilibrium" : "Equilíbrio de Nash",
-    homeAbout: isEn ? "About this project" : "Sobre este projeto",
+    homeGameTheoryIcon: isEn ? "GT" : "TJ",
+    homeAbout: isEn ? "About" : "Sobre",
+    homeAboutBadge: isEn ? "Learn more about this project" : "Saiba mais sobre este projeto",
     comingSoon: isEn ? "Coming soon" : "Em breve",
     exerciseTab: isEn ? "💪 Exercise" : "💪 Exercício",
     solutionTab: isEn ? "🤓 Solution" : "🤓 Solução",
@@ -749,11 +754,6 @@ function renderPage(mount, { lang }) {
           couple of exercise-types that deal with decisions under ignorance. In the future, I hope to include many more options,
           making the experience a little richer for the students that decide to visit the app.
         </p>
-        <p style="line-height: 180%; margin-bottom: 15px;">
-          In any case, if you find this project interesting and want to be involved, please access the app's
-          <a href="https://github.com/lthevenard/dt_exercises">Github Page</a> or contact me directly at
-          <a href="mailto: lucas.gomes@fgv.br">lucas.gomes@fgv.br</a>. I hope you like what has been accomplished so far and have fun!
-        </p>
       `
       : `
         <p style="line-height: 180%; margin-bottom: 15px;">
@@ -772,10 +772,6 @@ function renderPage(mount, { lang }) {
           Diante desses objetivos, este app funciona como um <i>laboratório</i> onde os alunos podem praticar os conceitos vistos em sala.
           É um projeto ambicioso, implementado gradualmente e sujeito a revisões futuras. Atualmente, o app cobre apenas alguns tipos de
           exercícios sobre decisões sob ignorância. No futuro, esperamos incluir novas opções e enriquecer a experiência.
-        </p>
-        <p style="line-height: 180%; margin-bottom: 15px;">
-          Se você tiver interesse em colaborar, acesse o <a href="https://github.com/lthevenard/dt_exercises">Github</a> do app ou entre em
-          contato pelo e-mail <a href="mailto: lucas.gomes@fgv.br">lucas.gomes@fgv.br</a>. Esperamos que você goste do resultado e se divirta!
         </p>
       `,
   };
@@ -915,7 +911,13 @@ function renderPage(mount, { lang }) {
             <h1 class="exercises-title">${labels.title}</h1>
             <p class="exercises-subtitle">${labels.subtitle}</p>
           </div>
-          <button class="exercises-link-btn" type="button" data-home-link="true">
+          <button
+            class="exercises-link-btn"
+            type="button"
+            data-home-link="true"
+            data-home-label="${labels.backToHome}"
+            data-about-label="${labels.backToHomeAbout}"
+          >
             ${labels.backToHome}
           </button>
         </header>
@@ -926,17 +928,19 @@ function renderPage(mount, { lang }) {
             <p class="exercises-subtitle">${labels.homeSubtitle}</p>
             <div class="exercises-home-grid">
               <button class="exercises-home-card" data-home="dui" type="button">
-                <div class="exercises-home-icon">DT</div>
+                <div class="exercises-home-icon">${labels.homeIgnoranceIcon}</div>
                 <div class="exercises-home-title">${labels.homeIgnorance}</div>
+                <div class="exercises-home-badge">${labels.homeIgnoranceBadge}</div>
               </button>
               <button class="exercises-home-card" data-home="game" type="button">
-                <div class="exercises-home-icon">GT</div>
+                <div class="exercises-home-icon">${labels.homeGameTheoryIcon}</div>
                 <div class="exercises-home-title">${labels.homeGameTheory}</div>
                 <div class="exercises-home-badge">${labels.homeGameTheoryBadge}</div>
               </button>
               <button class="exercises-home-card" data-home="about" type="button">
                 <div class="exercises-home-icon">i</div>
                 <div class="exercises-home-title">${labels.homeAbout}</div>
+                <div class="exercises-home-badge">${labels.homeAboutBadge}</div>
               </button>
             </div>
           </div>
@@ -1163,6 +1167,13 @@ export async function mountApp(mount, { lang }) {
     });
     if (ui.surface) {
       ui.surface.classList.toggle("is-home", panel === "home");
+    }
+    if (ui.els.homeLink) {
+      const { homeLabel, aboutLabel } = ui.els.homeLink.dataset;
+      const nextLabel = panel === "about" ? aboutLabel : homeLabel;
+      if (nextLabel) {
+        ui.els.homeLink.textContent = nextLabel;
+      }
     }
   };
 
