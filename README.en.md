@@ -38,8 +38,6 @@ This repository hosts my bilingual (PT/EN) static academic website. The site is 
 │  ├─ slides.json
 │  ├─ archived/ (create when needed)
 │  └─ <slide-slug>/
-├─ rss-pt.xml
-└─ rss-en.xml
 ```
 
 ## Apps Hosted on the Site
@@ -140,7 +138,6 @@ Rules:
 
 1. Create a Markdown file in `posts/`.
 2. Add an entry in `posts/posts.json`.
-3. Update `rss-pt.xml` or `rss-en.xml` (see RSS section below).
 
 ### Slides (`#/pt/slides`, `#/en/slides`)
 
@@ -270,19 +267,6 @@ Example catalog entry:
 3. Register the app in `apps/apps.json`.
 4. Add a separate README inside the app folder if needed.
 
-## RSS Feeds
-
-The RSS feeds are maintained manually:
-
-- `rss-pt.xml`
-- `rss-en.xml`
-
-When you publish a new post:
-
-1. Update `<lastBuildDate>`.
-2. Add a new `<item>` with title, link, guid, pubDate, and categories.
-3. Keep items in reverse chronological order.
-
 ## Maintenance Checklist
 
 - `lang` is always `pt` or `en`.
@@ -293,4 +277,3 @@ When you publish a new post:
 - Projects only appear if they have active slides.
 - Publications are placed in the correct type file.
 - CV items are marked with `"cv": true`.
-- RSS feeds are kept in sync with the blog.

@@ -1,5 +1,15 @@
 [
-    {
+  {
+    "type": "op-ed",
+    "title": "AI as a Research Assistant for Regulatory Studies – a Methodological Note",
+    "authors": ["Lucas Thevenard"],
+    "date": "2026-02-16",
+    "publication": "Regulatory Studies Center – Commenatries & Insights",
+    "url": "https://regulatorystudies.columbian.gwu.edu/ai-research-assistant-regulatory-studies-methodological-note",
+    "lang": "en",
+    "cv": true
+  },
+  {
     "type": "op-ed",
     "title": "O desafio da sustentabilidade das agências reguladoras",
     "authors": ["Natasha Schmitt Caccia Salinas", "Lucas Thevenard", "Caio Assumpção", "Jeane Santos Ribeiro"],

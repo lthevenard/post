@@ -1,6 +1,2 @@
 User-agent: *
 Allow: /
-
-# Feeds RSS
-# pt: /rss-pt.xml
-# en: /rss-en.xml

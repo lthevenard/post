@@ -1,8 +1,5 @@
 {
   "name": "lt-pages",
   "private": true,
-  "type": "module",
-  "scripts": {
-    "build:feeds": "node tools/build-feeds.mjs"
-  }
+  "type": "module"
 }

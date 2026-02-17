@@ -1,0 +1,308 @@
+:root {
+  --ink: #1f2937;
+  --muted: #5f6b7a;
+  --accent: #0b3d6e;
+  --accent-soft: #e8f0f8;
+  --line: #d9e1ea;
+  --paper: #f5f3ee;
+}
+
+@page {
+  size: A4;
+  margin: 16mm 16mm 18mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Source Sans 3", "Avenir Next", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-variant-ligatures: common-ligatures;
+}
+
+.page {
+  max-width: 210mm;
+  margin: 24px auto 32px;
+  background: #fff;
+  padding: 18mm 16mm 20mm;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  border: 1px solid #eef2f6;
+}
+
+.cv-kicker {
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+h1, h2, h3 {
+  font-family: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0;
+}
+
+h1 {
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+h2 {
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+h2, h3 {
+  break-after: avoid;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 14px 0 8px;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.cv-header {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  align-items: start;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--line);
+}
+
+.cv-role {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.cv-affiliation {
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.cv-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.cv-highlights {
+  background: var(--accent-soft);
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.cv-highlights p {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.cv-section {
+  margin-top: 24px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  break-inside: avoid;
+}
+
+.cv-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.cv-timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.cv-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  align-items: start;
+  break-inside: avoid;
+}
+
+.cv-date {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.92rem;
+}
+
+.cv-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.cv-org {
+  color: var(--muted);
+  font-size: 0.94rem;
+  margin-bottom: 4px;
+}
+
+.cv-desc {
+  font-size: 0.94rem;
+}
+
+.cv-subrole {
+  margin-top: 8px;
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+}
+
+.cv-subrole-title {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.cv-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cv-skill-block {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.cv-skill-block h3 {
+  margin-top: 0;
+}
+
+.cv-skill-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cv-skill-list li {
+  margin-bottom: 6px;
+  font-size: 0.93rem;
+}
+
+.pub-group {
+  margin-top: 14px;
+  break-inside: avoid;
+}
+
+.pub-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.pub-item {
+  margin-bottom: 10px;
+  break-inside: avoid;
+}
+
+.pub-main {
+  font-size: 0.96rem;
+}
+
+.pub-title {
+  font-style: italic;
+}
+
+.pub-meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.pub-links {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .cv-header {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-item {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-date {
+    margin-bottom: 4px;
+  }
+
+  .cv-skill-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .page {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    max-width: none;
+    width: auto;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .cv-highlights {
+    background: #eef3f8;
+  }
+
+  /* Keep the two-column layout in print, even if screen media queries would stack. */
+  .cv-header {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+
+  .cv-item {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .cv-skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
