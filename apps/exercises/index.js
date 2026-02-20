@@ -41,7 +41,12 @@ import {
   describeGameProblem,
   buildGameSolutionHeader,
 } from "./modules/game/nash_equilibrium.js";
-import { buildClassicGamesTexts } from "./modules/game/classic_games.js";
+import {
+  buildClassicGamesTexts,
+  buildClassicGameInstance,
+  describeClassicGameProblem,
+  buildClassicGameSolutionHeader,
+} from "./modules/game/classic_games.js";
 import { buildAboutCopy } from "./modules/about/about.js";
 import {
   renderDecisionTree,
@@ -767,6 +772,34 @@ function renderPage(mount, { lang }) {
               <hr />
 
               <div class="exercises-field">
+                <label class="exercises-label">${gameClassicTexts.gameTypeLabel}</label>
+                <select id="game_classic_type" class="exercises-select">
+                  ${gameClassicTexts.gameTypeOptions
+                    .map(
+                      (opt) =>
+                        `<option value="${opt.value}" ${
+                          opt.value === "test" ? "selected" : ""
+                        }>${opt.label}</option>`
+                    )
+                    .join("")}
+                </select>
+              </div>
+
+              <div class="exercises-field">
+                <label class="exercises-label">${gameClassicTexts.payoffStyleLabel}</label>
+                <select id="game_classic_payoff_style" class="exercises-select">
+                  ${gameClassicTexts.payoffStyleOptions
+                    .map(
+                      (opt) =>
+                        `<option value="${opt.value}" ${
+                          opt.value === "independent" ? "selected" : ""
+                        }>${opt.label}</option>`
+                    )
+                    .join("")}
+                </select>
+              </div>
+
+              <div class="exercises-field">
                 <div class="exercises-seed-card">
                   <div class="exercises-seed-title">${labels.seedTitle}</div>
                   <div class="exercises-seed-options">
@@ -840,11 +873,14 @@ function renderPage(mount, { lang }) {
 
               <div class="exercises-subtab-panel" data-subpanel="exercise">
                 <p class="exercises-placeholder">${gameClassicTexts.exerciseIntro}</p>
+                <div id="game_classic_problem_description"></div>
+                <div id="game_classic_problem_table"></div>
                 <div id="game_classic_exercise_seed" class="exercises-seed-used"></div>
               </div>
 
               <div class="exercises-subtab-panel hidden" data-subpanel="solution">
                 <p class="exercises-placeholder">${gameClassicTexts.solutionIntro}</p>
+                <div id="game_classic_solution_header"></div>
                 <div id="game_classic_solution_seed" class="exercises-seed-used"></div>
               </div>
             </main>
@@ -1214,11 +1250,16 @@ function renderPage(mount, { lang }) {
         generatePanel: mount.querySelector("#game_classic_generate_panel"),
         subtabButtons: Array.from(gameClassicPanel.querySelectorAll(".exercises-subtab-btn")),
         subtabPanels: Array.from(gameClassicPanel.querySelectorAll(".exercises-subtab-panel")),
+        gameType: mount.querySelector("#game_classic_type"),
+        payoffStyle: mount.querySelector("#game_classic_payoff_style"),
         seedModeAuto: mount.querySelector("#game_classic_seed_mode_auto"),
         seedModeManual: mount.querySelector("#game_classic_seed_mode_manual"),
         seedManualWrap: mount.querySelector("#game_classic_seed_manual_wrap"),
         seedManualInput: mount.querySelector("#game_classic_seed_manual_input"),
         generateBtn: mount.querySelector("#game_classic_generate_btn"),
+        problemDescription: mount.querySelector("#game_classic_problem_description"),
+        problemTable: mount.querySelector("#game_classic_problem_table"),
+        solutionHeader: mount.querySelector("#game_classic_solution_header"),
         seedUsedExercise: mount.querySelector("#game_classic_exercise_seed"),
         seedUsedSolution: mount.querySelector("#game_classic_solution_seed"),
         placeholders: Array.from(gameClassicPanel.querySelectorAll(".exercises-placeholder")),
@@ -1767,12 +1808,19 @@ export async function mountApp(mount, { lang }) {
 
   const resetGameClassicPanels = () => {
     ui.els.gameClassic.placeholders.forEach((el) => (el.style.display = ""));
+    if (ui.els.gameClassic.gameType) {
+      ui.els.gameClassic.gameType.value = "test";
+      ui.els.gameClassic.gameType.dispatchEvent(new Event("change", { bubbles: true }));
+    }
     if (ui.els.gameClassic.seedModeAuto) {
       ui.els.gameClassic.seedModeAuto.checked = true;
       ui.els.gameClassic.seedModeAuto.dispatchEvent(new Event("change", { bubbles: true }));
     }
     if (ui.els.gameClassic.seedModeManual) ui.els.gameClassic.seedModeManual.checked = false;
     if (ui.els.gameClassic.seedManualInput) ui.els.gameClassic.seedManualInput.value = "";
+    if (ui.els.gameClassic.problemDescription) ui.els.gameClassic.problemDescription.innerHTML = "";
+    if (ui.els.gameClassic.problemTable) ui.els.gameClassic.problemTable.innerHTML = "";
+    if (ui.els.gameClassic.solutionHeader) ui.els.gameClassic.solutionHeader.innerHTML = "";
     if (ui.els.gameClassic.seedUsedExercise) ui.els.gameClassic.seedUsedExercise.innerHTML = "";
     if (ui.els.gameClassic.seedUsedSolution) ui.els.gameClassic.seedUsedSolution.innerHTML = "";
     setActiveSubtab(
@@ -1823,24 +1871,8 @@ export async function mountApp(mount, { lang }) {
     setActiveSubtab(ui.els.dur.subtabButtons, ui.els.dur.subtabPanels, getDefaultSubtab());
   };
 
-  const resetEvPanels = () => {
+  const resetEvGeneratedPanels = () => {
     ui.els.ev.placeholders.forEach((el) => (el.style.display = ""));
-    if (ui.els.ev.exerciseType) {
-      ui.els.ev.exerciseType.value =
-        EXPECTED_VALUE_EXERCISES[0]?.id ?? ui.els.ev.exerciseType.value;
-      ui.els.ev.exerciseType.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-    if (ui.els.ev.numPayoffs) ui.els.ev.numPayoffs.value = "3";
-    if (ui.els.ev.proposedPayoffs) ui.els.ev.proposedPayoffs.value = "";
-    if (ui.els.ev.proposedProbabilities) ui.els.ev.proposedProbabilities.value = "";
-    updateEvRangeLabels();
-    updateEvInputMode();
-    if (ui.els.ev.seedModeAuto) {
-      ui.els.ev.seedModeAuto.checked = true;
-      ui.els.ev.seedModeAuto.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-    if (ui.els.ev.seedModeManual) ui.els.ev.seedModeManual.checked = false;
-    if (ui.els.ev.seedManualInput) ui.els.ev.seedManualInput.value = "";
     if (ui.els.ev.exerciseBlock) ui.els.ev.exerciseBlock.classList.add("hidden");
     if (ui.els.ev.exerciseTreeCard) {
       ui.els.ev.exerciseTreeCard.classList.add("hidden");
@@ -1870,6 +1902,26 @@ export async function mountApp(mount, { lang }) {
     }
     if (ui.els.ev.seedUsedExercise) ui.els.ev.seedUsedExercise.innerHTML = "";
     if (ui.els.ev.seedUsedSolution) ui.els.ev.seedUsedSolution.innerHTML = "";
+  };
+
+  const resetEvPanels = () => {
+    if (ui.els.ev.exerciseType) {
+      ui.els.ev.exerciseType.value =
+        EXPECTED_VALUE_EXERCISES[0]?.id ?? ui.els.ev.exerciseType.value;
+      ui.els.ev.exerciseType.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (ui.els.ev.numPayoffs) ui.els.ev.numPayoffs.value = "3";
+    if (ui.els.ev.proposedPayoffs) ui.els.ev.proposedPayoffs.value = "";
+    if (ui.els.ev.proposedProbabilities) ui.els.ev.proposedProbabilities.value = "";
+    updateEvRangeLabels();
+    updateEvInputMode();
+    if (ui.els.ev.seedModeAuto) {
+      ui.els.ev.seedModeAuto.checked = true;
+      ui.els.ev.seedModeAuto.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (ui.els.ev.seedModeManual) ui.els.ev.seedModeManual.checked = false;
+    if (ui.els.ev.seedManualInput) ui.els.ev.seedManualInput.value = "";
+    resetEvGeneratedPanels();
     setActiveSubtab(ui.els.ev.subtabButtons, ui.els.ev.subtabPanels, getDefaultSubtab());
   };
 
@@ -2430,6 +2482,8 @@ export async function mountApp(mount, { lang }) {
     ui.els.dui.exerciseType,
     ui.els.dui.valuePrecision,
     ui.els.game.valuePrecision,
+    ui.els.gameClassic.gameType,
+    ui.els.gameClassic.payoffStyle,
     ui.els.dur.exerciseType,
     ui.els.ev.exerciseType,
   ]
@@ -2491,7 +2545,22 @@ export async function mountApp(mount, { lang }) {
   ui.els.dui.exerciseType.addEventListener("change", () => updateOptimismLevel());
 
   ui.els.ev.numPayoffs.addEventListener("input", updateEvRangeLabels);
-  ui.els.ev.exerciseType.addEventListener("change", updateEvInputMode);
+  let lastEvExerciseType = ui.els.ev.exerciseType?.value ?? "";
+  ui.els.ev.exerciseType.addEventListener("change", () => {
+    updateEvInputMode();
+    const nextExerciseType = ui.els.ev.exerciseType?.value ?? "";
+    if (!nextExerciseType || nextExerciseType === lastEvExerciseType) return;
+    lastEvExerciseType = nextExerciseType;
+
+    resetEvGeneratedPanels();
+    setActiveSubtab(ui.els.ev.subtabButtons, ui.els.ev.subtabPanels, getDefaultSubtab());
+
+    const isDesktop = !mobileMq.matches;
+    const evVisible = ui.els.ev.panel && !ui.els.ev.panel.classList.contains("hidden");
+    if (isDesktop && evVisible) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
   updateEvInputMode();
 
   const wireEmptyExerciseGenerate = (els) => {
@@ -2854,7 +2923,47 @@ export async function mountApp(mount, { lang }) {
     renderSeedUsed(ui.els.game.seedUsedSolution, seed, ui.labels);
   });
 
-  wireEmptyExerciseGenerate(ui.els.gameClassic);
+  ui.els.gameClassic.generateBtn.addEventListener("click", () => {
+    setActiveSubtab(ui.els.gameClassic.subtabButtons, ui.els.gameClassic.subtabPanels, "exercise");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const seedMode = getSeedMode(ui.els.gameClassic);
+    const seed = resolveSeedFromMode(seedMode, ui.els.gameClassic.seedManualInput);
+    const rng = createSeededRng(seed);
+
+    const requestedTypeId = ui.els.gameClassic.gameType?.value ?? "test";
+    const payoffStyleId = ui.els.gameClassic.payoffStyle?.value ?? "independent";
+
+    const instance = buildClassicGameInstance({
+      requestedTypeId,
+      payoffStyleId,
+      rng,
+      texts: ui.gameClassicTexts,
+      lang,
+    });
+
+    ui.els.gameClassic.placeholders.forEach((el) => (el.style.display = "none"));
+
+    if (ui.els.gameClassic.problemDescription) {
+      ui.els.gameClassic.problemDescription.innerHTML = describeClassicGameProblem(
+        ui.gameClassicTexts
+      );
+    }
+    if (ui.els.gameClassic.problemTable) {
+      renderTable(ui.els.gameClassic.problemTable, instance.table, { tableClass: "game-table" });
+    }
+    if (ui.els.gameClassic.solutionHeader) {
+      ui.els.gameClassic.solutionHeader.innerHTML = buildClassicGameSolutionHeader({
+        requestedTypeId: instance.requestedTypeId,
+        chosenTypeId: instance.chosenTypeId,
+        texts: ui.gameClassicTexts,
+        lang,
+      });
+    }
+
+    renderSeedUsed(ui.els.gameClassic.seedUsedExercise, seed, ui.labels);
+    renderSeedUsed(ui.els.gameClassic.seedUsedSolution, seed, ui.labels);
+  });
 
   ui.els.dur.generateBtn.addEventListener("click", () => {
     setActiveSubtab(ui.els.dur.subtabButtons, ui.els.dur.subtabPanels, "exercise");

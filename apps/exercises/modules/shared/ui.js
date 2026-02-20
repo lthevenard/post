@@ -63,8 +63,29 @@ export function wireSubtabs(subtabButtons, subtabPanels) {
  * @returns {void}
  */
 export function setActiveSubtab(subtabButtons, subtabPanels, tab) {
+  const isMobile = window.matchMedia("(max-width: 980px)").matches;
+  const parseEmojiLabel = (rawLabel) => {
+    const label = (rawLabel ?? "").trim();
+    const firstWhitespaceIndex = label.search(/\s/);
+    if (firstWhitespaceIndex === -1) return { emoji: "", title: label };
+    const emojiCandidate = label.slice(0, firstWhitespaceIndex);
+    const titleCandidate = label.slice(firstWhitespaceIndex + 1).trim();
+    const isEmojiCandidate = !/[A-Za-z0-9]/.test(emojiCandidate);
+    return isEmojiCandidate
+      ? { emoji: emojiCandidate, title: titleCandidate }
+      : { emoji: "", title: label };
+  };
+
   subtabButtons.forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.subtab === tab);
+    const isActive = btn.dataset.subtab === tab;
+    btn.classList.toggle("active", isActive);
+
+    const fullLabel = btn.dataset.fullLabel ?? btn.textContent.trim();
+    btn.dataset.fullLabel = fullLabel;
+    btn.setAttribute("aria-label", fullLabel);
+
+    const { emoji } = parseEmojiLabel(fullLabel);
+    btn.textContent = isMobile && emoji ? (isActive ? fullLabel : emoji) : fullLabel;
   });
   subtabPanels.forEach((panel) => {
     panel.classList.toggle("hidden", panel.dataset.subpanel !== tab);
@@ -73,7 +94,6 @@ export function setActiveSubtab(subtabButtons, subtabPanels, tab) {
     const panelRoot = subtabPanels[0]?.closest(".exercises-tab-panel");
     const sidebar = panelRoot?.querySelector(".exercises-sidebar");
     if (sidebar) {
-      const isMobile = window.matchMedia("(max-width: 980px)").matches;
       sidebar.classList.toggle("hidden", isMobile && tab !== "generate");
     }
   }

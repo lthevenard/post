@@ -1087,6 +1087,10 @@
   font-weight: 700;
 }
 
+.exercises-solution-card + .exercises-solution-subtitle{
+  margin-top: 14px;
+}
+
 .exercises-solution-gap{
   height: 14px;
 }
@@ -1275,6 +1279,49 @@
 }
 
 @media (max-width: 980px){
+  .exercises-subtabs{
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .exercises-subtab-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,.18);
+    background: rgba(255,255,255,.82);
+    color: rgba(15,23,42,.72);
+    box-shadow: 0 10px 22px rgba(0,0,0,.08) !important;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .exercises-subtab-btn:hover{
+    transform: translateY(-1px);
+    border-color: rgba(15,23,42,.30);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 14px 30px rgba(0,0,0,.10) !important;
+  }
+
+  .exercises-subtab-btn.active{
+    background: var(--link);
+    border-color: rgba(49, 145, 255, 0.55);
+    color: #ffffff;
+    box-shadow: 0 16px 34px rgba(49, 145, 255, 0.22) !important;
+  }
+
+  .exercises-subtab-btn:focus-visible{
+    outline: 3px solid rgba(129,140,248,.55);
+    outline-offset: 2px;
+  }
+
   .exercises-subtab-btn[data-subtab="generate"]{
     display: inline-flex;
   }

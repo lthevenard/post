@@ -1,5 +1,61 @@
 [
   {
+    "group": "2026-02-ai-and-the-apa-symposium",
+    "slug": "2026-02-ai-and-the-apa-symposium-en",
+    "title": "The Yale Journal on Regulation's “Symposium on AI and the APA”: Organizing an Emerging Debate",
+    "date": "2026-02-19",
+    "tags": [
+      "AI",
+      "administrative law",
+      "public administration"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2026-02-ai-and-the-apa-symposium.en.md"
+  },
+  {
+    "group": "2026-02-ai-and-the-apa-symposium",
+    "slug": "2026-02-ai-and-the-apa-symposium-pt",
+    "title": "O “Simpósio sobre IA e o APA” do Yale Journal on Regulation: organizando um debate emergente",
+    "date": "2026-02-19",
+    "tags": [
+      "IA",
+      "direito administrativo",
+      "administração pública"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2026-02-ai-and-the-apa-symposium.pt.md"
+  },
+  {
+    "group": "2026-02-dubai-chocolate",
+    "slug": "2026-02-dubai-chocolate-en",
+    "title": "Dubai Chocolate: it’s about the experience",
+    "date": "2026-02-05",
+    "tags": [
+      "culture",
+      "food",
+      "personal stories"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2026-02-dubai-chocolate.en.md"
+  },
+  {
+    "group": "2026-02-dubai-chocolate",
+    "slug": "2026-02-dubai-chocolate-pt",
+    "title": "Dubai Chocolate: é sobre a experiência",
+    "date": "2026-02-05",
+    "tags": [
+      "cultura",
+      "comida",
+      "histórias pessoais"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2026-02-dubai-chocolate.pt.md"
+  },
+  {
     "group": "2026-02-AI-intern",
     "slug": "2026-02-AI-intern-pt",
     "title": "Quando o estagiário vira chefe",
