@@ -1,5 +1,9 @@
 # O “Simpósio sobre IA e o APA” do Yale Journal on Regulation: organizando um debate emergente
 
+![Illustration: The "AI hand"](./assets/posts/2026-yale-symposium/cover.png)
+
+<br>
+
 A inteligência artificial virou uma palavra-chave política em muitas jurisdições, especialmente nos Estados Unidos. Nos debates atuais sobre o uso de IA na administração pública, ela é alternativamente apresentada—tanto por defensores quanto por críticos—como uma promessa de aumento de capacidade estatal ou como um atalho para automatizar funções públicas sem responsabilização.
 
 Essa tensão deixou de ser abstrata. Ela agora está no coração da máquina cotidiana do Estado administrativo, moldando como pensamos sobre regulamentação, contratações públicas, fiscalização, gestão de benefícios e os inúmeros passos internos que antecedem (e moldam) decisões voltadas ao público.
