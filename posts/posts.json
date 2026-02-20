@@ -1,9 +1,39 @@
 [
   {
+    "group": "2026-02-miami-drivers-ai-research",
+    "slug": "2026-02-miami-drivers-ai-research-en",
+    "title": "Self-driving cars, Miami drivers and uses of AI in academic research",
+    "date": "2026-02-21",
+    "tags": [
+      "AI",
+      "academia",
+      "social science",
+      "research methods"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2026-02-miami-drivers-ai-research.en.md"
+  },
+  {
+    "group": "2026-02-miami-drivers-ai-research",
+    "slug": "2026-02-miami-drivers-ai-research-pt",
+    "title": "Carros autônomos, motoristas de Miami e usos de IA em pesquisa acadêmica",
+    "date": "2026-02-21",
+    "tags": [
+      "IA",
+      "academia",
+      "ciências sociais",
+      "métodos de pesquisa"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2026-02-miami-drivers-ai-research.pt.md"
+  },
+  {
     "group": "2026-02-ai-and-the-apa-symposium",
     "slug": "2026-02-ai-and-the-apa-symposium-en",
     "title": "The Yale Journal on Regulation's “Symposium on AI and the APA”: Organizing an Emerging Debate",
-    "date": "2026-02-19",
+    "date": "2026-02-16",
     "tags": [
       "AI",
       "administrative law",
@@ -17,7 +47,7 @@
     "group": "2026-02-ai-and-the-apa-symposium",
     "slug": "2026-02-ai-and-the-apa-symposium-pt",
     "title": "O “Simpósio sobre IA e o APA” do Yale Journal on Regulation: organizando um debate emergente",
-    "date": "2026-02-19",
+    "date": "2026-02-16",
     "tags": [
       "IA",
       "direito administrativo",

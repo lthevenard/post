@@ -44,6 +44,7 @@ import {
 import {
   buildClassicGamesTexts,
   buildClassicGameInstance,
+  buildClassicGamesExplainerBody,
   describeClassicGameProblem,
   buildClassicGameSolutionHeader,
 } from "./modules/game/classic_games.js";
@@ -772,13 +773,41 @@ function renderPage(mount, { lang }) {
               <hr />
 
               <div class="exercises-field">
-                <label class="exercises-label">${gameClassicTexts.gameTypeLabel}</label>
-                <select id="game_classic_type" class="exercises-select">
-                  ${gameClassicTexts.gameTypeOptions
+                <div class="exercises-option-card">
+                  <div class="exercises-seed-title">${gameClassicTexts.scopeTitle}</div>
+                  ${gameClassicTexts.scopeOptions
+                    .map(
+                      (opt, idx) => `
+                        <label class="exercises-option">
+                          <input
+                            id="game_classic_scope_${opt.value}"
+                            type="radio"
+                            name="game_classic_scope"
+                            value="${opt.value}"
+                            ${idx === 0 ? "checked" : ""}
+                          />
+                          <div class="exercises-option-text">
+                            <strong>${opt.title}</strong>
+                            <div class="exercises-option-description">${opt.description}</div>
+                          </div>
+                        </label>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div
+                id="game_classic_produce_type_wrap"
+                class="exercises-field hidden"
+              >
+                <label class="exercises-label">${gameClassicTexts.produceTypeLabel}</label>
+                <select id="game_classic_produce_type" class="exercises-select">
+                  ${gameClassicTexts.produceTypeOptions
                     .map(
                       (opt) =>
                         `<option value="${opt.value}" ${
-                          opt.value === "test" ? "selected" : ""
+                          opt.value === "prisoners_dilemma" ? "selected" : ""
                         }>${opt.label}</option>`
                     )
                     .join("")}
@@ -786,17 +815,27 @@ function renderPage(mount, { lang }) {
               </div>
 
               <div class="exercises-field">
-                <label class="exercises-label">${gameClassicTexts.payoffStyleLabel}</label>
-                <select id="game_classic_payoff_style" class="exercises-select">
+                <div class="exercises-option-card">
+                  <div class="exercises-seed-title">${gameClassicTexts.payoffStyleTitle}</div>
                   ${gameClassicTexts.payoffStyleOptions
                     .map(
-                      (opt) =>
-                        `<option value="${opt.value}" ${
-                          opt.value === "independent" ? "selected" : ""
-                        }>${opt.label}</option>`
+                      (opt) => `
+                        <label class="exercises-option">
+                          <input
+                            id="game_classic_payoff_style_${opt.value}"
+                            type="radio"
+                            name="game_classic_payoff_style"
+                            value="${opt.value}"
+                            ${opt.value === "shared_offset" ? "checked" : ""}
+                          />
+                          <div class="exercises-option-text">
+                            <strong>${opt.label}</strong>
+                          </div>
+                        </label>
+                      `
                     )
                     .join("")}
-                </select>
+                </div>
               </div>
 
               <div class="exercises-field">
@@ -881,6 +920,7 @@ function renderPage(mount, { lang }) {
               <div class="exercises-subtab-panel hidden" data-subpanel="solution">
                 <p class="exercises-placeholder">${gameClassicTexts.solutionIntro}</p>
                 <div id="game_classic_solution_header"></div>
+                <div id="game_classic_solution_table"></div>
                 <div id="game_classic_solution_seed" class="exercises-seed-used"></div>
               </div>
             </main>
@@ -1250,8 +1290,14 @@ function renderPage(mount, { lang }) {
         generatePanel: mount.querySelector("#game_classic_generate_panel"),
         subtabButtons: Array.from(gameClassicPanel.querySelectorAll(".exercises-subtab-btn")),
         subtabPanels: Array.from(gameClassicPanel.querySelectorAll(".exercises-subtab-panel")),
-        gameType: mount.querySelector("#game_classic_type"),
-        payoffStyle: mount.querySelector("#game_classic_payoff_style"),
+        scopeRadios: Array.from(
+          gameClassicPanel.querySelectorAll('input[name="game_classic_scope"]')
+        ),
+        produceTypeWrap: mount.querySelector("#game_classic_produce_type_wrap"),
+        produceType: mount.querySelector("#game_classic_produce_type"),
+        payoffStyleRadios: Array.from(
+          gameClassicPanel.querySelectorAll('input[name="game_classic_payoff_style"]')
+        ),
         seedModeAuto: mount.querySelector("#game_classic_seed_mode_auto"),
         seedModeManual: mount.querySelector("#game_classic_seed_mode_manual"),
         seedManualWrap: mount.querySelector("#game_classic_seed_manual_wrap"),
@@ -1260,6 +1306,7 @@ function renderPage(mount, { lang }) {
         problemDescription: mount.querySelector("#game_classic_problem_description"),
         problemTable: mount.querySelector("#game_classic_problem_table"),
         solutionHeader: mount.querySelector("#game_classic_solution_header"),
+        solutionTable: mount.querySelector("#game_classic_solution_table"),
         seedUsedExercise: mount.querySelector("#game_classic_exercise_seed"),
         seedUsedSolution: mount.querySelector("#game_classic_solution_seed"),
         placeholders: Array.from(gameClassicPanel.querySelectorAll(".exercises-placeholder")),
@@ -2478,12 +2525,23 @@ export async function mountApp(mount, { lang }) {
   wireSeedControls(ui.els.dur.seedModeAuto, ui.els.dur.seedModeManual, ui.els.dur.seedManualWrap);
   wireSeedControls(ui.els.ev.seedModeAuto, ui.els.ev.seedModeManual, ui.els.ev.seedManualWrap);
 
+  const updateGameClassicScopeControls = () => {
+    const scopeId =
+      ui.els.gameClassic.scopeRadios?.find((el) => el.checked)?.value ?? "coop";
+    if (ui.els.gameClassic.produceTypeWrap) {
+      ui.els.gameClassic.produceTypeWrap.classList.toggle("hidden", scopeId !== "produce");
+    }
+  };
+  ui.els.gameClassic.scopeRadios?.forEach((el) =>
+    el.addEventListener("change", updateGameClassicScopeControls)
+  );
+  updateGameClassicScopeControls();
+
   [
     ui.els.dui.exerciseType,
     ui.els.dui.valuePrecision,
     ui.els.game.valuePrecision,
-    ui.els.gameClassic.gameType,
-    ui.els.gameClassic.payoffStyle,
+    ui.els.gameClassic.produceType,
     ui.els.dur.exerciseType,
     ui.els.ev.exerciseType,
   ]
@@ -2931,12 +2989,32 @@ export async function mountApp(mount, { lang }) {
     const seed = resolveSeedFromMode(seedMode, ui.els.gameClassic.seedManualInput);
     const rng = createSeededRng(seed);
 
-    const requestedTypeId = ui.els.gameClassic.gameType?.value ?? "test";
-    const payoffStyleId = ui.els.gameClassic.payoffStyle?.value ?? "independent";
+    const scopeId =
+      ui.els.gameClassic.scopeRadios?.find((el) => el.checked)?.value ?? "coop";
+    const payoffStyleId =
+      ui.els.gameClassic.payoffStyleRadios?.find((el) => el.checked)?.value ??
+      "shared_offset";
+
+    const coopPool = ["pure_coordination", "battle_of_the_sexes", "stag_hunt", "hawk_dove"];
+    const fullPool = [
+      "prisoners_dilemma",
+      "pure_coordination",
+      "stag_hunt",
+      "battle_of_the_sexes",
+      "hawk_dove",
+      "none",
+    ];
+
+    const isProduce = scopeId === "produce";
+    const requestedTypeId = isProduce
+      ? ui.els.gameClassic.produceType?.value ?? "prisoners_dilemma"
+      : "test";
+    const poolTypeIds = isProduce ? null : scopeId === "full" ? fullPool : coopPool;
 
     const instance = buildClassicGameInstance({
       requestedTypeId,
       payoffStyleId,
+      poolTypeIds,
       rng,
       texts: ui.gameClassicTexts,
       lang,
@@ -2945,19 +3023,45 @@ export async function mountApp(mount, { lang }) {
     ui.els.gameClassic.placeholders.forEach((el) => (el.style.display = "none"));
 
     if (ui.els.gameClassic.problemDescription) {
+      let lead = ui.gameClassicTexts.problemLeadCoordination;
+      if (scopeId === "full") lead = ui.gameClassicTexts.problemLeadFull;
+      if (isProduce) {
+        const label = instance.chosenTypeLabel ?? "";
+        lead = String(ui.gameClassicTexts.problemLeadProduce || "").replace("[X]", label);
+      }
       ui.els.gameClassic.problemDescription.innerHTML = describeClassicGameProblem(
-        ui.gameClassicTexts
+        { ...ui.gameClassicTexts, problemLead: lead }
       );
     }
     if (ui.els.gameClassic.problemTable) {
       renderTable(ui.els.gameClassic.problemTable, instance.table, { tableClass: "game-table" });
     }
     if (ui.els.gameClassic.solutionHeader) {
-      ui.els.gameClassic.solutionHeader.innerHTML = buildClassicGameSolutionHeader({
-        requestedTypeId: instance.requestedTypeId,
+      const explainerBody = buildClassicGamesExplainerBody({
+        scopeId,
         chosenTypeId: instance.chosenTypeId,
-        texts: ui.gameClassicTexts,
         lang,
+      });
+      const explainer = buildExplainerBox(
+        ui.gameClassicTexts.explainerTitle,
+        explainerBody,
+        ui.explainerTexts
+      );
+      ui.els.gameClassic.solutionHeader.innerHTML =
+        explainer +
+        buildClassicGameSolutionHeader({
+          scopeId,
+          instance,
+          texts: ui.gameClassicTexts,
+          lang,
+        });
+    }
+    if (ui.els.gameClassic.solutionTable) {
+      const analysis = analyzeGameForNash(instance);
+      const solutionTable = buildGameSolutionTable(instance, analysis, ui.gameClassicTexts);
+      renderTable(ui.els.gameClassic.solutionTable, solutionTable.table, {
+        cellClasses: solutionTable.cellClasses,
+        tableClass: "game-table",
       });
     }
 

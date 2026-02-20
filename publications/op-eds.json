@@ -1,6 +1,16 @@
 [
   {
     "type": "op-ed",
+    "title": "A nova etapa da regulação dos ativos virtuais pelo Banco Central",
+    "authors": ["Antônio José Maristrello Porto", "Lucas Thevenard", "Paula da Cunha Duarte"],
+    "date": "2026-02-18",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/a-nova-etapa-da-regulacao-dos-ativos-virtuais-pelo-banco-central",
+    "lang": "pt",
+    "cv": false
+  },
+  {
+    "type": "op-ed",
     "title": "AI as a Research Assistant for Regulatory Studies – a Methodological Note",
     "authors": ["Lucas Thevenard"],
     "date": "2026-02-16",
@@ -8,6 +18,16 @@
     "url": "https://regulatorystudies.columbian.gwu.edu/ai-research-assistant-regulatory-studies-methodological-note",
     "lang": "en",
     "cv": true
+  },
+  {
+    "type": "op-ed",
+    "title": "A IA e os novos desafios da melhoria regulatória",
+    "authors": ["Lucas Thevenard Gomes", "Luiz Felipe Monteiro Seixas", "Natasha Salinas", "Marne Melo", "Thelma Maria Melo Pinheiro"],
+    "date": "2026-01-20",
+    "publication": "Jota",
+    "url": "https://www.jota.info/opiniao-e-analise/artigos/a-ia-e-os-novos-desafios-da-melhoria-regulatoria",
+    "lang": "pt",
+    "cv": false
   },
   {
     "type": "op-ed",
