@@ -1426,10 +1426,19 @@ function fillTemplate(template, data) {
   return template.replace(/\{(\w+)\}/g, (_, key) => (data[key] ?? ""));
 }
 
-function buildDecisionClause(decisions, texts) {
+function capitalizeFirstChar(value) {
+  const text = String(value ?? "");
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function buildDecisionClause(decisions, texts, { sentenceStart = false } = {}) {
   if (!decisions?.length) return "";
   const key = decisions.length === 1 ? "decisionSingle" : "decisionPlural";
-  return `${texts.outcome[key]} <b>${decisions.join(", ")}</b>`;
+  const clause = sentenceStart
+    ? capitalizeFirstChar(texts.outcome[key])
+    : String(texts.outcome[key] ?? "");
+  return `${clause} <b>${decisions.join(", ")}</b>`;
 }
 
 function buildTieClause(decisions, texts) {
@@ -1508,6 +1517,7 @@ function buildSolutionOutcomeText(exerciseType, solution, levelOfOptimism, texts
   if (!solution || !texts?.outcome) return "";
   const decisions = solution.bestDecision ?? [];
   const decisionClause = buildDecisionClause(decisions, texts);
+  const decisionClauseSentenceStart = buildDecisionClause(decisions, texts, { sentenceStart: true });
   if (!decisionClause) return "";
   const steps = solution.steps ?? 0;
   const firstStepTies = getFirstStepTies(exerciseType, baseTable);
@@ -1519,9 +1529,18 @@ function buildSolutionOutcomeText(exerciseType, solution, levelOfOptimism, texts
       return fillTemplate(texts.outcome.maximinSimple, { decisionClause, value });
     }
     if (steps === 1) {
-      return fillTemplate(texts.outcome.maximinTieSimple, { decisionClause, value, tieClause });
+      return fillTemplate(texts.outcome.maximinTieSimple, {
+        decisionClause: decisionClauseSentenceStart,
+        value,
+        tieClause,
+      });
     }
-    return fillTemplate(texts.outcome.maximinLexical, { decisionClause, value, steps, tieClause });
+    return fillTemplate(texts.outcome.maximinLexical, {
+      decisionClause: decisionClauseSentenceStart,
+      value,
+      steps,
+      tieClause,
+    });
   }
 
   if (exerciseType === "Minimax") {
@@ -1530,9 +1549,18 @@ function buildSolutionOutcomeText(exerciseType, solution, levelOfOptimism, texts
       return fillTemplate(texts.outcome.minimaxSimple, { decisionClause, value });
     }
     if (steps === 1) {
-      return fillTemplate(texts.outcome.minimaxTieSimple, { decisionClause, value, tieClause });
+      return fillTemplate(texts.outcome.minimaxTieSimple, {
+        decisionClause: decisionClauseSentenceStart,
+        value,
+        tieClause,
+      });
     }
-    return fillTemplate(texts.outcome.minimaxLexical, { decisionClause, value, steps, tieClause });
+    return fillTemplate(texts.outcome.minimaxLexical, {
+      decisionClause: decisionClauseSentenceStart,
+      value,
+      steps,
+      tieClause,
+    });
   }
 
   if (exerciseType === "Optimism-Pessimism Rule") {

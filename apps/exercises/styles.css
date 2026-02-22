@@ -279,7 +279,8 @@
 }
 
 .exercises-home-card[data-home="game"]::after,
-.exercises-home-card[data-home="game_classic"]::after{
+.exercises-home-card[data-home="game_classic"]::after,
+.exercises-home-card[data-home="game_mixed"]::after{
   background-image: url("assets/watermarks/joystick-white.svg");
 }
 
@@ -304,7 +305,8 @@
 }
 
 .exercises-home-card[data-home="game"],
-.exercises-home-card[data-home="game_classic"]{
+.exercises-home-card[data-home="game_classic"],
+.exercises-home-card[data-home="game_mixed"]{
   background: linear-gradient(135deg, rgba(225,29,72,.38), rgba(15,23,42,.92));
   border-color: rgba(244,63,94,.55);
   --home-glow: rgba(225,29,72,.6);
@@ -1252,6 +1254,11 @@
   border: 1px solid rgba(34,211,238,.22);
 }
 
+.exercises-explainer.is-hint{
+  background: rgba(34,211,238,.10);
+  border: 1px solid rgba(34,211,238,.22);
+}
+
 .exercises-sidebar-title{
   margin-top: 0;
 }
@@ -1363,6 +1370,11 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     flex: 0 0 auto;
+  }
+
+  .exercises-explainer.is-hint .exercises-explainer-toggle{
+    background: rgba(34,211,238,.14);
+    border-color: rgba(34,211,238,.22);
   }
 
   .exercises-explainer-toggle .toggle-long{

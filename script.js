@@ -3,7 +3,8 @@
 // ============================================================================
 
 const app = document.getElementById('app');
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ============================================================================
 // Header / Navigation
@@ -48,6 +49,30 @@ const routes = {
 };
 
 const ENABLE_SLIDE_LANGUAGE_SWITCH = false;
+
+// ============================================================================
+// Hidden / Password-gated pages (weak protection, by design)
+// ============================================================================
+
+// Route segments (not linked in the UI).
+const SECRET_ROUTES = {
+  home: 'secret',
+  slides: 'secret-slides',
+  projects: 'secret-projects',
+  project: 'secret-project',
+};
+
+// Configure the password by setting the SHA-256 hash (hex) below.
+// Tip: `node tools/sha256.mjs "your password"` prints the hash.
+const SECRET_PASSWORD_SHA256 = '514cedc5a74404407cb25627410a3e8287d284f3da11ac4fea1725a649b9f987'; // <-- set this
+const SECRET_AUTH_STORAGE_KEY = 'lt_secret_unlocked_v1';
+
+Object.assign(routes, {
+  [SECRET_ROUTES.home]: renderSecretHome,
+  [SECRET_ROUTES.slides]: renderSecretSlides,
+  [SECRET_ROUTES.projects]: renderSecretProjectsIndex,
+  [SECRET_ROUTES.project]: renderSecretProjectPage,
+});
 
 // ============================================================================
 // Data Fetching & Caching
@@ -126,6 +151,26 @@ function isPostPublished(post) {
   return post?.posted !== false;
 }
 
+/**
+ * Returns true when a slide should be visible in listings.
+ * Defaults to true when the field is missing.
+ * @param {object} slide
+ * @returns {boolean}
+ */
+function isSlidePublished(slide) {
+  return slide?.posted !== false;
+}
+
+/**
+ * Returns true when a slide is marked as hidden from public listings.
+ * Defaults to false when the field is missing.
+ * @param {object} slide
+ * @returns {boolean}
+ */
+function isSlideHidden(slide) {
+  return slide?.hide === true;
+}
+
 // ============================================================================
 // UI Strings
 // ============================================================================
@@ -145,6 +190,15 @@ const i18n = {
       'Repositório de slides utilizados em apresentações avulsas, cursos de graduação e pós-graduação, entre outros. Cada apresentação está acompanhada de uma versão <strong>HTML</strong> para visualização online e um arquivo <strong>PDF</strong> para download.',
     seeOnline: 'Ver online',
     downloadPDF: 'Baixar PDF',
+    secretTitle: 'Área restrita',
+    secretPasswordLabel: 'Senha',
+    secretUnlock: 'Entrar',
+    secretWrongPassword: 'Senha incorreta.',
+    secretNotConfigured: 'Área restrita não configurada (defina `SECRET_PASSWORD_SHA256` em `script.js`).',
+    secretLogout: 'Sair',
+    secretSlidesAll: 'Slides',
+    secretProjectsAll: 'Projetos',
+    hiddenBadge: 'Oculto',
     notFound: 'Página não encontrada',
     errorTitle: 'Ops…',
     errorBody: 'Algo deu errado ao carregar o conteúdo.',
@@ -184,6 +238,15 @@ const i18n = {
       'Repository of slides used in standalone presentations, undergraduate and graduate courses, among others. Each presentation has an <strong>HTML</strong> version for online viewing and a <strong>PDF</strong> for download.',
     seeOnline: 'View online',
     downloadPDF: 'Download PDF',
+    secretTitle: 'Restricted area',
+    secretPasswordLabel: 'Password',
+    secretUnlock: 'Unlock',
+    secretWrongPassword: 'Wrong password.',
+    secretNotConfigured: 'Restricted area not configured (set `SECRET_PASSWORD_SHA256` in `script.js`).',
+    secretLogout: 'Log out',
+    secretSlidesAll: 'Slides',
+    secretProjectsAll: 'Projects',
+    hiddenBadge: 'Hidden',
     notFound: 'Page not found',
     errorTitle: 'Oops…',
     errorBody: 'Something went wrong while loading content.',
@@ -229,8 +292,9 @@ function parseHashOrRedirect() {
   const fallbackLang = SUPPORTED_LANGS.includes(current?.lang) ? current.lang : 'pt';
 
   if (!raw || raw === '/') {
-    location.replace(`#/${fallbackLang}`);
-    return null;
+    const next = `#/${fallbackLang}`;
+    if (location.hash !== next) location.replace(next);
+    return { lang: fallbackLang, path: '/', query: '' };
   }
 
   // Ensures format /<lang>/<path...>
@@ -238,8 +302,13 @@ function parseHashOrRedirect() {
   if (!match) {
     // Hash without language (ex: "#/blog"); inject fallbackLang.
     const fix = raw.startsWith('/') ? raw : '/' + raw;
-    location.replace(`#/${fallbackLang}` + fix);
-    return null;
+    const nextHash = `#/${fallbackLang}` + fix;
+    if (location.hash !== nextHash) location.replace(nextHash);
+
+    const fixedRaw = `/${fallbackLang}` + fix;
+    const fixedMatch = fixedRaw.match(/^\/(pt|en)(\/[^?]*)?(\?.*)?$/);
+    if (!fixedMatch) return { lang: fallbackLang, path: '/', query: '' };
+    return { lang: fixedMatch[1], path: (fixedMatch[2] || '/'), query: (fixedMatch[3] || '') };
   }
 
   const lang = match[1];
@@ -299,19 +368,41 @@ async function computeOtherLangHash(lang) {
       getJSON('projects/projects.json'),
       getJSON('slides/slides.json')
     ]);
+    const hiddenKeys = hiddenSlideKeySet(slidesAll);
     const params = new URLSearchParams(current.query.replace(/^\?/, ''));
     const slug = params.get('slug');
     const here = findProjectBySlugAndLang(projects, slug, lang);
     if (here && here.group) {
       const there = counterpartByGroup(projects, here.group, other);
       if (there) {
-        const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug);
+        const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug && !s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s)));
         targetHash = thereHasSlides ? `#/${other}/project?slug=${encodeURIComponent(there.slug)}` : `#/${other}/projects`;
       } else {
         targetHash = `#/${other}/projects`;
       }
     } else {
       targetHash = `#/${other}/projects`;
+    }
+  } else if (seg === SECRET_ROUTES.project) {
+    const [projects, slidesAll] = await Promise.all([
+      getJSON('projects/projects.json'),
+      getJSON('slides/slides.json')
+    ]);
+    const params = new URLSearchParams(current.query.replace(/^\?/, ''));
+    const slug = params.get('slug');
+    const here = findProjectBySlugAndLang(projects, slug, lang);
+    if (here && here.group) {
+      const there = counterpartByGroup(projects, here.group, other);
+      if (there) {
+        const thereHasSlides = slidesAll.some(s => s.lang === other && s.project === there.slug && !s.archive && isSlidePublished(s));
+        targetHash = thereHasSlides
+          ? `#/${other}/${SECRET_ROUTES.project}?slug=${encodeURIComponent(there.slug)}`
+          : `#/${other}/${SECRET_ROUTES.projects}`;
+      } else {
+        targetHash = `#/${other}/${SECRET_ROUTES.projects}`;
+      }
+    } else {
+      targetHash = `#/${other}/${SECRET_ROUTES.projects}`;
     }
   }
 
@@ -465,9 +556,10 @@ function renderNotFound(lang) {
  * @returns {Set<string>}
  */
 function projectSlugsWithSlides(slides, lang) {
+  const hiddenKeys = hiddenSlideKeySet(slides);
   const set = new Set();
   slides.forEach(s => {
-    if (s.lang === lang && s.project && !s.archive) set.add(s.project);
+    if (s.lang === lang && s.project && !s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s))) set.add(s.project);
   });
   return set;
 }
@@ -512,6 +604,26 @@ function flagBadge(lang){
 }
 
 /**
+ * Returns a small HTML badge to indicate a hidden slide.
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
+function hiddenBadge(lang) {
+  const label = i18n?.[lang]?.hiddenBadge || (lang === 'pt' ? 'Oculto' : 'Hidden');
+  return ` <span title="${label}" aria-label="${label}">👁️</span>`;
+}
+
+/**
+ * Returns a subtle eye icon to indicate partial hidden content.
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
+function partialHiddenBadge(lang) {
+  const label = i18n?.[lang]?.partialHiddenBadge || (lang === 'pt' ? 'Parcialmente oculto' : 'Partially hidden');
+  return ` <span title="${label}" aria-label="${label}" style="opacity:.5">👁️</span>`;
+}
+
+/**
  * Builds a stable key for slide equivalence across languages.
  * @param {object} s
  * @returns {string}
@@ -519,6 +631,20 @@ function flagBadge(lang){
 function keyForSlide(s){
   // Group is canonical; if missing, fall back to slug/pdf (singleton).
   return s.group || s.slug || `pdf:${s.pdf}`;
+}
+
+/**
+ * Returns a set of slide keys that are hidden from public pages.
+ * If any language variant is hidden, the whole deck is hidden.
+ * @param {Array<object>} slides
+ * @returns {Set<string>}
+ */
+function hiddenSlideKeySet(slides) {
+  const set = new Set();
+  (slides || []).forEach(s => {
+    if (isSlidePublished(s) && isSlideHidden(s)) set.add(keyForSlide(s));
+  });
+  return set;
 }
 
 /**
@@ -579,6 +705,52 @@ function selectHybrid(items, lang, keyFn){
     }
   }
   return out;
+}
+
+/**
+ * Returns true when the secret area is configured with a valid SHA-256 hash.
+ * @returns {boolean}
+ */
+function isSecretConfigured() {
+  return typeof SECRET_PASSWORD_SHA256 === 'string' && /^[0-9a-f]{64}$/i.test(SECRET_PASSWORD_SHA256);
+}
+
+/**
+ * Returns whether the user has unlocked the secret area in this session.
+ * @returns {boolean}
+ */
+function isSecretUnlocked() {
+  try {
+    return sessionStorage.getItem(SECRET_AUTH_STORAGE_KEY) === '1';
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Sets the secret area unlock flag for this session.
+ * @param {boolean} unlocked
+ * @returns {void}
+ */
+function setSecretUnlocked(unlocked) {
+  try {
+    if (unlocked) sessionStorage.setItem(SECRET_AUTH_STORAGE_KEY, '1');
+    else sessionStorage.removeItem(SECRET_AUTH_STORAGE_KEY);
+  } catch (e) {
+    // ignore (private mode / disabled storage)
+  }
+}
+
+/**
+ * Computes SHA-256(input) and returns a hex string.
+ * @param {string} input
+ * @returns {Promise<string>}
+ */
+async function sha256Hex(input) {
+  if (!globalThis.crypto?.subtle) throw new Error('WebCrypto not available');
+  const enc = new TextEncoder();
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(String(input)));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
@@ -1013,13 +1185,14 @@ async function renderProjectPage(lang, params) {
     getJSON('projects/projects.json'),
     getJSON('slides/slides.json')
   ]);
+  const hiddenKeys = hiddenSlideKeySet(slidesAll);
 
   const project = findProjectBySlugAndLang(projects, slug, lang);
   if (!project) return renderNotFound(lang);
 
   // Only active slides for this project.
   const slides = slidesAll
-    .filter(s => s.lang === lang && s.project === slug && !s.archive)
+    .filter(s => s.lang === lang && s.project === slug && !s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s)))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 
   if (!slides.length) return renderNotFound(lang);
@@ -1031,7 +1204,7 @@ async function renderProjectPage(lang, params) {
   const twinProj = project.group ? counterpartByGroup(projects, project.group, other) : null;
   let switchLink = '';
   if (twinProj) {
-    const twinHasSlides = slidesAll.some(s => s.lang === other && s.project === twinProj.slug && !s.archive);
+    const twinHasSlides = slidesAll.some(s => s.lang === other && s.project === twinProj.slug && !s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s)));
     if (twinHasSlides) {
       switchLink = `<a class="badge" style="text-decoration:none" href="#/${other}/project?slug=${encodeURIComponent(twinProj.slug)}">
         ${lang === 'pt' ? 'Ver esta página em inglês' : 'See this page in Portuguese'}
@@ -1280,7 +1453,8 @@ async function renderSlides(lang) {
   ]);
 
   // 1) Remove archived slides.
-  const active = allSlides.filter(s => !s.archive);
+  const hiddenKeys = hiddenSlideKeySet(allSlides);
+  const active = allSlides.filter(s => !s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s)));
 
   // 2) Hybrid selection (pt/en) with slide keys.
   const chosen = selectHybrid(active, lang, keyForSlide)
@@ -1340,6 +1514,388 @@ async function renderSlides(lang) {
 }
 
 /**
+ * Renders the secret login gate (password prompt).
+ * @param {"pt"|"en"} lang
+ * @returns {void}
+ */
+function renderSecretGate(lang) {
+  const t = i18n[lang];
+
+  if (!isSecretConfigured()) {
+    setContent(`
+      <section class="card prose">
+        <h1>${t.secretTitle}</h1>
+        <p style="color:var(--muted)">${t.secretNotConfigured}</p>
+        <p style="text-align:right;font-size:.8rem">
+          <a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a>
+        </p>
+      </section>
+    `);
+    return;
+  }
+
+  setContent(`
+    <section class="card prose">
+      <h1>${t.secretTitle}</h1>
+      <form id="secretForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <label style="display:flex;gap:10px;align-items:center;flex:1;min-width:260px">
+          <span style="min-width:90px">${t.secretPasswordLabel}</span>
+          <input
+            id="secretPassword"
+            type="password"
+            autocomplete="current-password"
+            style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text)"
+          />
+        </label>
+        <button class="lang-btn" type="submit">${t.secretUnlock}</button>
+      </form>
+      <p id="secretMsg" style="margin-top:10px;color:var(--muted)"></p>
+      <p style="text-align:right;font-size:.8rem">
+        <a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a>
+      </p>
+    </section>
+  `);
+
+  const form = document.getElementById('secretForm');
+  const input = document.getElementById('secretPassword');
+  const msg = document.getElementById('secretMsg');
+
+  if (input) input.focus();
+
+  if (!form || !input) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = String(input.value || '');
+
+    try {
+      const h = (await sha256Hex(pw)).toLowerCase();
+      if (h === String(SECRET_PASSWORD_SHA256).toLowerCase()) {
+        setSecretUnlocked(true);
+        input.value = '';
+        if (msg) msg.textContent = '';
+        navigate();
+        return;
+      }
+    } catch (err) {
+      if (msg) msg.textContent = (err && (err.message || err)) || 'Error';
+      return;
+    }
+
+    if (msg) msg.textContent = t.secretWrongPassword;
+  });
+}
+
+/**
+ * Ensures the current session is unlocked before rendering secret pages.
+ * @param {"pt"|"en"} lang
+ * @returns {boolean}
+ */
+function ensureSecretAccess(lang) {
+  if (isSecretUnlocked()) return true;
+  renderSecretGate(lang);
+  return false;
+}
+
+/**
+ * Returns a small navigation bar for secret pages.
+ * @param {"pt"|"en"} lang
+ * @returns {string}
+ */
+function secretNav(lang) {
+  const t = i18n[lang];
+  return `
+    <section class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#/${lang}/${SECRET_ROUTES.home}">${t.secretTitle}</a>
+        <a href="#/${lang}/${SECRET_ROUTES.slides}">${t.secretSlidesAll}</a>
+        <a href="#/${lang}/${SECRET_ROUTES.projects}">${t.secretProjectsAll}</a>
+      </div>
+      <button class="lang-btn" id="secretLogout" type="button">${t.secretLogout}</button>
+    </section>
+  `;
+}
+
+/**
+ * Wires the logout button (if present).
+ * @returns {void}
+ */
+function wireSecretLogout() {
+  const btn = document.getElementById('secretLogout');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    setSecretUnlocked(false);
+    navigate();
+  });
+}
+
+/**
+ * Renders the secret home page.
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
+async function renderSecretHome(lang) {
+  if (!ensureSecretAccess(lang)) return;
+  const t = i18n[lang];
+
+  setContent(`
+    ${secretNav(lang)}
+    <section class="card prose">
+      <h1>${t.secretTitle}</h1>
+      <ul>
+        <li><a href="#/${lang}/${SECRET_ROUTES.slides}">${t.secretSlidesAll}</a></li>
+        <li><a href="#/${lang}/${SECRET_ROUTES.projects}">${t.secretProjectsAll}</a></li>
+      </ul>
+      <p style="text-align:right;font-size:.8rem">
+        <a href="#/${lang}">${lang === 'pt' ? '← Voltar ao início' : '← Back to home'}</a>
+      </p>
+    </section>
+  `);
+
+  wireSecretLogout();
+}
+
+/**
+ * Renders the full slides index (includes hidden slides).
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
+async function renderSecretSlides(lang) {
+  if (!ensureSecretAccess(lang)) return;
+  const t = i18n[lang];
+
+  setContent(`
+    ${secretNav(lang)}
+    <section class="card prose">
+      <h1>Slides</h1>
+      <p>${t.slidesIntro}</p>
+      <p>
+        <a href="#/${lang}/${SECRET_ROUTES.projects}">
+          ${lang === 'pt'
+            ? 'Veja os slides agrupados por projetos →'
+            : 'See slides grouped by projects →'}
+        </a>
+      </p>
+    </section>
+    <section class="card">
+      <div class="list" id="secret-slides-list"></div>
+    </section>
+  `);
+
+  wireSecretLogout();
+
+  const [allSlides, allProjects] = await Promise.all([
+    getJSON('slides/slides.json'),
+    getJSON('projects/projects.json')
+  ]);
+
+  const hiddenKeys = hiddenSlideKeySet(allSlides);
+  const activeAll = allSlides.filter(s => !s.archive && isSlidePublished(s));
+  const chosen = selectHybrid(activeAll, lang, keyForSlide)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  const list = document.getElementById('secret-slides-list');
+  if (!list) return;
+
+  if (!chosen.length) {
+    list.innerHTML = `<div class="list-item">${lang === 'pt' ? 'Nenhum slide disponível.' : 'No slides available.'}</div>`;
+    return;
+  }
+
+  list.innerHTML = chosen.map(s => {
+    const hasHTML = Boolean(s.slug && s.html);
+    const htmlHref = hasHTML
+      ? `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`
+      : '';
+    const pdfLink = resolvePdfHref(s);
+
+    const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
+    const projLink = proj
+      ? `<a class="badge" style="text-decoration:none" href="#/${lang}/${SECRET_ROUTES.project}?slug=${encodeURIComponent(proj.slug)}">${t.viewProject}</a>`
+      : '';
+
+    const titleEl = hasHTML
+      ? `<a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>`
+      : `<span>${s.title}</span>`;
+
+    const hidden = hiddenKeys.has(keyForSlide(s)) ? hiddenBadge(lang) : '';
+
+    return `
+      <div class="list-item stacked">
+        <div class="primary">
+          <div class="list-item-title">
+            ${titleEl}
+            ${flagBadge(s.lang)}
+            ${hidden}
+          </div>
+          <div class="muted" style="color:#9ca3af;font-size:.9rem">
+            ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
+          </div>
+        </div>
+        <div class="actions">
+          ${hasHTML ? `<a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>` : ''}
+          <a class="badge" href="${pdfLink}" target="_blank" rel="noopener" style="text-decoration:none">${t.downloadPDF}</a>
+          ${projLink}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/**
+ * Renders the full projects index (includes projects with only hidden slides).
+ * @param {"pt"|"en"} lang
+ * @returns {Promise<void>}
+ */
+async function renderSecretProjectsIndex(lang) {
+  if (!ensureSecretAccess(lang)) return;
+  const t = i18n[lang];
+
+  setContent(`
+    ${secretNav(lang)}
+    <section class="card prose">
+      <h1>${lang === 'pt' ? 'Projetos' : 'Projects'}</h1>
+      <p>${t.projectsIntro}</p>
+    </section>
+    <section class="card">
+      <div class="list" id="secret-projects-list"></div>
+    </section>
+  `);
+
+  wireSecretLogout();
+
+  const [projectsAll, slidesAll] = await Promise.all([
+    getJSON('projects/projects.json'),
+    getJSON('slides/slides.json')
+  ]);
+
+  const hiddenKeys = hiddenSlideKeySet(slidesAll);
+  const statsByProject = new Map(); // projectSlug -> { hasSlides: boolean, hasVisible: boolean, hasHidden: boolean }
+  slidesAll.forEach(s => {
+    if (s.lang !== lang) return;
+    if (!s.project || s.archive || !isSlidePublished(s)) return;
+
+    const proj = String(s.project);
+    const stats = statsByProject.get(proj) || { hasSlides: false, hasVisible: false, hasHidden: false };
+    stats.hasSlides = true;
+    if (hiddenKeys.has(keyForSlide(s))) stats.hasHidden = true;
+    else stats.hasVisible = true;
+    statsByProject.set(proj, stats);
+  });
+
+  const projects = projectsAll
+    .filter(p => p.lang === lang && statsByProject.has(p.slug))
+    .sort((a, b) => a.title.localeCompare(b.title, lang));
+
+  const list = document.getElementById('secret-projects-list');
+  if (!list) return;
+
+  if (!projects.length) {
+    list.innerHTML = `<div class="list-item">${lang === 'pt' ? 'Nenhum projeto com slides.' : 'No projects with slides.'}</div>`;
+    return;
+  }
+
+  list.innerHTML = projects.map(p => `
+    <div class="list-item">
+      <div>
+        <div class="list-item-title">
+          <a href="#/${lang}/${SECRET_ROUTES.project}?slug=${encodeURIComponent(p.slug)}">${p.title}</a>
+          ${(() => {
+            const st = statsByProject.get(p.slug);
+            if (!st) return '';
+            if (st.hasHidden && st.hasVisible) return partialHiddenBadge(lang);
+            if (st.hasHidden) return hiddenBadge(lang);
+            return '';
+          })()}
+        </div>
+        <div class="muted" style="color:#9ca3af;font-size:.9rem">
+          ${p.tags?.join(' • ') || ''}
+        </div>
+      </div>
+      <a class="badge" style="text-decoration:none" href="#/${lang}/${SECRET_ROUTES.project}?slug=${encodeURIComponent(p.slug)}">
+        ${lang === 'pt' ? 'Abrir' : 'Open'}
+      </a>
+    </div>
+  `).join('');
+}
+
+/**
+ * Renders a secret project detail page (includes hidden slides).
+ * @param {"pt"|"en"} lang
+ * @param {URLSearchParams} params
+ * @returns {Promise<void>}
+ */
+async function renderSecretProjectPage(lang, params) {
+  if (!ensureSecretAccess(lang)) return;
+  const slug = params.get('slug');
+  if (!slug) return renderNotFound(lang);
+
+  const [projects, slidesAll] = await Promise.all([
+    getJSON('projects/projects.json'),
+    getJSON('slides/slides.json')
+  ]);
+  const hiddenKeys = hiddenSlideKeySet(slidesAll);
+
+  const project = findProjectBySlugAndLang(projects, slug, lang);
+  if (!project) return renderNotFound(lang);
+
+  const slides = slidesAll
+    .filter(s => s.lang === lang && s.project === slug && !s.archive && isSlidePublished(s))
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  if (!slides.length) return renderNotFound(lang);
+
+  const t = i18n[lang];
+
+  setContent(`
+    ${secretNav(lang)}
+    <section class="card prose">
+      <h1>${project.title}</h1>
+      <p>${project.description || ''}</p>
+      <p class="muted" style="color:#9ca3af">${project.tags?.map(tag => `#${tag}`).join(' ') || ''}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="#/${lang}/${SECRET_ROUTES.projects}">${t.backToProjects}</a>
+      </div>
+    </section>
+    <section class="card">
+      <div class="list" id="secret-proj-slides"></div>
+    </section>
+  `);
+
+  wireSecretLogout();
+
+  const list = document.getElementById('secret-proj-slides');
+  if (!list) return;
+
+  list.innerHTML = slides.map(s => {
+    const hasHTML = Boolean(s.slug && s.html);
+    const htmlHref = hasHTML
+      ? `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`
+      : '';
+    const pdfHref = resolvePdfHref(s);
+    const hidden = hiddenKeys.has(keyForSlide(s)) ? hiddenBadge(lang) : '';
+
+    return `
+      <div class="list-item stacked">
+        <div class="primary">
+          <div class="list-item-title">
+            ${hasHTML ? `<a href="${htmlHref}" target="_blank" rel="noopener">${s.title}</a>` : `<span>${s.title}</span>`}
+            ${flagBadge(s.lang)}
+            ${hidden}
+          </div>
+          <div class="muted" style="color:#9ca3af;font-size:.9rem">
+            ${(s.event || '')} ${s.date ? '· ' + s.date : ''}
+          </div>
+        </div>
+        <div class="actions">
+          ${hasHTML ? `<a class="badge" href="${htmlHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.seeOnline}</a>` : ''}
+          <a class="badge" href="${pdfHref}" target="_blank" rel="noopener" style="text-decoration:none">${t.downloadPDF}</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/**
  * Renders the archived slides page.
  * @param {"pt"|"en"} lang
  * @returns {Promise<void>}
@@ -1359,8 +1915,11 @@ async function renderArchivedSlides(lang) {
     </section>
   `);
 
-  const slides = (await getJSON('slides/slides.json'))
-    .filter(s => s.lang === lang && s.archive)
+  const allSlides = await getJSON('slides/slides.json');
+  const hiddenKeys = hiddenSlideKeySet(allSlides);
+
+  const slides = allSlides
+    .filter(s => s.lang === lang && s.archive && isSlidePublished(s) && !hiddenKeys.has(keyForSlide(s)))
     .sort((a,b) => (a.date < b.date ? 1 : -1));
 
   const el = document.getElementById('archived-list');
@@ -1517,4 +2076,7 @@ async function renderHeroGallery(lang) {
 // Events
 // ============================================================================
 window.addEventListener('hashchange', navigate);
-window.addEventListener('load', navigate);
+window.addEventListener('DOMContentLoaded', navigate);
+
+// Fallback for environments where DOMContentLoaded already fired.
+if (document.readyState !== 'loading') navigate();

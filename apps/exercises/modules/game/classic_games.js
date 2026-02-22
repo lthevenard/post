@@ -211,6 +211,30 @@ function buildPureCoordinationParallelPayoffs(rng) {
   ];
 }
 
+function buildPrisonersDilemmaParallelPayoffs(rng) {
+  const [wc, db, po, tb] = sampleIncreasingValues(4, rng, {
+    startMin: -6,
+    startMax: 6,
+    minGap: 1,
+    maxGap: 6,
+  });
+
+  return [
+    [
+      // C, C → PO, PO
+      { row: po, col: po },
+      // C, T → WC, TB
+      { row: wc, col: tb },
+    ],
+    [
+      // T, C → TB, WC
+      { row: tb, col: wc },
+      // T, T → DB, DB
+      { row: db, col: db },
+    ],
+  ];
+}
+
 function buildBattleOfTheSexesParallelPayoffs(rng) {
   const v4 = randomIntInclusive(-6, 6, rng);
   const v3 = v4 + randomIntInclusive(1, 6, rng);
@@ -548,6 +572,10 @@ function pickRandomType(rng) {
 
 function generatePayoffsForType(typeId, rng, options = {}) {
   const payoffStyleId = options.payoffStyleId ?? "independent";
+  if (typeId === "prisoners_dilemma" && payoffStyleId === "shared_offset") {
+    const base = buildPrisonersDilemmaParallelPayoffs(rng);
+    return applyRandomPresentationTransforms(base, rng);
+  }
   if (typeId === "pure_coordination" && payoffStyleId === "shared_offset") {
     const base = buildPureCoordinationParallelPayoffs(rng);
     return applyRandomPresentationTransforms(base, rng);
@@ -1201,8 +1229,8 @@ export function buildClassicGamesExplainerBody({ scopeId, chosenTypeId, lang }) 
           ? "Both equilibria are strictly better (for both players) than off-equilibrium outcomes."
           : "Ambos os equilíbrios são estritamente melhores (para ambos) do que resultados fora do equilíbrio.",
         isEn
-          ? "Players are indifferent between the equilibria (same payoffs)."
-          : "Os jogadores são indiferentes entre os equilíbrios (mesmos payoffs).",
+          ? "Players are indifferent between the equilibria (same payoffs at both equilibria, for each player)."
+          : "Os jogadores são indiferentes entre os equilíbrios (mesmos payoffs entre os dois equilíbrios para cada jogador).",
       ])
     );
 
@@ -1217,6 +1245,9 @@ export function buildClassicGamesExplainerBody({ scopeId, chosenTypeId, lang }) 
         isEn
           ? "Each player prefers a different equilibrium (distributional conflict)."
           : "Cada jogador prefere um equilíbrio diferente (conflito distributivo).",
+        isEn
+          ? "If both act selfishly by aiming at their preferred equilibrium, the off-equilibrium outcome is not catastrophic (unlike Hawk–Dove)."
+          : "Se ambos agem de forma egoísta, buscando o equilíbrio que lhe é mais vantajoso, isso não gera um resultado catastrófico (diferença em relação ao jogo dos Gaviões e dos Pombos).",
       ])
     );
 
@@ -1226,25 +1257,25 @@ export function buildClassicGamesExplainerBody({ scopeId, chosenTypeId, lang }) 
           ? "Two pure-strategy Nash equilibria."
           : "Dois equilíbrios de Nash em estratégias puras.",
         isEn
-          ? "One equilibrium Pareto-dominates the other (better for both)."
-          : "Um equilíbrio Pareto-domina o outro (melhor para ambos).",
+          ? "One equilibrium (when both hunt stag) Pareto-dominates the other (better for both)."
+          : "Um equilíbrio (quando ambos “caçam o veado”) Pareto-domina o outro, ou seja, é melhor para ambos.",
         isEn
           ? "The Pareto-inferior equilibrium is the “safe” (maximin) outcome."
-          : "O equilíbrio Pareto-inferior é o resultado “seguro” (maximin).",
+          : "O equilíbrio Pareto-inferior (quando ambos “caçam a lebre”) é o resultado mais “seguro” (maximin) para ambos os jogadores.",
       ])
     );
 
     blocks.push(
       makeBlock(getClassicGameTypeLabel("hawk_dove", lang), [
         isEn
-          ? "Two pure-strategy Nash equilibria, typically off-diagonal: (H, D) and (D, H)."
-          : "Dois equilíbrios de Nash em estratégias puras, tipicamente fora da diagonal: (H, D) e (D, H).",
+          ? "Two pure-strategy Nash equilibria: (H, D) and (D, H). Here H is the aggressive strategy (Hawk) and D is the conservative strategy (Dove)."
+          : "Dois equilíbrios de Nash em estratégias puras, que podemos designar como (H, D) e (D, H): H é chamada de estratégia “agressiva” (Hawk) e D é chamada de estratégia conservadora (Dove).",
         isEn
           ? "For each player: (H, D) > (D, D) > (D, H) > (H, H)."
           : "Para cada jogador: (H, D) > (D, D) > (D, H) > (H, H).",
         isEn
-          ? "Mutual aggression (H, H) is the worst (catastrophic) outcome."
-          : "A agressividade mútua (H, H) é o pior resultado (catastrófico).",
+          ? "Thus, each player’s best equilibrium is the one where they play H, but mutual aggression (H, H) yields the worst payoffs for both (catastrophic outcome)."
+          : "Assim, o equilíbrio mais vantajoso para cada jogador é aquele em que ele é agressivo, mas a agressividade mútua (H, H) leva aos piores payoffs para ambos (resultado catastrófico).",
       ])
     );
   };
@@ -1281,130 +1312,65 @@ export function buildClassicGamesExplainerBody({ scopeId, chosenTypeId, lang }) 
 
     const detailed = (t) => {
       if (t === "prisoners_dilemma") {
-        return (
-          makeBlock(isEn ? "Defining features" : "Características definidoras", [
+        return makeBlock(isEn ? "Defining features" : "Características definidoras", [
           isEn
             ? "A cooperation problem with a unique equilibrium driven by strictly dominant strategies."
             : "Um problema de cooperação com um equilíbrio único determinado por estratégias estritamente dominantes.",
           isEn
             ? "Key feature: mutual defection is a Nash equilibrium even though mutual cooperation would be better for both."
             : "Característica central: a (mútua) não cooperação é equilíbrio de Nash, embora a cooperação mútua seja melhor para ambos.",
-          ]) +
-          makeBlock(isEn ? "Applications" : "Aplicações", [
-            isEn
-              ? "Cartels / price competition."
-              : "Cartéis / competição de preços.",
-            isEn
-              ? "Arms races and security dilemmas."
-              : "Corridas armamentistas e dilemas de segurança.",
-            isEn
-              ? "Collective action problems (e.g., public goods)."
-              : "Problemas de ação coletiva (ex.: bens públicos).",
-          ])
-        );
+        ]);
       }
       if (t === "pure_coordination") {
-        return (
-          makeBlock(isEn ? "Defining features" : "Características definidoras", [
-            isEn
-              ? "A coordination problem with two pure-strategy Nash equilibria."
-              : "Um problema de coordenação com dois equilíbrios de Nash em estratégias puras.",
-            isEn
-              ? "No distributional conflict: equilibria yield the same payoffs."
-              : "Sem conflito distributivo: os equilíbrios geram os mesmos payoffs.",
-            isEn
-              ? "Any equilibrium is strictly better (for both players) than any mismatch."
-              : "Qualquer equilíbrio é estritamente melhor (para ambos) do que qualquer desencontro.",
-          ]) +
-          makeBlock(isEn ? "Applications" : "Aplicações", [
-            isEn
-              ? "Standards and protocols (file formats, payment systems)."
-              : "Padrões e protocolos (formatos, sistemas de pagamento).",
-            isEn
-              ? "Conventions (left/right driving)."
-              : "Convenções (dirigir à direita/esquerda).",
-            isEn
-              ? "Focal points and communication to select an equilibrium."
-              : "Pontos focais e comunicação para selecionar um equilíbrio.",
-          ])
-        );
+        return makeBlock(isEn ? "Defining features" : "Características definidoras", [
+          isEn
+            ? "A coordination problem with two pure-strategy Nash equilibria."
+            : "Um problema de coordenação com dois equilíbrios de Nash em estratégias puras.",
+          isEn
+            ? "No distributional conflict: equilibria yield the same payoffs."
+            : "Sem conflito distributivo: os equilíbrios geram os mesmos payoffs.",
+          isEn
+            ? "Any equilibrium is strictly better (for both players) than any mismatch."
+            : "Qualquer equilíbrio é estritamente melhor (para ambos) do que qualquer desencontro.",
+        ]);
       }
       if (t === "battle_of_the_sexes") {
-        return (
-          makeBlock(isEn ? "Defining features" : "Características definidoras", [
-            isEn
-              ? "Two pure-strategy Nash equilibria, both strictly better than mismatches."
-              : "Dois equilíbrios de Nash em estratégias puras, ambos estritamente melhores do que os desencontros.",
-            isEn
-              ? "Distributional conflict: each player prefers a different equilibrium."
-              : "Conflito distributivo: cada jogador prefere um equilíbrio diferente.",
-            isEn
-              ? "Coordination is valuable, but equilibrium selection is contentious."
-              : "Coordenar é valioso, mas a seleção do equilíbrio é disputada.",
-          ]) +
-          makeBlock(isEn ? "Applications" : "Aplicações", [
-            isEn
-              ? "Meeting points and scheduling (compatible options)."
-              : "Pontos de encontro e agenda (opções compatíveis).",
-            isEn
-              ? "Bargaining over which coordinated outcome to pick."
-              : "Barganha sobre qual resultado coordenado escolher.",
-            isEn
-              ? "Institutional rules to resolve selection (norms, turn-taking)."
-              : "Regras institucionais para resolver a seleção (normas, alternância).",
-          ])
-        );
+        return makeBlock(isEn ? "Defining features" : "Características definidoras", [
+          isEn
+            ? "Two pure-strategy Nash equilibria, both strictly better than mismatches."
+            : "Dois equilíbrios de Nash em estratégias puras, ambos estritamente melhores do que os desencontros.",
+          isEn
+            ? "Distributional conflict: each player prefers a different equilibrium."
+            : "Conflito distributivo: cada jogador prefere um equilíbrio diferente.",
+          isEn
+            ? "Coordination is valuable, but equilibrium selection is contentious."
+            : "Coordenar é valioso, mas a seleção do equilíbrio é disputada.",
+        ]);
       }
       if (t === "stag_hunt") {
-        return (
-          makeBlock(isEn ? "Defining features" : "Características definidoras", [
-            isEn
-              ? "Two pure-strategy Nash equilibria: one efficient and one safe."
-              : "Dois equilíbrios de Nash em estratégias puras: um eficiente e um seguro.",
-            isEn
-              ? "The efficient equilibrium Pareto-dominates the safe equilibrium."
-              : "O equilíbrio eficiente Pareto-domina o equilíbrio seguro.",
-            isEn
-              ? "The safe equilibrium is selected by maximin (security) reasoning."
-              : "O equilíbrio seguro é selecionado por raciocínio maximin (segurança).",
-          ]) +
-          makeBlock(isEn ? "Applications" : "Aplicações", [
-            isEn
-              ? "Trust and cooperation problems."
-              : "Confiança e problemas de cooperação.",
-            isEn
-              ? "Technology adoption / network effects."
-              : "Adoção de tecnologia / efeitos de rede.",
-            isEn
-              ? "Joint investments and complementary effort."
-              : "Investimentos conjuntos e esforços complementares.",
-          ])
-        );
+        return makeBlock(isEn ? "Defining features" : "Características definidoras", [
+          isEn
+            ? "Two pure-strategy Nash equilibria: one efficient and one safe."
+            : "Dois equilíbrios de Nash em estratégias puras: um eficiente e um seguro.",
+          isEn
+            ? "The efficient equilibrium Pareto-dominates the safe equilibrium."
+            : "O equilíbrio eficiente Pareto-domina o equilíbrio seguro.",
+          isEn
+            ? "The safe equilibrium is selected by maximin (security) reasoning."
+            : "O equilíbrio seguro é selecionado por raciocínio maximin (segurança).",
+        ]);
       }
-      return (
-        makeBlock(isEn ? "Defining features" : "Características definidoras", [
-          isEn
-            ? "Two pure-strategy Nash equilibria: (H, D) and (D, H)."
-            : "Dois equilíbrios de Nash em estratégias puras: (H, D) e (D, H).",
-          isEn
-            ? "Each player prefers being aggressive when the other yields."
-            : "Cada jogador prefere ser agressivo quando o outro cede.",
-          isEn
-            ? "Mutual aggression (H, H) is the worst (catastrophic) outcome."
-            : "A agressividade mútua (H, H) é o pior resultado (catastrófico).",
-        ]) +
-        makeBlock(isEn ? "Applications" : "Aplicações", [
-          isEn
-            ? "Chicken games (traffic / brinkmanship)."
-            : "Jogos da galinha (trânsito / brinkmanship).",
-          isEn
-            ? "Strike/lockout and escalation dynamics."
-            : "Greves/lockouts e dinâmicas de escalada.",
-          isEn
-            ? "Conflicts in biology/economics (resource contests)."
-            : "Conflitos em biologia/economia (disputas por recursos).",
-        ])
-      );
+      return makeBlock(isEn ? "Defining features" : "Características definidoras", [
+        isEn
+          ? "Two pure-strategy Nash equilibria: (H, D) and (D, H)."
+          : "Dois equilíbrios de Nash em estratégias puras: (H, D) e (D, H).",
+        isEn
+          ? "Each player prefers being aggressive when the other yields."
+          : "Cada jogador prefere ser agressivo quando o outro cede.",
+        isEn
+          ? "Mutual aggression (H, H) is the worst (catastrophic) outcome."
+          : "A agressividade mútua (H, H) é o pior resultado (catastrófico).",
+      ]);
     };
 
     blocks.push(
@@ -1440,7 +1406,7 @@ export function buildClassicGamesExplainerBody({ scopeId, chosenTypeId, lang }) 
   return `${intro}${blocks.join("")}`;
 }
 
-export function buildClassicGameSolutionHeader({ scopeId, instance, texts, lang }) {
+export function buildClassicGameSolutionHeader({ scopeId: _scopeId, instance, texts, lang }) {
   const isEn = lang === "en";
   const equilibria = computePureNashEquilibria(instance.payoffs);
   const classificationId = classifyClassicGame(instance.payoffs);
@@ -1458,17 +1424,17 @@ export function buildClassicGameSolutionHeader({ scopeId, instance, texts, lang 
         .join("")}</ul>`
     : "";
 
-  const scopeNote =
-    scopeId === "produce"
-      ? ""
-      : isEn
-        ? `<p class="exercises-legend">Random draw used (within the selected scope).</p>`
-        : `<p class="exercises-legend">Sorteio aleatório usado (dentro do escopo selecionado).</p>`;
-
   const nashText = buildEquilibriaText(instance, equilibria, isEn, texts);
   const solutionNashLabel = isEn ? texts.solutionNashLabelEn : texts.solutionNashLabel;
   const classificationKey = isEn ? texts.solutionClassificationLabelEn : texts.solutionClassificationLabel;
-  const justificationKey = isEn ? texts.solutionJustificationLabelEn : texts.solutionJustificationLabel;
+  const justificationKey =
+    classificationId === "none"
+      ? isEn
+        ? "Characteristics indicating the game fits none of the classic models"
+        : "Características que indicam que o jogo não se enquadra em nenhum dos jogos clássicos"
+      : isEn
+        ? `Characteristics that identify the game as ${classificationLabel}`
+        : `Características que identificam o jogo como um ${classificationLabel}`;
 
   return `
     <div class="exercises-solution-card">
@@ -1477,10 +1443,127 @@ export function buildClassicGameSolutionHeader({ scopeId, instance, texts, lang 
       <p><b>${solutionNashLabel}:</b> ${nashText}</p>
       <p><b>${classificationKey}:</b> ${classificationLabel}</p>
       ${justificationHtml ? `<p><b>${justificationKey}:</b></p>${justificationHtml}` : ""}
-      ${scopeNote}
     </div>
     <h3 class="exercises-solution-subtitle">${texts.matrixTitleSolved}</h3>
   `;
+}
+
+export function buildClassicGameSolutionStrategyLabels(instance, lang = "pt") {
+  const isEn = lang === "en";
+  const typeId = classifyClassicGame(instance.payoffs);
+  const rowSemantic = [null, null];
+  const colSemantic = [null, null];
+
+  if (typeId === "prisoners_dilemma") {
+    const domRow = findStrictlyDominantRow(instance.payoffs);
+    const domCol = findStrictlyDominantCol(instance.payoffs);
+    const cooperate = isEn ? "Cooperate" : "Cooperar";
+    const defect = isEn ? "Defect" : "Trair";
+    if (domRow !== null) {
+      rowSemantic[domRow] = defect;
+      rowSemantic[domRow === 0 ? 1 : 0] = cooperate;
+    }
+    if (domCol !== null) {
+      colSemantic[domCol] = defect;
+      colSemantic[domCol === 0 ? 1 : 0] = cooperate;
+    }
+  }
+
+  if (typeId === "pure_coordination") {
+    const equilibria = computePureNashEquilibria(instance.payoffs);
+    const option1 = isEn ? "Convention 1" : "Convenção 1";
+    const option2 = isEn ? "Convention 2" : "Convenção 2";
+
+    const eqRow0 = equilibria.find((e) => e.row === 0);
+    const eqRow1 = equilibria.find((e) => e.row === 1);
+
+    if (eqRow0) {
+      rowSemantic[0] = option1;
+      colSemantic[eqRow0.col] = option1;
+    }
+    if (eqRow1) {
+      rowSemantic[1] = option2;
+      colSemantic[eqRow1.col] = option2;
+    }
+
+    if (!eqRow0 || !eqRow1) {
+      if (equilibria[0]) {
+        rowSemantic[equilibria[0].row] = option1;
+        colSemantic[equilibria[0].col] = option1;
+      }
+      if (equilibria[1]) {
+        rowSemantic[equilibria[1].row] = option2;
+        colSemantic[equilibria[1].col] = option2;
+      }
+    }
+  }
+
+  if (typeId === "battle_of_the_sexes") {
+    const equilibria = computePureNashEquilibria(instance.payoffs);
+    if (equilibria.length === 2) {
+      const [e1, e2] = equilibria;
+      const c1 = instance.payoffs[e1.row][e1.col];
+      const c2 = instance.payoffs[e2.row][e2.col];
+
+      const eP1 = c1.row > c2.row ? e1 : e2;
+      const eP2 = c1.col > c2.col ? e1 : e2;
+
+      const optionP1 = isEn ? "P1’s preferred option" : "Opção preferida do J1";
+      const optionP2 = isEn ? "P2’s preferred option" : "Opção preferida do J2";
+
+      rowSemantic[eP1.row] = optionP1;
+      colSemantic[eP1.col] = optionP1;
+      rowSemantic[eP2.row] = optionP2;
+      colSemantic[eP2.col] = optionP2;
+    }
+  }
+
+  if (typeId === "stag_hunt") {
+    const equilibria = computePureNashEquilibria(instance.payoffs);
+    if (equilibria.length === 2) {
+      const [e1, e2] = equilibria;
+      const c1 = instance.payoffs[e1.row][e1.col];
+      const c2 = instance.payoffs[e2.row][e2.col];
+      const e1Pareto = c1.row > c2.row && c1.col > c2.col;
+      const eHi = e1Pareto ? e1 : e2;
+      const eLo = e1Pareto ? e2 : e1;
+
+      const high = isEn ? "Hunt stag" : "Caçar o veado";
+      const low = isEn ? "Hunt hare" : "Caçar a lebre";
+
+      rowSemantic[eHi.row] = high;
+      colSemantic[eHi.col] = high;
+      rowSemantic[eLo.row] = low;
+      colSemantic[eLo.col] = low;
+    }
+  }
+
+  if (typeId === "hawk_dove") {
+    const mapping = findHawkDoveMapping(instance.payoffs);
+    if (mapping) {
+      const hawk = isEn ? "Hawk (H) / Aggressive strategy" : "Gavião (H) / E. Agressiva";
+      const dove = isEn ? "Dove (D) / Conservative strategy" : "Pombo (D) / E. Conservadora";
+
+      rowSemantic[mapping.hRow] = hawk;
+      rowSemantic[mapping.dRow] = dove;
+      colSemantic[mapping.hCol] = hawk;
+      colSemantic[mapping.dCol] = dove;
+    }
+  }
+
+  const rowLabels = (instance.rowStrategies ?? ["A", "B"]).map((label, idx) => {
+    const semantic = rowSemantic[idx];
+    const text = semantic ? `${label}: ${semantic}` : label;
+    return wrapPlayer(text, PLAYER_ONE_CLASS);
+  });
+
+  const colLabels = (instance.colStrategies ?? ["C", "D"]).map((label, idx) => {
+    const semantic = colSemantic[idx];
+    const text = semantic ? `${label}: ${semantic}` : label;
+    return wrapPlayer(text, PLAYER_TWO_CLASS);
+  });
+
+  return { rowLabels, colLabels, typeId };
 }
 
 export function buildClassicGamesTexts(lang) {
@@ -1563,7 +1646,7 @@ export function buildClassicGamesTexts(lang) {
       ? "Payoffs are shown as (Player 1, Player 2)."
       : "Os payoffs estão no formato (Jogador 1, Jogador 2).",
     matrixHeader: isEn ? "P1 | P2" : "J1 | J2",
-    explainerTitle: isEn ? "How to solve and classify" : "Como resolver e classificar",
+    explainerTitle: isEn ? "How to identify classic games" : "Como identificar jogos clássicos",
     solutionTitle: isEn ? "Solution" : "Solução",
     solutionNashLabel: "Equilíbrios de Nash (estratégias puras)",
     solutionNashLabelEn: "Nash equilibria (pure strategies)",

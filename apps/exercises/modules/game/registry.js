@@ -10,4 +10,11 @@ export const GAME_EXERCISES = [
       pt: "Equilíbrio de Nash (estratégias puras)",
     },
   },
+  {
+    value: "Mixed Strategies",
+    label: {
+      en: "Mixed strategies",
+      pt: "Estratégias mistas",
+    },
+  },
 ];

@@ -32,7 +32,14 @@ import {
   buildSolutionExplainer,
 } from "./modules/dui/dui_methods.js";
 import { buildBuildTableTexts } from "./modules/dui/build_table.js";
-import { buildOptimismTexts } from "./modules/dui/optimism.js";
+import {
+  buildOptimismTexts,
+  generateOptimismExercise,
+  buildOptimismStatementHtml,
+  buildOptimismHintBodyHtml,
+  buildOptimismSolutionExplainerBodyHtml,
+  buildOptimismSolutionHtml,
+} from "./modules/dui/optimism.js";
 import {
   buildGameTexts,
   createGameTable,
@@ -46,8 +53,18 @@ import {
   buildClassicGameInstance,
   buildClassicGamesExplainerBody,
   describeClassicGameProblem,
+  buildClassicGameSolutionStrategyLabels,
   buildClassicGameSolutionHeader,
 } from "./modules/game/classic_games.js";
+import {
+  buildGameMixedTexts,
+  buildMixedGameInstance,
+  describeMixedGameProblem,
+  buildMixedGameExplainerBody,
+  buildMixedGameSummaryCard,
+  buildMixedGameCalculationCard,
+  buildMixedGameSolutionTable,
+} from "./modules/game/game_mixed.js";
 import { buildAboutCopy } from "./modules/about/about.js";
 import {
   renderDecisionTree,
@@ -214,6 +231,7 @@ function renderPage(mount, { lang }) {
     homeGameTheoryBadge: isEn ? "Nash equilibrium" : "Equilíbrio de Nash",
     homeGameTheoryIcon: EMOJIS.game,
     homeClassicGames: isEn ? "Classic Games" : "Jogos Clássicos",
+    homeMixedStrategies: isEn ? "Mixed Strategies" : "Estratégias Mistas",
     homeAbout: isEn ? "About" : "Sobre",
     homeAboutBadge: isEn ? "Learn more about this project" : "Saiba mais sobre este projeto",
     homeAboutIcon: EMOJIS.about,
@@ -266,6 +284,12 @@ function renderPage(mount, { lang }) {
       icon: labels.homeGameTheoryIcon,
     },
     {
+      home: "game_mixed",
+      title: labels.homeMixedStrategies,
+      badge: labels.homeGameTheory,
+      icon: labels.homeGameTheoryIcon,
+    },
+    {
       home: "dur",
       title: labels.homeRiskTreesBadge,
       badge: labels.homeRisk,
@@ -287,6 +311,7 @@ function renderPage(mount, { lang }) {
   const duiOptimismTexts = buildOptimismTexts(lang);
   const gameTexts = buildGameTexts(lang);
   const gameClassicTexts = buildClassicGamesTexts(lang);
+  const gameMixedTexts = buildGameMixedTexts(lang);
   const durTexts = buildDurTexts(lang);
   const evTexts = buildExpectedValueTexts(lang);
   const aboutCopy = buildAboutCopy(lang);
@@ -581,6 +606,30 @@ function renderPage(mount, { lang }) {
               <hr />
 
               <div class="exercises-field">
+                <div class="exercises-option-card">
+                  ${duiOptimismTexts.exerciseTypes
+                    .map(
+                      (type, idx) => `
+                    <label class="exercises-option">
+                      <input
+                        id="dui_optimism_type_${type.id}"
+                        type="radio"
+                        name="dui_optimism_type"
+                        value="${type.id}"
+                        ${idx === 0 ? "checked" : ""}
+                      />
+                      <div class="exercises-option-text">
+                        <strong>${type.title}</strong>
+                        <div class="exercises-option-description">${type.description}</div>
+                      </div>
+                    </label>
+                  `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div class="exercises-field">
                 <div class="exercises-seed-card">
                   <div class="exercises-seed-title">${labels.seedTitle}</div>
                   <div class="exercises-seed-options">
@@ -654,13 +703,24 @@ function renderPage(mount, { lang }) {
 
               <div class="exercises-subtab-panel" data-subpanel="exercise">
                 <p class="exercises-placeholder">${duiOptimismTexts.exerciseIntro}</p>
+                <div id="dui_optimism_exercise_block" class="hidden">
+                  <h3 class="exercises-section-title">${duiOptimismTexts.problemTitle}</h3>
+                  <div id="dui_optimism_statement" class="exercises-intro"></div>
+                  <div id="dui_optimism_hint"></div>
+                  <div class="exercises-solution-gap"></div>
+                  <div id="dui_optimism_table"></div>
+                </div>
                 <div id="dui_optimism_exercise_seed" class="exercises-seed-used"></div>
               </div>
 
-              <div class="exercises-subtab-panel hidden" data-subpanel="solution">
-                <p class="exercises-placeholder">${duiOptimismTexts.solutionIntro}</p>
-                <div id="dui_optimism_solution_seed" class="exercises-seed-used"></div>
-              </div>
+	              <div class="exercises-subtab-panel hidden" data-subpanel="solution">
+	                <p class="exercises-placeholder">${duiOptimismTexts.solutionIntro}</p>
+	                <div id="dui_optimism_solution_explainer" class="hidden"></div>
+	                <div id="dui_optimism_solution_body" class="hidden">
+	                  <div id="dui_optimism_solution_card" class="exercises-solution-card"></div>
+	                </div>
+	                <div id="dui_optimism_solution_seed" class="exercises-seed-used"></div>
+	              </div>
             </main>
           </div>
         </div>
@@ -794,24 +854,23 @@ function renderPage(mount, { lang }) {
                       `
                     )
                     .join("")}
+                  <div
+                    id="game_classic_produce_type_wrap"
+                    class="exercises-field hidden"
+                  >
+                    <label class="exercises-label">${gameClassicTexts.produceTypeLabel}</label>
+                    <select id="game_classic_produce_type" class="exercises-select">
+                      ${gameClassicTexts.produceTypeOptions
+                        .map(
+                          (opt) =>
+                            `<option value="${opt.value}" ${
+                              opt.value === "prisoners_dilemma" ? "selected" : ""
+                            }>${opt.label}</option>`
+                        )
+                        .join("")}
+                    </select>
+                  </div>
                 </div>
-              </div>
-
-              <div
-                id="game_classic_produce_type_wrap"
-                class="exercises-field hidden"
-              >
-                <label class="exercises-label">${gameClassicTexts.produceTypeLabel}</label>
-                <select id="game_classic_produce_type" class="exercises-select">
-                  ${gameClassicTexts.produceTypeOptions
-                    .map(
-                      (opt) =>
-                        `<option value="${opt.value}" ${
-                          opt.value === "prisoners_dilemma" ? "selected" : ""
-                        }>${opt.label}</option>`
-                    )
-                    .join("")}
-                </select>
               </div>
 
               <div class="exercises-field">
@@ -922,6 +981,150 @@ function renderPage(mount, { lang }) {
                 <div id="game_classic_solution_header"></div>
                 <div id="game_classic_solution_table"></div>
                 <div id="game_classic_solution_seed" class="exercises-seed-used"></div>
+              </div>
+            </main>
+          </div>
+        </div>
+
+        <div class="exercises-tab-panel hidden" data-panel="game_mixed">
+          <div class="exercises-grid">
+            <aside class="exercises-sidebar">
+              <h3 class="exercises-sidebar-title">${gameMixedTexts.sidebarTitle}</h3>
+              <hr />
+
+              <div class="exercises-field">
+                <div class="exercises-option-card">
+                  <div class="exercises-seed-title">${gameMixedTexts.matrixSizeTitle}</div>
+                  ${gameMixedTexts.matrixSizeOptions
+                    .map(
+                      (opt, idx) => `
+                        <label class="exercises-option">
+                          <input
+                            id="game_mixed_size_${opt.value}"
+                            type="radio"
+                            name="game_mixed_size"
+                            value="${opt.value}"
+                            ${idx === 0 ? "checked" : ""}
+                          />
+                          <div class="exercises-option-text">
+                            <strong>${opt.title}</strong>
+                            <div class="exercises-option-description">${opt.description}</div>
+                          </div>
+                        </label>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div class="exercises-field">
+                <div class="exercises-option-card">
+                  <div class="exercises-seed-title">${gameMixedTexts.payoffStyleTitle}</div>
+                  ${gameMixedTexts.payoffStyleOptions
+                    .map(
+                      (opt, idx) => `
+                        <label class="exercises-option">
+                          <input
+                            id="game_mixed_payoff_style_${opt.value}"
+                            type="radio"
+                            name="game_mixed_payoff_style"
+                            value="${opt.value}"
+                            ${idx === 0 ? "checked" : ""}
+                          />
+                          <div class="exercises-option-text">
+                            <strong>${opt.title}</strong>
+                            <div class="exercises-option-description">${opt.description}</div>
+                          </div>
+                        </label>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div class="exercises-field">
+                <div class="exercises-seed-card">
+                  <div class="exercises-seed-title">${labels.seedTitle}</div>
+                  <div class="exercises-seed-options">
+                    <label class="exercises-seed-option">
+                      <input
+                        id="game_mixed_seed_mode_auto"
+                        type="radio"
+                        name="game_mixed_seed_mode"
+                        value="auto"
+                        checked
+                      />
+                      <span>${labels.seedAuto}</span>
+                    </label>
+                    <label class="exercises-seed-option">
+                      <input
+                        id="game_mixed_seed_mode_manual"
+                        type="radio"
+                        name="game_mixed_seed_mode"
+                        value="manual"
+                      />
+                      <span>${labels.seedManual}</span>
+                    </label>
+                    <div id="game_mixed_seed_manual_wrap" class="exercises-seed-manual hidden">
+                      <label class="exercises-label">${labels.seedManualLabel}</label>
+                      <input
+                        id="game_mixed_seed_manual_input"
+                        class="exercises-input"
+                        type="number"
+                        min="10000"
+                        max="99999"
+                        step="1"
+                        inputmode="numeric"
+                        placeholder="12345"
+                      />
+                      <div class="exercises-seed-help">${labels.seedManualHelp}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exercises-field">
+                <button
+                  id="game_mixed_generate_btn"
+                  class="exercises-cta exercises-cta-green"
+                  type="button"
+                >
+                  ${gameMixedTexts.generate}
+                </button>
+              </div>
+            </aside>
+
+            <main class="exercises-main">
+              <div class="exercises-subtabs">
+                <button class="exercises-subtab-btn" data-subtab="generate" type="button">
+                  ${gameMixedTexts.generateTab}
+                </button>
+                <button class="exercises-subtab-btn active" data-subtab="exercise" type="button">
+                  ${labels.exerciseTab}
+                </button>
+                <button class="exercises-subtab-btn" data-subtab="solution" type="button">
+                  ${labels.solutionTab}
+                </button>
+              </div>
+
+              <div class="exercises-subtab-panel hidden" data-subpanel="generate">
+                <div id="game_mixed_generate_panel"></div>
+              </div>
+
+              <div class="exercises-subtab-panel" data-subpanel="exercise">
+                <p class="exercises-placeholder">${gameMixedTexts.exerciseIntro}</p>
+                <div id="game_mixed_problem_description"></div>
+                <div id="game_mixed_problem_table"></div>
+                <div id="game_mixed_exercise_seed" class="exercises-seed-used"></div>
+              </div>
+
+              <div class="exercises-subtab-panel hidden" data-subpanel="solution">
+                <p class="exercises-placeholder">${gameMixedTexts.solutionIntro}</p>
+                <div id="game_mixed_solution_explainer"></div>
+                <div id="game_mixed_solution_table"></div>
+                <div id="game_mixed_solution_summary"></div>
+                <div id="game_mixed_solution_calc"></div>
+                <div id="game_mixed_solution_seed" class="exercises-seed-used"></div>
               </div>
             </main>
           </div>
@@ -1182,6 +1385,7 @@ function renderPage(mount, { lang }) {
   const duiOptimismPanel = mount.querySelector('[data-panel="dui_optimism"]');
   const gamePanel = mount.querySelector('[data-panel="game"]');
   const gameClassicPanel = mount.querySelector('[data-panel="game_classic"]');
+  const gameMixedPanel = mount.querySelector('[data-panel="game_mixed"]');
   const durPanel = mount.querySelector('[data-panel="dur"]');
   const evPanel = mount.querySelector('[data-panel="ev"]');
 
@@ -1245,20 +1449,34 @@ function renderPage(mount, { lang }) {
         solutionExplainers: mount.querySelector("#dui_build_table_solution_explainers"),
         placeholders: Array.from(duiBuildPanel.querySelectorAll(".exercises-placeholder")),
       },
-      duiOptimism: {
-        panel: duiOptimismPanel,
-        sidebar: duiOptimismPanel.querySelector(".exercises-sidebar"),
-        generatePanel: mount.querySelector("#dui_optimism_generate_panel"),
-        subtabButtons: Array.from(duiOptimismPanel.querySelectorAll(".exercises-subtab-btn")),
-        subtabPanels: Array.from(duiOptimismPanel.querySelectorAll(".exercises-subtab-panel")),
-        seedModeAuto: mount.querySelector("#dui_optimism_seed_mode_auto"),
-        seedModeManual: mount.querySelector("#dui_optimism_seed_mode_manual"),
-        seedManualWrap: mount.querySelector("#dui_optimism_seed_manual_wrap"),
-        seedManualInput: mount.querySelector("#dui_optimism_seed_manual_input"),
-        generateBtn: mount.querySelector("#dui_optimism_generate_btn"),
-        seedUsedExercise: mount.querySelector("#dui_optimism_exercise_seed"),
-        seedUsedSolution: mount.querySelector("#dui_optimism_solution_seed"),
-        placeholders: Array.from(duiOptimismPanel.querySelectorAll(".exercises-placeholder")),
+	      duiOptimism: {
+	        panel: duiOptimismPanel,
+	        sidebar: duiOptimismPanel.querySelector(".exercises-sidebar"),
+	        generatePanel: mount.querySelector("#dui_optimism_generate_panel"),
+	        subtabButtons: Array.from(duiOptimismPanel.querySelectorAll(".exercises-subtab-btn")),
+	        subtabPanels: Array.from(duiOptimismPanel.querySelectorAll(".exercises-subtab-panel")),
+	        exercisePlaceholder: duiOptimismPanel.querySelector(
+	          '[data-subpanel="exercise"] .exercises-placeholder'
+	        ),
+	        solutionPlaceholder: duiOptimismPanel.querySelector(
+	          '[data-subpanel="solution"] .exercises-placeholder'
+	        ),
+	        typeRadios: Array.from(duiOptimismPanel.querySelectorAll('input[name="dui_optimism_type"]')),
+	        seedModeAuto: mount.querySelector("#dui_optimism_seed_mode_auto"),
+	        seedModeManual: mount.querySelector("#dui_optimism_seed_mode_manual"),
+	        seedManualWrap: mount.querySelector("#dui_optimism_seed_manual_wrap"),
+	        seedManualInput: mount.querySelector("#dui_optimism_seed_manual_input"),
+	        generateBtn: mount.querySelector("#dui_optimism_generate_btn"),
+	        exerciseBlock: mount.querySelector("#dui_optimism_exercise_block"),
+	        statement: mount.querySelector("#dui_optimism_statement"),
+	        hint: mount.querySelector("#dui_optimism_hint"),
+	        table: mount.querySelector("#dui_optimism_table"),
+	        solutionExplainer: mount.querySelector("#dui_optimism_solution_explainer"),
+	        solutionBody: mount.querySelector("#dui_optimism_solution_body"),
+	        solutionCard: mount.querySelector("#dui_optimism_solution_card"),
+	        seedUsedExercise: mount.querySelector("#dui_optimism_exercise_seed"),
+	        seedUsedSolution: mount.querySelector("#dui_optimism_solution_seed"),
+	        placeholders: Array.from(duiOptimismPanel.querySelectorAll(".exercises-placeholder")),
       },
       game: {
         panel: gamePanel,
@@ -1310,6 +1528,31 @@ function renderPage(mount, { lang }) {
         seedUsedExercise: mount.querySelector("#game_classic_exercise_seed"),
         seedUsedSolution: mount.querySelector("#game_classic_solution_seed"),
         placeholders: Array.from(gameClassicPanel.querySelectorAll(".exercises-placeholder")),
+      },
+      gameMixed: {
+        panel: gameMixedPanel,
+        sidebar: gameMixedPanel.querySelector(".exercises-sidebar"),
+        generatePanel: mount.querySelector("#game_mixed_generate_panel"),
+        subtabButtons: Array.from(gameMixedPanel.querySelectorAll(".exercises-subtab-btn")),
+        subtabPanels: Array.from(gameMixedPanel.querySelectorAll(".exercises-subtab-panel")),
+        matrixSizeRadios: Array.from(gameMixedPanel.querySelectorAll('input[name="game_mixed_size"]')),
+        payoffStyleRadios: Array.from(
+          gameMixedPanel.querySelectorAll('input[name="game_mixed_payoff_style"]')
+        ),
+        seedModeAuto: mount.querySelector("#game_mixed_seed_mode_auto"),
+        seedModeManual: mount.querySelector("#game_mixed_seed_mode_manual"),
+        seedManualWrap: mount.querySelector("#game_mixed_seed_manual_wrap"),
+        seedManualInput: mount.querySelector("#game_mixed_seed_manual_input"),
+        generateBtn: mount.querySelector("#game_mixed_generate_btn"),
+        problemDescription: mount.querySelector("#game_mixed_problem_description"),
+        problemTable: mount.querySelector("#game_mixed_problem_table"),
+        solutionExplainer: mount.querySelector("#game_mixed_solution_explainer"),
+        solutionTable: mount.querySelector("#game_mixed_solution_table"),
+        solutionSummary: mount.querySelector("#game_mixed_solution_summary"),
+        solutionCalc: mount.querySelector("#game_mixed_solution_calc"),
+        seedUsedExercise: mount.querySelector("#game_mixed_exercise_seed"),
+        seedUsedSolution: mount.querySelector("#game_mixed_solution_seed"),
+        placeholders: Array.from(gameMixedPanel.querySelectorAll(".exercises-placeholder")),
       },
       dur: {
         panel: durPanel,
@@ -1375,6 +1618,7 @@ function renderPage(mount, { lang }) {
     tableLabels,
     gameTexts,
     gameClassicTexts,
+    gameMixedTexts,
     durTexts,
     evTexts,
     duiBuildTexts,
@@ -1396,6 +1640,7 @@ export async function mountApp(mount, { lang }) {
 
   const ui = renderPage(mount, { lang });
   let levelOfOptimism = 0;
+  let duiOptimismInstance = null;
 
   const setMainPanel = (panel) => {
     const canOpenPanel = (nextPanel) => nextPanel === "home" || isHomeCardVisible(nextPanel);
@@ -1423,6 +1668,9 @@ export async function mountApp(mount, { lang }) {
     }
     if (targetPanel === "game_classic") {
       updateGameClassicLayout();
+    }
+    if (targetPanel === "game_mixed") {
+      updateGameMixedLayout();
     }
     if (targetPanel === "dur") {
       updateDurLayout();
@@ -1500,6 +1748,12 @@ export async function mountApp(mount, { lang }) {
   };
 
   const gameClassicLayoutState = {
+    moved: false,
+    originalParent: null,
+    originalNextSibling: null,
+  };
+
+  const gameMixedLayoutState = {
     moved: false,
     originalParent: null,
     originalNextSibling: null,
@@ -1682,6 +1936,43 @@ export async function mountApp(mount, { lang }) {
     }
   };
 
+  const updateGameMixedLayout = () => {
+    const isMobile = mobileMq.matches;
+    const sidebar = ui.els.gameMixed.sidebar;
+    const generatePanel = ui.els.gameMixed.generatePanel;
+    if (!sidebar || !generatePanel) return;
+
+    if (isMobile && !gameMixedLayoutState.moved) {
+      gameMixedLayoutState.originalParent = sidebar.parentNode;
+      gameMixedLayoutState.originalNextSibling = sidebar.nextSibling;
+      generatePanel.appendChild(sidebar);
+      gameMixedLayoutState.moved = true;
+      setActiveSubtab(
+        ui.els.gameMixed.subtabButtons,
+        ui.els.gameMixed.subtabPanels,
+        "generate"
+      );
+    } else if (!isMobile && gameMixedLayoutState.moved) {
+      const parent = gameMixedLayoutState.originalParent;
+      if (parent) {
+        if (
+          gameMixedLayoutState.originalNextSibling &&
+          parent.contains(gameMixedLayoutState.originalNextSibling)
+        ) {
+          parent.insertBefore(sidebar, gameMixedLayoutState.originalNextSibling);
+        } else {
+          parent.appendChild(sidebar);
+        }
+      }
+      gameMixedLayoutState.moved = false;
+      setActiveSubtab(
+        ui.els.gameMixed.subtabButtons,
+        ui.els.gameMixed.subtabPanels,
+        "exercise"
+      );
+    }
+  };
+
   const updateDurLayout = () => {
     const isMobile = mobileMq.matches;
     const sidebar = ui.els.dur.sidebar;
@@ -1813,16 +2104,38 @@ export async function mountApp(mount, { lang }) {
   };
 
   const resetDuiOptimismPanels = () => {
+    duiOptimismInstance = null;
     ui.els.duiOptimism.placeholders.forEach((el) => (el.style.display = ""));
+    if (ui.els.duiOptimism.exercisePlaceholder) {
+      ui.els.duiOptimism.exercisePlaceholder.style.display = "";
+    }
+    if (ui.els.duiOptimism.solutionPlaceholder) {
+      ui.els.duiOptimism.solutionPlaceholder.style.display = "";
+    }
+    if (ui.els.duiOptimism.typeRadios?.length) {
+      ui.els.duiOptimism.typeRadios.forEach((radio, idx) => {
+        radio.checked = idx === 0;
+      });
+    }
     if (ui.els.duiOptimism.seedModeAuto) {
       ui.els.duiOptimism.seedModeAuto.checked = true;
       ui.els.duiOptimism.seedModeAuto.dispatchEvent(new Event("change", { bubbles: true }));
     }
     if (ui.els.duiOptimism.seedModeManual) ui.els.duiOptimism.seedModeManual.checked = false;
     if (ui.els.duiOptimism.seedManualInput) ui.els.duiOptimism.seedManualInput.value = "";
-    if (ui.els.duiOptimism.seedUsedExercise) ui.els.duiOptimism.seedUsedExercise.innerHTML = "";
-    if (ui.els.duiOptimism.seedUsedSolution) ui.els.duiOptimism.seedUsedSolution.innerHTML = "";
-    setActiveSubtab(
+	    if (ui.els.duiOptimism.exerciseBlock) ui.els.duiOptimism.exerciseBlock.classList.add("hidden");
+	    if (ui.els.duiOptimism.statement) ui.els.duiOptimism.statement.innerHTML = "";
+	    if (ui.els.duiOptimism.hint) ui.els.duiOptimism.hint.innerHTML = "";
+	    if (ui.els.duiOptimism.table) ui.els.duiOptimism.table.innerHTML = "";
+	    if (ui.els.duiOptimism.solutionBody) ui.els.duiOptimism.solutionBody.classList.add("hidden");
+	    if (ui.els.duiOptimism.solutionExplainer) {
+	      ui.els.duiOptimism.solutionExplainer.innerHTML = "";
+	      ui.els.duiOptimism.solutionExplainer.classList.add("hidden");
+	    }
+	    if (ui.els.duiOptimism.solutionCard) ui.els.duiOptimism.solutionCard.innerHTML = "";
+	    if (ui.els.duiOptimism.seedUsedExercise) ui.els.duiOptimism.seedUsedExercise.innerHTML = "";
+	    if (ui.els.duiOptimism.seedUsedSolution) ui.els.duiOptimism.seedUsedSolution.innerHTML = "";
+	    setActiveSubtab(
       ui.els.duiOptimism.subtabButtons,
       ui.els.duiOptimism.subtabPanels,
       getDefaultSubtab()
@@ -1873,6 +2186,39 @@ export async function mountApp(mount, { lang }) {
     setActiveSubtab(
       ui.els.gameClassic.subtabButtons,
       ui.els.gameClassic.subtabPanels,
+      getDefaultSubtab()
+    );
+  };
+
+  const resetGameMixedPanels = () => {
+    ui.els.gameMixed.placeholders.forEach((el) => (el.style.display = ""));
+    if (ui.els.gameMixed.matrixSizeRadios?.length) {
+      ui.els.gameMixed.matrixSizeRadios.forEach((radio, index) => {
+        radio.checked = index === 0;
+      });
+    }
+    if (ui.els.gameMixed.payoffStyleRadios?.length) {
+      ui.els.gameMixed.payoffStyleRadios.forEach((radio, index) => {
+        radio.checked = index === 0;
+      });
+    }
+    if (ui.els.gameMixed.seedModeAuto) {
+      ui.els.gameMixed.seedModeAuto.checked = true;
+      ui.els.gameMixed.seedModeAuto.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (ui.els.gameMixed.seedModeManual) ui.els.gameMixed.seedModeManual.checked = false;
+    if (ui.els.gameMixed.seedManualInput) ui.els.gameMixed.seedManualInput.value = "";
+    if (ui.els.gameMixed.problemDescription) ui.els.gameMixed.problemDescription.innerHTML = "";
+    if (ui.els.gameMixed.problemTable) ui.els.gameMixed.problemTable.innerHTML = "";
+    if (ui.els.gameMixed.solutionExplainer) ui.els.gameMixed.solutionExplainer.innerHTML = "";
+    if (ui.els.gameMixed.solutionTable) ui.els.gameMixed.solutionTable.innerHTML = "";
+    if (ui.els.gameMixed.solutionSummary) ui.els.gameMixed.solutionSummary.innerHTML = "";
+    if (ui.els.gameMixed.solutionCalc) ui.els.gameMixed.solutionCalc.innerHTML = "";
+    if (ui.els.gameMixed.seedUsedExercise) ui.els.gameMixed.seedUsedExercise.innerHTML = "";
+    if (ui.els.gameMixed.seedUsedSolution) ui.els.gameMixed.seedUsedSolution.innerHTML = "";
+    setActiveSubtab(
+      ui.els.gameMixed.subtabButtons,
+      ui.els.gameMixed.subtabPanels,
       getDefaultSubtab()
     );
   };
@@ -1978,12 +2324,16 @@ export async function mountApp(mount, { lang }) {
     resetDuiOptimismPanels();
     resetGamePanels();
     resetGameClassicPanels();
+    resetGameMixedPanels();
     resetDurPanels();
     resetEvPanels();
   };
 
-  const buildExplainerBox = (title, bodyHtml, texts) => `
-    <details class="exercises-explainer">
+  const buildExplainerBox = (title, bodyHtml, texts, options = {}) => {
+    const extraClasses = String(options.extraClass ?? "").trim();
+    const classAttr = ["exercises-explainer", extraClasses].filter(Boolean).join(" ");
+    return `
+    <details class="${classAttr}">
       <summary class="exercises-explainer-summary">
         <span class="exercises-explainer-title">${title}</span>
         <span class="exercises-explainer-toggle">
@@ -2002,6 +2352,35 @@ export async function mountApp(mount, { lang }) {
       </div>
     </details>
   `;
+  };
+
+  const buildDuiBuildTableExplainerTexts = (baseTexts) => {
+    if (!baseTexts?.methods) return baseTexts;
+    const isEn = lang === "en";
+    const methods = { ...baseTexts.methods };
+
+    const setTitle = (key, title) => {
+      if (!methods[key]) return;
+      methods[key] = { ...methods[key], title };
+    };
+
+    setTitle("Maximin", isEn ? "Solution by the Maximin method" : "Solução pelo método Maximin");
+    setTitle("Minimax", isEn ? "Solution by the Minimax method" : "Solução pelo método Minimax");
+    setTitle(
+      "Optimism-Pessimism Rule",
+      isEn ? "Solution by the Optimism–Pessimism Rule" : "Solução pela Regra Otimismo-Pessimismo"
+    );
+    setTitle(
+      "Principle of Insufficient Reason",
+      isEn
+        ? "Solution by the Principle of Insufficient Reason"
+        : "Solução pelo Princípio da Razão Insuficiente"
+    );
+
+    return { ...baseTexts, methods };
+  };
+
+  const duiBuildTableExplainerTexts = buildDuiBuildTableExplainerTexts(ui.explainerTexts);
 
   const formatProbabilityDecimal = (value, digits = 2) => {
     const num = Number(value);
@@ -2507,6 +2886,7 @@ export async function mountApp(mount, { lang }) {
   updateDuiOptimismLayout();
   updateGameLayout();
   updateGameClassicLayout();
+  updateGameMixedLayout();
   updateDurLayout();
   updateEvLayout();
 
@@ -2521,6 +2901,11 @@ export async function mountApp(mount, { lang }) {
     ui.els.gameClassic.seedModeAuto,
     ui.els.gameClassic.seedModeManual,
     ui.els.gameClassic.seedManualWrap
+  );
+  wireSeedControls(
+    ui.els.gameMixed.seedModeAuto,
+    ui.els.gameMixed.seedModeManual,
+    ui.els.gameMixed.seedManualWrap
   );
   wireSeedControls(ui.els.dur.seedModeAuto, ui.els.dur.seedModeManual, ui.els.dur.seedManualWrap);
   wireSeedControls(ui.els.ev.seedModeAuto, ui.els.ev.seedModeManual, ui.els.ev.seedManualWrap);
@@ -2555,6 +2940,7 @@ export async function mountApp(mount, { lang }) {
     updateEvRangeLabels();
     updateDuiLayout();
     updateGameLayout();
+    updateGameMixedLayout();
     updateDurLayout();
     updateEvLayout();
   });
@@ -2565,6 +2951,7 @@ export async function mountApp(mount, { lang }) {
     mobileMq.addEventListener("change", updateDuiOptimismLayout);
     mobileMq.addEventListener("change", updateGameLayout);
     mobileMq.addEventListener("change", updateGameClassicLayout);
+    mobileMq.addEventListener("change", updateGameMixedLayout);
     mobileMq.addEventListener("change", updateDurLayout);
     mobileMq.addEventListener("change", updateEvLayout);
   } else if (mobileMq.addListener) {
@@ -2573,6 +2960,7 @@ export async function mountApp(mount, { lang }) {
     mobileMq.addListener(updateDuiOptimismLayout);
     mobileMq.addListener(updateGameLayout);
     mobileMq.addListener(updateGameClassicLayout);
+    mobileMq.addListener(updateGameMixedLayout);
     mobileMq.addListener(updateDurLayout);
     mobileMq.addListener(updateEvLayout);
   }
@@ -2595,6 +2983,7 @@ export async function mountApp(mount, { lang }) {
   wireSubtabs(ui.els.duiOptimism.subtabButtons, ui.els.duiOptimism.subtabPanels);
   wireSubtabs(ui.els.game.subtabButtons, ui.els.game.subtabPanels);
   wireSubtabs(ui.els.gameClassic.subtabButtons, ui.els.gameClassic.subtabPanels);
+  wireSubtabs(ui.els.gameMixed.subtabButtons, ui.els.gameMixed.subtabPanels);
   wireSubtabs(ui.els.dur.subtabButtons, ui.els.dur.subtabPanels);
   wireSubtabs(ui.els.ev.subtabButtons, ui.els.ev.subtabPanels);
 
@@ -2914,7 +3303,7 @@ export async function mountApp(mount, { lang }) {
             .map((result) =>
               buildSolutionExplainer(
                 result.method,
-                ui.explainerTexts,
+                duiBuildTableExplainerTexts,
                 result.solution,
                 optimismLevel,
                 result.baseTable
@@ -2942,7 +3331,155 @@ export async function mountApp(mount, { lang }) {
     updateCheckState();
   });
 
-  wireEmptyExerciseGenerate(ui.els.duiOptimism);
+	  const getSelectedOptimismType = () =>
+	    ui.els.duiOptimism.typeRadios?.find((radio) => radio.checked)?.value ?? "max_level";
+
+	  const renderDuiOptimismHint = () => {
+	    if (!ui.els.duiOptimism.hint) return;
+	    const body = buildOptimismHintBodyHtml(duiOptimismInstance, ui.duiOptimismTexts);
+	    if (!body) {
+	      ui.els.duiOptimism.hint.innerHTML = "";
+	      return;
+	    }
+    const hintToggleTexts = {
+      toggleShow: ui.duiOptimismTexts.hintToggleShow,
+      toggleHide: ui.duiOptimismTexts.hintToggleHide,
+      toggleShowShort: ui.duiOptimismTexts.hintToggleShowShort,
+      toggleHideShort: ui.duiOptimismTexts.hintToggleHideShort,
+    };
+    ui.els.duiOptimism.hint.innerHTML = buildExplainerBox(
+      ui.duiOptimismTexts.hintTitle,
+      body,
+      hintToggleTexts,
+      { extraClass: "is-hint" }
+	    );
+	  };
+
+	  const renderDuiOptimismSolutionExplainer = () => {
+	    if (!ui.els.duiOptimism.solutionExplainer) return;
+	    if (!duiOptimismInstance) {
+	      ui.els.duiOptimism.solutionExplainer.innerHTML = "";
+	      ui.els.duiOptimism.solutionExplainer.classList.add("hidden");
+	      return;
+	    }
+	    const body = buildOptimismSolutionExplainerBodyHtml(
+	      duiOptimismInstance,
+	      ui.duiOptimismTexts,
+	      ui.explainerTexts
+	    );
+	    if (!body) {
+	      ui.els.duiOptimism.solutionExplainer.innerHTML = "";
+	      ui.els.duiOptimism.solutionExplainer.classList.add("hidden");
+	      return;
+	    }
+	    ui.els.duiOptimism.solutionExplainer.classList.remove("hidden");
+	    ui.els.duiOptimism.solutionExplainer.innerHTML = buildExplainerBox(
+	      ui.duiOptimismTexts.solutionExplainerTitle,
+	      body,
+	      ui.explainerTexts
+	    );
+	    renderMathInContainer(ui.els.duiOptimism.solutionExplainer);
+	  };
+
+	  if (ui.els.duiOptimism.typeRadios?.length) {
+	    ui.els.duiOptimism.typeRadios.forEach((radio) => {
+	      radio.addEventListener("change", () => {
+	        const nextTypeId = getSelectedOptimismType();
+
+	        const isSwitchingBetweenAlphaTypes =
+	          duiOptimismInstance &&
+	          duiOptimismInstance.typeId !== "find_payoff" &&
+	          nextTypeId !== "find_payoff";
+
+        if (isSwitchingBetweenAlphaTypes) {
+          duiOptimismInstance.typeId = nextTypeId;
+	          if (ui.els.duiOptimism.statement) {
+	            ui.els.duiOptimism.statement.innerHTML = buildOptimismStatementHtml(
+	              duiOptimismInstance,
+	              ui.duiOptimismTexts
+	            );
+	          }
+	          renderDuiOptimismHint();
+	          renderDuiOptimismSolutionExplainer();
+	          if (ui.els.duiOptimism.solutionCard) {
+	            ui.els.duiOptimism.solutionCard.innerHTML = buildOptimismSolutionHtml(
+	              duiOptimismInstance,
+	              ui.duiOptimismTexts
+	            );
+	            renderMathInContainer(ui.els.duiOptimism.solutionCard);
+	          }
+	        } else if (duiOptimismInstance && duiOptimismInstance.typeId !== nextTypeId) {
+	          duiOptimismInstance = null;
+	          ui.els.duiOptimism.placeholders.forEach((el) => (el.style.display = ""));
+          if (ui.els.duiOptimism.exercisePlaceholder) {
+            ui.els.duiOptimism.exercisePlaceholder.style.display = "";
+          }
+          if (ui.els.duiOptimism.solutionPlaceholder) {
+            ui.els.duiOptimism.solutionPlaceholder.style.display = "";
+          }
+          if (ui.els.duiOptimism.exerciseBlock) ui.els.duiOptimism.exerciseBlock.classList.add("hidden");
+          if (ui.els.duiOptimism.solutionBody) ui.els.duiOptimism.solutionBody.classList.add("hidden");
+	          if (ui.els.duiOptimism.statement) ui.els.duiOptimism.statement.innerHTML = "";
+	          if (ui.els.duiOptimism.hint) ui.els.duiOptimism.hint.innerHTML = "";
+	          if (ui.els.duiOptimism.table) ui.els.duiOptimism.table.innerHTML = "";
+	          if (ui.els.duiOptimism.solutionExplainer) {
+	            ui.els.duiOptimism.solutionExplainer.innerHTML = "";
+	            ui.els.duiOptimism.solutionExplainer.classList.add("hidden");
+	          }
+	          if (ui.els.duiOptimism.solutionCard) ui.els.duiOptimism.solutionCard.innerHTML = "";
+	        }
+	      });
+	    });
+	  }
+
+  ui.els.duiOptimism.generateBtn.addEventListener("click", () => {
+    setActiveSubtab(ui.els.duiOptimism.subtabButtons, ui.els.duiOptimism.subtabPanels, "exercise");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const typeId = getSelectedOptimismType();
+    const seedMode = getSeedMode(ui.els.duiOptimism);
+    const seed = resolveSeedFromMode(seedMode, ui.els.duiOptimism.seedManualInput);
+    const rng = createSeededRng(seed);
+
+    duiOptimismInstance = generateOptimismExercise({
+      typeId,
+      rng,
+      tableLabels: ui.tableLabels,
+    });
+
+    ui.els.duiOptimism.placeholders.forEach((el) => (el.style.display = "none"));
+    if (ui.els.duiOptimism.exercisePlaceholder) {
+      ui.els.duiOptimism.exercisePlaceholder.style.display = "none";
+    }
+    if (ui.els.duiOptimism.solutionPlaceholder) {
+      ui.els.duiOptimism.solutionPlaceholder.style.display = "none";
+    }
+
+    if (ui.els.duiOptimism.exerciseBlock) ui.els.duiOptimism.exerciseBlock.classList.remove("hidden");
+	    if (ui.els.duiOptimism.statement) {
+	      ui.els.duiOptimism.statement.innerHTML = buildOptimismStatementHtml(
+	        duiOptimismInstance,
+	        ui.duiOptimismTexts
+	      );
+	    }
+	    renderDuiOptimismHint();
+	    if (ui.els.duiOptimism.table) {
+	      renderTable(ui.els.duiOptimism.table, duiOptimismInstance.table);
+	    }
+
+	    if (ui.els.duiOptimism.solutionBody) ui.els.duiOptimism.solutionBody.classList.remove("hidden");
+	    renderDuiOptimismSolutionExplainer();
+	    if (ui.els.duiOptimism.solutionCard) {
+	      ui.els.duiOptimism.solutionCard.innerHTML = buildOptimismSolutionHtml(
+	        duiOptimismInstance,
+	        ui.duiOptimismTexts
+	      );
+	      renderMathInContainer(ui.els.duiOptimism.solutionCard);
+	    }
+
+	    renderSeedUsed(ui.els.duiOptimism.seedUsedExercise, seed, ui.labels);
+	    renderSeedUsed(ui.els.duiOptimism.seedUsedSolution, seed, ui.labels);
+	  });
 
   ui.els.game.numRows.addEventListener("input", updateGameRangeLabels);
   ui.els.game.numCols.addEventListener("input", updateGameRangeLabels);
@@ -3058,7 +3595,12 @@ export async function mountApp(mount, { lang }) {
     }
     if (ui.els.gameClassic.solutionTable) {
       const analysis = analyzeGameForNash(instance);
-      const solutionTable = buildGameSolutionTable(instance, analysis, ui.gameClassicTexts);
+      const semanticLabels = buildClassicGameSolutionStrategyLabels(instance, lang);
+      const solutionTable = buildGameSolutionTable(
+        { ...instance, rowLabels: semanticLabels.rowLabels, colLabels: semanticLabels.colLabels },
+        analysis,
+        ui.gameClassicTexts
+      );
       renderTable(ui.els.gameClassic.solutionTable, solutionTable.table, {
         cellClasses: solutionTable.cellClasses,
         tableClass: "game-table",
@@ -3067,6 +3609,81 @@ export async function mountApp(mount, { lang }) {
 
     renderSeedUsed(ui.els.gameClassic.seedUsedExercise, seed, ui.labels);
     renderSeedUsed(ui.els.gameClassic.seedUsedSolution, seed, ui.labels);
+  });
+
+  ui.els.gameMixed.generateBtn.addEventListener("click", () => {
+    setActiveSubtab(ui.els.gameMixed.subtabButtons, ui.els.gameMixed.subtabPanels, "exercise");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const seedMode = getSeedMode(ui.els.gameMixed);
+    const seed = resolveSeedFromMode(seedMode, ui.els.gameMixed.seedManualInput);
+    const rng = createSeededRng(seed);
+
+    const sizeId =
+      ui.els.gameMixed.matrixSizeRadios?.find((el) => el.checked)?.value ?? "2x2";
+    const payoffStyleId =
+      ui.els.gameMixed.payoffStyleRadios?.find((el) => el.checked)?.value ?? "parallel";
+
+    const instance = buildMixedGameInstance({
+      sizeId,
+      payoffStyleId,
+      rng,
+      texts: ui.gameMixedTexts,
+    });
+
+    ui.els.gameMixed.placeholders.forEach((el) => (el.style.display = "none"));
+
+    if (ui.els.gameMixed.problemDescription) {
+      ui.els.gameMixed.problemDescription.innerHTML = describeMixedGameProblem(
+        instance,
+        ui.gameMixedTexts
+      );
+    }
+    if (ui.els.gameMixed.problemTable) {
+      renderTable(ui.els.gameMixed.problemTable, instance.table, { tableClass: "game-table" });
+    }
+
+    if (ui.els.gameMixed.solutionExplainer) {
+      const explainerBody = buildMixedGameExplainerBody(instance, ui.gameMixedTexts);
+      const explainer = buildExplainerBox(
+        ui.gameMixedTexts.explainerTitle,
+        explainerBody,
+        ui.explainerTexts
+      );
+      ui.els.gameMixed.solutionExplainer.innerHTML = explainer;
+      renderMathInContainer(ui.els.gameMixed.solutionExplainer);
+    }
+
+    if (ui.els.gameMixed.solutionTable) {
+      const solutionTable = buildMixedGameSolutionTable(instance);
+      renderTable(ui.els.gameMixed.solutionTable, solutionTable.table, {
+        cellClasses: solutionTable.cellClasses,
+        tableClass: "game-table",
+      });
+      ui.els.gameMixed.solutionTable.insertAdjacentHTML(
+        "beforeend",
+        `<p class="exercises-legend">${ui.gameMixedTexts.solutionLegend}</p>`
+      );
+    }
+
+    if (ui.els.gameMixed.solutionSummary) {
+      ui.els.gameMixed.solutionSummary.innerHTML = buildMixedGameSummaryCard(
+        instance,
+        ui.gameMixedTexts
+      );
+      renderMathInContainer(ui.els.gameMixed.solutionSummary);
+    }
+
+    if (ui.els.gameMixed.solutionCalc) {
+      ui.els.gameMixed.solutionCalc.innerHTML = buildMixedGameCalculationCard(
+        instance,
+        ui.gameMixedTexts
+      );
+      renderMathInContainer(ui.els.gameMixed.solutionCalc);
+    }
+
+    renderSeedUsed(ui.els.gameMixed.seedUsedExercise, seed, ui.labels);
+    renderSeedUsed(ui.els.gameMixed.seedUsedSolution, seed, ui.labels);
   });
 
   ui.els.dur.generateBtn.addEventListener("click", () => {

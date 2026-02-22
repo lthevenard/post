@@ -162,6 +162,8 @@ Exemplo de item:
 
 Regras:
 
+- Um slide só aparece nas listagens **públicas** se `posted !== false` e `hide !== true` (padrão: visível).
+- Slides ocultos: `hide: true` (não aparecem em `#/pt/slides` nem na página pública do projeto).
 - Slides ativos: `archive: false`.
 - Slides arquivados: `archive: true` e aparecem apenas em `#/pt/archived` ou `#/en/archived`.
 - Se `pdf_url` existir, ele substitui o PDF local.
@@ -171,6 +173,22 @@ Regras:
 - Caminhos locais para slides arquivados:
   - PDF: `slides/archived/<pdf>`
   - Crie `slides/archived/` na primeira vez que precisar.
+
+#### Área restrita (slides/projetos completos)
+
+Há uma área restrita (não linkada no menu) que lista slides e projetos **incluindo** itens com `hide: true`.
+
+1. Defina `SECRET_PASSWORD_SHA256` em `script.js` (hash SHA-256 em hex).
+2. Gere o hash localmente com: `node tools/sha256.mjs "sua senha"`.
+3. Acesse (onde `<lang>` é `pt` ou `en`):
+   - `#/<lang>/secret`
+   - `#/<lang>/secret-slides`
+   - `#/<lang>/secret-projects`
+   - `#/<lang>/secret-project?slug=<project-slug>`
+
+O acesso é lembrado apenas durante a sessão/aba do navegador.
+
+Obs.: isso não é segurança real (os arquivos continuam acessíveis por URL direta); é apenas “obscuridade” para evitar curiosos.
 
 #### Adicionar um novo slide deck
 
@@ -184,6 +202,8 @@ Regras:
 Projetos são definidos em `projects/projects.json`. A página de Projetos não está mais no menu principal, mas continua existindo e é linkada a partir da página de Slides.
 
 Um projeto só aparece se tiver pelo menos um slide **ativo** com `slides.project === projects.slug`.
+
+Obs.: na página pública, o slide também precisa ser **público** (`posted !== false` e `hide !== true`). Slides com `hide: true` só aparecem na área restrita (ver `script.js`).
 
 Exemplo de item:
 
