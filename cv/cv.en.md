@@ -42,7 +42,7 @@ My work combines legal research with quantitative and computational methods, inc
   <em style="color:#b3b3b3; font-size:90%;">2020–present</em>  
   <span style="font-size: 90%">Research on empirical regulatory studies, public participation, regulatory improvement tools, and public policy analysis, with an emphasis on quantitative and computational methods.</span>
 
-- <span style="color:var(--link)"><b>Teaching Assistant</b> — FGV Rio Law</span>  
+- <span style="color:var(--link)"><b>Professor</b> — FGV Rio Law</span>  
   <em style="color:#b3b3b3; font-size:90%;">2022–present</em>  
   <span style="color:var(--link); font-size:90%;">Decision Theory</span>  
   <span style="font-size: 90%">Focus on risk, uncertainty, decision-making under limited information, and applications of game theory to law and regulation.</span>  

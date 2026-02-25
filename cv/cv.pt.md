@@ -2,7 +2,7 @@
 
 <b style="color:#9cc8ff">Afiliação:</b> FGV Direito Rio — Programa de Doutorado em Direito da Regulação
 
-<b style="color:#9cc8ff">Cargo atual:</b> Pesquisador e Assistente de Ensino
+<b style="color:#9cc8ff">Cargo atual:</b> Pesquisador e Professor Assistente
 
 <b style="color:#9cc8ff">Interesses de pesquisa:</b> Participação social na regulação, Análise de Impacto Regulatório (AIR), complexidade regulatória, governança baseada em evidências, estudos empíricos do direito, NLP e métodos computacionais aplicados à regulação
 
@@ -44,7 +44,7 @@ Tenho forte interesse em métodos quantitativos e computacionais aplicados ao di
   <em style="color:#b3b3b3; font-size:90%;">2020–presente</em> 
   <span style="font-size: 90%">Atuação em pesquisas empíricas em regulação, participação social, ferramentas de melhoria regulatória e análise de políticas públicas, com ênfase em métodos quantitativos e computacionais.</span>
 
-- <span style="color:var(--link)"><b>Assistente de Ensino</b> — FGV Direito Rio</span>
+- <span style="color:var(--link)"><b>Professor Assistente</b> — FGV Direito Rio</span>
   <span style="color:var(--link); font-size:90%;">Teoria da Decisão</span>
   <em style="color:#b3b3b3; font-size:90%;">2022–presente</em>
   <span style="font-size: 90%">Responsável pela disciplina **Teoria da Decisão**, com foco em risco, incerteza, tomada de decisão sob informação limitada e aplicações da teoria dos jogos ao direito e à regulação.</span>
