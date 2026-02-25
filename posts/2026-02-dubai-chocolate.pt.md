@@ -12,7 +12,7 @@ O que realmente me pega é a marca. “Dubai.” Só pronunciar isso em voz alta
 
 Mas, assim: esses chocolates… são mesmo de Dubai?
 
-Porque, se tem uma coisa que eu sei sobre Dubai, é que Dubai é muito bom em ser Dubai. É um lugar com tradição de arquitetura, ambição e de fazer o impossível parecer um shopping. Chocolate, porém, não é exatamente a primeira coisa que me vem à cabeça. Cacaueiros não prosperam no deserto. “Tradição secular de chocolate emiradense” não é uma frase que eu já tenha ouvido alguma vez.
+Porque, se tem uma coisa que eu sei sobre Dubai, é que Dubai é muito bom em ser Dubai. É um lugar com tradição de arquitetura, ambição e de fazer o impossível parecer um shopping. Chocolate, porém, não é exatamente a primeira coisa que me vem à cabeça. Cacaueiros não prosperam no deserto.
 
 E, ainda assim, cá estamos nós, agindo como se os suíços estivessem tremendo, os belgas suando e os franceses aceitando a derrota em silêncio. Da minha parte, pelo menos posso dizer que tentei resistir.
 

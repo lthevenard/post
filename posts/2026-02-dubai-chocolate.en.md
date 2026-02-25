@@ -12,7 +12,7 @@ What really gets me is the branding. “Dubai.” Just saying it out loud adds a
 
 But also: are these chocolates… from Dubai?
 
-Because if there is one thing I know about Dubai, it’s that it is very good at being Dubai. It’s a place with a tradition of architecture, ambition, and making the impossible look like a shopping mall. Chocolate, however, is not exactly the first thing that comes to mind. Cocoa trees do not thrive in the desert. “Centuries-old Emirati chocolate craft” is not a phrase I’ve ever heard outside of a marketing meeting, immediately before someone says, “let’s make it viral.”
+Because if there is one thing I know about Dubai, it’s that it is very good at being Dubai. It’s a place with a tradition of architecture, ambition, and making the impossible look like a shopping mall. Chocolate, however, is not exactly the first thing that comes to mind. Cocoa trees do not thrive in the desert.
 
 And yet here we are, acting as if the Swiss are shaking, the Belgians are sweating, and the French are quietly accepting defeat. For my part, at least I can say I tried to resist it. 
 
