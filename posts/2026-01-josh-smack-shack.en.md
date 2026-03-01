@@ -32,10 +32,10 @@ Behind us, the line swelled as the night deepened and temperatures dropped.
     <h2>The Kramer Moment</h2>
     <hr>
     <p>
-        Then I realized that pinned to the wall next to the order window was a picture of Kramer (yes, that Kramer). It was an image from an episode in which a fancy artist makes a oil paiting with a portrait of Kramer. Honestly, it felt like the universe was winking at us — this entire experience was basically an episode of Seinfeld: absurd, minorly soul-crushing, and disproportionately elevated by social hype.
+        Then I realized that pinned to the wall next to the order window was a picture of Kramer (yes, that Kramer). It was an image from an episode in which a fancy artist makes an oil paiting with a portrait of Kramer. Honestly, it felt like the universe was winking at us — this entire experience was basically an episode of Seinfeld: absurd, minorly soul-crushing, and disproportionately elevated by social hype.
     </p>
     <p>
-        Some episodes — the Soup Nazi, the Yogurt Place with No Calories, the infamous black and white cookie standoff — always seemed exaggerated to me. Over the top. Not realistic. But there I was, in a parking-lot-turned-burger-theater, living out the real-world equivalent of those scenarios — right down to the bizarre social norms that emerge when people wait in line for something that may or may not be “worth it.”
+        Some episodes — the Soup Nazi, the Yogurt Place with No Calories, the infamous Black and White Cookie Standoff — always seemed exaggerated to me. Over the top. Not realistic. But there I was, in a parking-lot-turned-burger-theater, living out the real-world equivalent of those scenarios — right down to the bizarre social norms that emerge when people wait in line for something that may or may not be “worth it.”
     </p>
   </div>
 </div>
@@ -43,9 +43,9 @@ Behind us, the line swelled as the night deepened and temperatures dropped.
 
 ## The Burger (Spoiler: It Was Good)
 
-After what felt like both an eternity and a blink, we got our orders. We both decided on The Bubba — triple smashed patties with caramelized blackened beef bacon, house sauce, onions, and pickles. It was dirty (in the best possible way), messy, rich, and extremely flavorful. Worth the wait? Honestly? Probably. But I suspect half of that pleasure came from the absurdity of the situation, the company, and the shared delirium of everyone else trying to stay warm.
+After what felt like both an eternity and a blink, we got our orders. We both decided on The Bubba — triple smashed patties with caramelized blackened beef bacon, house sauce, onions, and pickles. It was dirty (in the best possible way), messy, rich, and extremely flavorful.
 
-We sat at that picnic table, surrounded by others still in line, who now had to watch us chowing down while chatting about this surreal experience.
+But, honestly, I suspect half of that pleasure came from the absurdity of the situation, the company, and the shared delirium of everyone else trying to stay warm. We sat at that picnic table, surrounded by others still in line, who now had to watch us chowing down while chatting about this surreal experience.
 
 <br>
 

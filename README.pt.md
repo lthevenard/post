@@ -37,7 +37,7 @@ Este repositório hospeda meu site acadêmico estático bilíngue (PT/EN). O sit
 ├─ slides/
 │  ├─ slides.json
 │  ├─ archived/ (crie quando precisar)
-│  └─ <slide-slug>/
+│  └─ <slide-dir>/
 ```
 
 ## Apps Hospedados no Site
@@ -168,8 +168,9 @@ Regras:
 - Slides arquivados: `archive: true` e aparecem apenas em `#/pt/archived` ou `#/en/archived`.
 - Se `pdf_url` existir, ele substitui o PDF local.
 - Caminhos locais para slides ativos:
-  - HTML: `slides/<slug>/<html>`
-  - PDF: `slides/<slug>/<pdf>`
+  - HTML: `slides/<slug>/<html>` (ou `slides/<dir>/<slug>/<html>` se `dir` estiver definido)
+  - PDF: `slides/<slug>/<pdf>` (ou `slides/<dir>/<slug>/<pdf>` se `dir` estiver definido)
+  - `dir` (opcional) vem de `dir` no `slides.json`. Se ele já terminar com `<slug>`, o site não duplica.
 - Caminhos locais para slides arquivados:
   - PDF: `slides/archived/<pdf>`
   - Crie `slides/archived/` na primeira vez que precisar.
@@ -192,10 +193,11 @@ Obs.: isso não é segurança real (os arquivos continuam acessíveis por URL di
 
 #### Adicionar um novo slide deck
 
-1. Crie a pasta `slides/<slug>/`.
-2. Coloque os arquivos `<html>` e `<pdf>` dentro dela.
-3. Adicione um item em `slides/slides.json`.
-4. Se o slide pertence a um projeto, defina `project` com o `slug` do projeto.
+1. Crie a pasta `slides/<slug>/` (estrutura padrão) ou `slides/<subpasta>/<slug>/`.
+2. Se usar uma subpasta, defina `dir` no item de `slides/slides.json` como `<subpasta>` (ou `<subpasta>/<slug>`; ambos funcionam).
+3. Coloque os arquivos `<html>` e `<pdf>` dentro dela.
+4. Adicione um item em `slides/slides.json`.
+5. Se o slide pertence a um projeto, defina `project` com o `slug` do projeto.
 
 ### Projetos (linkados a partir de Slides)
 

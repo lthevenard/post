@@ -41,9 +41,9 @@ Atrás de nós, a fila crescia conforme a noite avançava e a temperatura caía.
 
 ## O hambúrguer (spoiler: era muito bom)
 
-Depois do que pareceu ao mesmo tempo uma eternidade e um piscar de olhos, finalmente recebemos nossos pedidos. Nós dois pedimos o Bubba — três carnes smash, bacon de carne bovina caramelizado e bem tostado, molho da casa, cebola e picles. Era “sujo” (no melhor sentido possível), bagunçado, intenso e extremamente saboroso. Valeu a espera? Sinceramente? Provavelmente. Mas suspeito que metade desse prazer tenha vindo do quanto toda a situação era absurda, da companhia e do delírio coletivo de todo mundo tentando se manter aquecido.
+Depois do que pareceu ao mesmo tempo uma eternidade e um piscar de olhos, finalmente recebemos nossos pedidos. Nós dois pedimos o Bubba — três carnes smash, bacon de carne bovina caramelizado e bem tostado, molho da casa, cebola e picles. Era “sujo” (no melhor sentido possível), bagunçado, intenso e extremamente saboroso. 
 
-Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguardavam na fila — e que agora foram obrigadas a nos assistir devorando o hambúrguer enquanto conversávamos sobre o quão surreal tudo aquilo era.
+Mas, honestamente, eu suspeito que metade desse prazer tenha vindo do quanto toda a situação era absurda, da companhia e do delírio coletivo de todo mundo tentando se manter aquecido. Sentamos naquela única mesa de piquenique, cercados por pessoas que ainda aguardavam na fila — e que agora foram obrigadas a nos assistir devorando o hambúrguer enquanto conversávamos sobre o quão surreal tudo aquilo era.
 
 <br>
 

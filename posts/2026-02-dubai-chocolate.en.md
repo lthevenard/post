@@ -1,4 +1,4 @@
-# Dubai Chocolate: it’s about the experience
+# Dubai Chocolate: the wonderful taste of being a VIP
 
 ![Illustration: Dubai Chocolate bar](./assets/posts/2026-dubai/cover.png)
 
@@ -6,15 +6,19 @@
 
 Living in the U.S. has taught me that trends don’t *arrive*. They spawn. One day you’re buying normal groceries like a responsible adult, and the next day everyone is whispering the same two words like it’s a secret password: “Dubai Chocolate.”
 
-It started innocently: first my co-advisor here in Washington mentioned how everywhere he was seen people talk about "Dubai chocolate". Then I saw a youtube add of someone snapping a thick chocolate bar in half, revealing an interior that looked like a luxury construction project — pistachio-green, crunchy, photogenic. Then I caught a glimpse of someone actually eating a bar at an online meeting. Suddenly, it was in the “suggested for you” section of every app that knows I’ve ever experienced joy.
+It started innocently: first my co-advisor here in Washington mentioned that, everywhere he went, he saw people talking about “Dubai chocolate”. Then I saw a YouTube ad of someone snapping a thick chocolate bar in half, revealing an interior that looked like a luxury construction project — pistachio-green, crunchy, photogenic. Then I caught a glimpse of someone actually eating a bar in an online meeting. Suddenly, it was in the “suggested for you” section of every app that knows I’ve ever experienced joy.
 
-What really gets me is the branding. “Dubai.” Just saying it out loud adds about $8 to the price and 40% more confidence to the person recommending it. Dubai conjures skyscrapers, gold leaf, and receipts you don’t show your bank account. It is the rare word that functions simultaneously as a location and as a lifestyle filter.
+What really gets me is the branding. “Dubai.” Just saying it out loud adds about $8 to the price and 40% more confidence to the person recommending it. Dubai conjures skyscrapers, gold leaf, and receipts you don’t want to see on your bank statement. It is the rare word that functions simultaneously as a location and as a lifestyle filter.
 
-But also: are these chocolates… from Dubai?
+But also: are these chocolates… from Dubai? Or is “Dubai” just the flavor of wanting to feel so very special?
 
 Because if there is one thing I know about Dubai, it’s that it is very good at being Dubai. It’s a place with a tradition of architecture, ambition, and making the impossible look like a shopping mall. Chocolate, however, is not exactly the first thing that comes to mind. Cocoa trees do not thrive in the desert.
 
-And yet here we are, acting as if the Swiss are shaking, the Belgians are sweating, and the French are quietly accepting defeat. For my part, at least I can say I tried to resist it. 
+And yet here we are, acting as if the Swiss are shaking, the Belgians are sweating, and the French are quietly accepting defeat — just because a chocolate bar discovered the marketing power of feeling expensive. For my part, at least I can say I tried to resist it.
+
+## Don't fall for the hype
+
+I told myself I was above this. I am an adult. I have interests. I read books. I occasionally cook vegetables on purpose. I do not need to buy into every hype just to validate my existence. I’m way too serious of a person to fall for such a shallow, frivolous endeavor as trying to feel rich and important for fifteen seconds... right?
 
 <div class="image-text-block image-text-block--text-first">
   <img
@@ -25,18 +29,17 @@ And yet here we are, acting as if the Swiss are shaking, the Belgians are sweati
   />
 
   <div class="image-text-block__text">
-    <h2>Don't fall for the hype</h2>
-    <hr>
     <p>
-        I told myself I was above this. I am an adult. I have interests. I read books. I occasionally cook vegetables on purpose. I do not need to adhere to every hype just to validate my existence. 
-    </p>
-    <p>
-        Then it happened: “Dubai Chocolate” made it all the way to my coffee. One afternoon, I met my co-advisor for a chat, we went to Starbucks — and somehow the menu had already found a way to attach those two magic words to caffeine. The best part is that I can’t even claim I *bought* into it; he paid for my latte. I just accepted the cup like a dignified gentleman and took a sip like it was field research.
+        Then it happened: “Dubai Chocolate” made it all the way to my coffee. One afternoon, I met my co-advisor for a chat; we went to Starbucks — and somehow the menu had already found a way to attach those two magic words to caffeine. The best part is that I can’t even claim I <i>bought</i> into it; he paid for my latte. I just accepted the cup like a dignified gentleman and took a sip like it was field research.
     </p>
     <p>
         Only later did I commit the fully intentional, inexcusable act. I found it in a perfectly ordinary American store, sitting on a shelf like it had always belonged there, wearing the name "Dubai Chocolate" like a designer logo. I decided to take it home “just to give it a try” — after a few brief, principled moments of reluctance that, I’m happy to report, I overcame with remarkable speed.
     </p>
+    <p>
+        It was actually tasty — but let’s be honest: the taste is just the excuse. The real point is that, for a minute, you get to feel like a VIP with an unlimited dessert budget.
+    </p>
+    <p>
+        There. I said it. I admit it: OK, I loved it! You win, OK? Now stop harassing me and let me get back to planning my next trip to Dubai...
+    </p>
   </div>
 </div>
-
-It was actually tasty — but, you know, it’s not just about the taste, it’s about the experience...

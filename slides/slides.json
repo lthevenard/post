@@ -1,5 +1,19 @@
 [
   {
+    "group": "td26_1",
+    "slug": "td26_aula1",
+    "title": "(TD26) Aula 1 - O que é Teoria da Decisão?",
+    "event": "TD26.1 - 2026-03-02",
+    "date": "2025-10-14",
+    "html": "td26_aula1.html",
+    "pdf": "td26_aula1.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "sbca_2025",
     "title": "(SBCA 2025) How many are too few? Analyzing the diversity of regulatory options considered in Brazil's RIAs",
     "event": "SBCA 2025",

@@ -648,6 +648,63 @@ function hiddenSlideKeySet(slides) {
 }
 
 /**
+ * Resolves the directory (under /slides) where this deck lives.
+ * Supports nested folders via `dir` in slides.json.
+ * @param {object} slide
+ * @returns {string}
+ */
+function slideDir(slide) {
+  const slug = String(slide?.slug || '')
+    .replace(/\\/g, '/')
+    .replace(/^\/+|\/+$/g, '');
+
+  const rawDir = String(slide?.dir || '')
+    .replace(/\\/g, '/')
+    .replace(/^\/+|\/+$/g, '');
+
+  const dirParts = rawDir.split('/').filter(Boolean);
+  const slugParts = slug.split('/').filter(Boolean);
+
+  const safeDir = dirParts.some(p => p === '.' || p === '..') ? '' : dirParts.join('/');
+  const safeSlug = slugParts.some(p => p === '.' || p === '..') ? '' : slugParts.join('/');
+
+  // Default layout: slides/<slug>/...
+  if (!safeDir) return safeSlug;
+
+  // If slug is missing, treat `dir` as the full directory.
+  if (!safeSlug) return safeDir;
+
+  // If `dir` already includes the slug at the end, assume it is the full deck dir.
+  if (safeDir === safeSlug || safeDir.endsWith(`/${safeSlug}`)) return safeDir;
+
+  // Otherwise, treat `dir` as a parent folder.
+  return `${safeDir}/${safeSlug}`;
+}
+
+/**
+ * Encodes a "/" separated path, segment by segment.
+ * @param {string} path
+ * @returns {string}
+ */
+function encodePath(path) {
+  return String(path || '')
+    .split('/')
+    .filter(Boolean)
+    .map(encodeURIComponent)
+    .join('/');
+}
+
+/**
+ * Resolves the HTML href for a slide (local).
+ * @param {object} slide
+ * @returns {string}
+ */
+function resolveHtmlHref(slide) {
+  const dir = slideDir(slide);
+  return `slides/${encodePath(dir)}/${encodeURIComponent(slide.html)}`;
+}
+
+/**
  * Resolves the PDF href for a slide (local or external).
  * @param {object} slide
  * @param {{archived?: boolean}} [opts]
@@ -659,7 +716,8 @@ function resolvePdfHref(slide, { archived = false } = {}) {
 
   // 2) Fallback: local PDF.
   if (archived) return `slides/archived/${encodeURIComponent(slide.pdf)}`;
-  return `slides/${encodeURIComponent(slide.slug)}/${encodeURIComponent(slide.pdf)}`;
+  const dir = slideDir(slide);
+  return `slides/${encodePath(dir)}/${encodeURIComponent(slide.pdf)}`;
 }
 
 /**
@@ -1229,7 +1287,7 @@ async function renderProjectPage(lang, params) {
 
   const list = document.getElementById('proj-slides');
   list.innerHTML = slides.map(s => {
-    const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
+    const htmlHref = resolveHtmlHref(s);
     const pdfHref = resolvePdfHref(s);
     return `
       <div class="list-item stacked">
@@ -1467,14 +1525,14 @@ async function renderSlides(lang) {
   const list = document.getElementById('slides-list');
 
   list.innerHTML = chosen.map(s => {
-    const htmlHref = `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`;
+    const htmlHref = resolveHtmlHref(s);
     const pdfLink = resolvePdfHref(s);
 
     const twin = (ENABLE_SLIDE_LANGUAGE_SWITCH && s.group)
       ? counterpartByGroup(allSlides, s.group, other)
       : null;
-    const twinLink = (ENABLE_SLIDE_LANGUAGE_SWITCH && twin && !twin.archive)
-      ? `<a href="slides/${encodeURIComponent(twin.slug)}/${encodeURIComponent(twin.html)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
+    const twinLink = (ENABLE_SLIDE_LANGUAGE_SWITCH && twin && !twin.archive && twin.slug && twin.html)
+      ? `<a href="${resolveHtmlHref(twin)}" target="_blank" rel="noopener" class="badge" style="text-decoration:none">
           ${lang === 'pt' ? 'Ver versão em inglês' : 'See Portuguese version'}
         </a>`
       : '';
@@ -1703,9 +1761,7 @@ async function renderSecretSlides(lang) {
 
   list.innerHTML = chosen.map(s => {
     const hasHTML = Boolean(s.slug && s.html);
-    const htmlHref = hasHTML
-      ? `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`
-      : '';
+    const htmlHref = hasHTML ? resolveHtmlHref(s) : '';
     const pdfLink = resolvePdfHref(s);
 
     const proj = allProjects.find(p => p.lang === lang && p.slug === s.project);
@@ -1868,9 +1924,7 @@ async function renderSecretProjectPage(lang, params) {
 
   list.innerHTML = slides.map(s => {
     const hasHTML = Boolean(s.slug && s.html);
-    const htmlHref = hasHTML
-      ? `slides/${encodeURIComponent(s.slug)}/${encodeURIComponent(s.html)}`
-      : '';
+    const htmlHref = hasHTML ? resolveHtmlHref(s) : '';
     const pdfHref = resolvePdfHref(s);
     const hidden = hiddenKeys.has(keyForSlide(s)) ? hiddenBadge(lang) : '';
 

@@ -37,7 +37,7 @@ This repository hosts my bilingual (PT/EN) static academic website. The site is 
 ├─ slides/
 │  ├─ slides.json
 │  ├─ archived/ (create when needed)
-│  └─ <slide-slug>/
+│  └─ <slide-dir>/
 ```
 
 ## Apps Hosted on the Site
@@ -168,8 +168,9 @@ Rules:
 - Archived slides: `archive: true` and shown only at `#/pt/archived` or `#/en/archived`.
 - If `pdf_url` is provided, it overrides the local PDF path.
 - Local paths for active slides:
-  - HTML: `slides/<slug>/<html>`
-  - PDF: `slides/<slug>/<pdf>`
+  - HTML: `slides/<slug>/<html>` (or `slides/<dir>/<slug>/<html>` if `dir` is set)
+  - PDF: `slides/<slug>/<pdf>` (or `slides/<dir>/<slug>/<pdf>` if `dir` is set)
+  - `dir` (optional) comes from `dir` in `slides.json`. If it already ends with `<slug>`, the site won’t duplicate it.
 - Local paths for archived slides:
   - PDF: `slides/archived/<pdf>`
   - Create `slides/archived/` the first time you need it.
@@ -192,10 +193,11 @@ Note: this is not real security (files are still accessible via direct URLs); it
 
 #### Add a new slide deck
 
-1. Create a folder `slides/<slug>/`.
-2. Add `<html>` and `<pdf>` files there.
-3. Add an entry in `slides/slides.json`.
-4. If the slide belongs to a project, set `project` to the project’s `slug`.
+1. Create a folder `slides/<slug>/` (default layout) or `slides/<subfolder>/<slug>/`.
+2. If using a subfolder, set `dir` in `slides/slides.json` to `<subfolder>` (or `<subfolder>/<slug>`; both work).
+3. Add `<html>` and `<pdf>` files there.
+4. Add an entry in `slides/slides.json`.
+5. If the slide belongs to a project, set `project` to the project’s `slug`.
 
 ### Projects (linked from Slides)
 
