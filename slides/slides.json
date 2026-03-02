@@ -1,5 +1,19 @@
 [
   {
+    "group": "td26_2",
+    "slug": "td26_aula2",
+    "title": "(TD26) Aula 2 - O Direito e suas consequências",
+    "event": "TD26.2 - 2026-03-03",
+    "date": "2025-10-14",
+    "html": "td26_aula2.html",
+    "pdf": "td26_aula2.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "td26_1",
     "slug": "td26_aula1",
     "title": "(TD26) Aula 1 - O que é Teoria da Decisão?",
