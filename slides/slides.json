@@ -25,7 +25,7 @@
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "sbca_2025",
