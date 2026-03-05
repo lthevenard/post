@@ -4,7 +4,7 @@
     "slug": "td26_aula3",
     "title": "(TD26) Aula 3 - Modelos de Decisão Racional Não-Estratégicos: MDRC e MDRR",
     "event": "TD26.3",
-    "date": "2025-03-10",
+    "date": "2026-03-10",
     "html": "td26_aula3.html",
     "pdf": "td26_aula3.pdf",
     "lang": "pt",
@@ -18,14 +18,14 @@
     "slug": "td26_aula2",
     "title": "(TD26) Aula 2 - O Direito e suas consequências",
     "event": "TD26.2",
-    "date": "2025-03-03",
+    "date": "2026-03-03",
     "html": "td26_aula2.html",
     "pdf": "td26_aula2.pdf",
     "lang": "pt",
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "td26_1",

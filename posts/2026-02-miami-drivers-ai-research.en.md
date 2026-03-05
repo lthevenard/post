@@ -44,22 +44,6 @@ Thankfully, human researchers have never been tempted by the plausible paragraph
 
 If anything, our greatest risk is *too much* intellectual risk-taking by the pioneering minds of contemporary scholars.
 
-## 5) Accountability (who is responsible for the output?)
-
-When an AI system generates text, who owns it? Who is responsible for errors? What does it even mean to “stand behind” a paragraph you did not write? These are serious questions—especially when AI is used not merely to polish prose, but to propose claims, synthesize evidence, or draft sections that look like analysis.
-
-Here again, academia offers a reassuring benchmark. Responsibility in research is always crystal clear. Authorship is perfectly aligned with contribution. Incentives are beautifully structured to reward slow, careful thinking. And when errors occur, correction mechanisms work swiftly and harmoniously, without defensiveness, social dynamics, or institutional anxiety.
-
-In short: if you worry that AI obscures accountability, you should take comfort in the fact that we humans have already solved it a long time ago.
-
-## 6) Ethics and confidentiality (data goes somewhere)
-
-Many AI tools are third-party services. Feeding them sensitive data—interview transcripts, administrative records, student work, unpublished manuscripts—raises privacy and confidentiality concerns. It can also create compliance problems when research involves human subjects, protected data, or contractual restrictions.
-
-But let’s be honest: researchers have a long, proud history of impeccable data hygiene. Nobody stores identifiable data in a folder called 'final_really_final_interviews/'. Nobody uploads confidential documents “just to summarize them.” Nobody shares datasets through informal channels when the formal process feels slow. And no one has ever discovered, five years later, that the only copy of a crucial dataset lived on someone’s laptop, which was last seen at an airport security checkpoint.
-
-So yes—AI introduces new ways to mishandle data. The important thing is to preserve our old ones.
-
 ## My actual point: AI versus Miami drivers
 
 <div class="image-text-block image-text-block--text-first">

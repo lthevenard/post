@@ -44,22 +44,6 @@ Felizmente, pesquisadores humanos nunca foram tentados pelo parágrafo plausíve
 
 Se existe algum risco atualmente, é o da ousadia intelectual *excessiva* das mentes pioneiras da academia contemporânea.
 
-## 5) Responsabilização (quem é responsável pelo resultado?)
-
-Quando um sistema de IA gera texto, quem é o dono? Quem responde por erros? O que significa “assinar embaixo” de um parágrafo que você não escreveu? Essas são questões sérias—especialmente quando a IA não é usada apenas para polir a escrita, mas para propor afirmações, sintetizar evidências ou redigir seções que parecem análise.
-
-Aqui também a academia oferece um parâmetro reconfortante. A responsabilidade em pesquisa sempre foi cristalina. A autoria, na academia, está sempre perfeitamente alinhada com a contribuição de cada autor. Os incentivos são lindamente estruturados para recompensar pensamento lento e cuidadoso. E, quando erros acontecem, mecanismos de correção funcionam de forma rápida e harmoniosa, sem defensividade, dinâmicas sociais perversas ou ansiedade institucional.
-
-Em suma: se você se preocupa que a IA obscureça o significado da autoria acadêmica e a responsabilização pelos seus trabalhos, console-se com o fato de que nós, humanos, já resolvemos isso há muito tempo.
-
-## 6) Ética e confidencialidade (os dados vão para algum lugar)
-
-Muitas ferramentas de IA são serviços de terceiros. Alimentá-las com dados sensíveis—transcrições de entrevistas, registros administrativos, trabalhos de alunos, manuscritos não publicados é algo que levanta preocupações de privacidade e confidencialidade. Essas práticas também podem criar problemas de conformidade quando a pesquisa envolve participantes humanos, dados protegidos ou restrições contratuais.
-
-Mas sejamos honestos: pesquisadores têm uma longa e orgulhosa história de higiene de dados impecável. Ninguém guarda dados identificáveis em uma pasta chamada 'versão_final_realmente_final_das_entrevistas/'. Ninguém faz upload de documentos confidenciais “só para resumir”. Ninguém compartilha datasets por canais informais quando o processo formal parece lento. E ninguém jamais descobriu, cinco anos depois, que a única cópia de um dataset crucial vivia no notebook de alguém, visto pela última vez em uma fila de raio-X no aeroporto.
-
-Então sim: a IA introduz novas maneiras de lidar mal com dados. É fundamental preservar as antigas, pois elas funcionavam muito bem.
-
 ## Meu verdadeiro argumento: IA versus motoristas de Miami
 
 <div class="image-text-block image-text-block--text-first">
