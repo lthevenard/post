@@ -32,7 +32,7 @@ Large language models can generate false statements in a confident, well-written
 
 To be clear, this is not a purely hypothetical fear. Studies have found that ChatGPT can fabricate a non-trivial share of citations when asked for sources, with error rates varying by model and prompt. (Which is why “please provide citations” should be treated as a request for *leads to verify*, not as a bibliography.)
 
-This is particularly alarming when we compare AI uses to human analysis. As we all know, human scholars never cite papers they haven’t fully read. Nobody has ever cited a famous work based solely on its title, or on other citations. Nobody has ever copy-pasted a reference from another PDF without checking the page number. And nobody, in the entire history of graduate education, has ever written: “as X convincingly demonstrates,” when what X actually demonstrates is that the author has not read what is being cited.
+This is particularly alarming when we compare AI uses to human analysis. As we all know, human scholars would never cite papers they haven’t fully read. How could someone cite a famous work based solely on its title, or on other citations? Nobody, in the entire history of graduate education, has ever written: “as X convincingly demonstrates,” when what X actually demonstrates is that the author has not read what is being cited.
 
 Again, those damn machines introducing horrible mistakes that humans would never produce on their own.
 
@@ -67,7 +67,7 @@ If anything, our greatest risk is *too much* intellectual risk-taking by the pio
         I keep thinking about that line because it neatly reframes how one should think about employing AI tools in academic research.  
     </p>
     <p>
-        The standard framing compares AI to an idealized version of scholarship: perfectly transparent, unbiased, meticulously cited, methodologically pristine, and ethically flawless. In that comparison, AI inspires fear and mistrust, because *of course it does*. The imagined benchmark is not “good research.” The imagined benchmark is “research conducted by angels with tenure.”
+        The standard framing compares AI to an idealized version of scholarship: perfectly transparent, unbiased, meticulously cited, methodologically pristine, and ethically flawless. In that comparison, AI inspires fear and mistrust, because <i>of course it does</i>. The imagined benchmark is not “good research.” The imagined benchmark is “research conducted by angels with tenure.”
     </p>
   </div>
 </div>
@@ -84,11 +84,9 @@ One thing that helps is to stop treating “AI in research” as a single practi
 
 **AI as writing.** When you use AI to draft the argument itself—or to produce the final prose of an academic publication—the core risk shifts. It is not only that the text might contain mistakes. It is that scholarship drifts into “machines talking to machines”: authors generating papers, reviewers generating reviews, editors generating decision letters, and nobody doing the slow work of thinking (and taking responsibility) that academic writing is supposed to represent.
 
-It is still true that AI can hallucinate. So can humans, except we call it “misremembering the literature” or “overgeneralizing from a case.” It is still true that AI can be biased. So can humans, except we call it “a theoretical perspective” or “a research agenda.” It is still true that AI can be a black box. So can humans, except the box is called “tacit knowledge,” and the training data is called “my entire intellectual formation since age 19.”
-
-The point is not that “AI is fine because humans are bad.” The point is that **rigor is not a purity test**. It is a set of practices that reduce error *relative to a real baseline*.
-
 ## In conclusion, do whatever you want! (just kidding)
+
+My point is not that “AI is fine because humans are bad.” The point is that **rigor is not a purity test**. It is a set of practices that reduce error *relative to a real baseline*.
 
 When AI is used for analysis, rigor looks like measurement discipline: validation, error estimates, and robustness checks. When AI is used for writing, rigor looks like accountability: a human author who can defend what the text claims.
 

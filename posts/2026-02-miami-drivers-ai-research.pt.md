@@ -67,7 +67,7 @@ Se existe algum risco atualmente, é o da ousadia intelectual *excessiva* das me
         Eu continuo pensando nessa frase porque ela reformula, de forma elegante, como deveríamos pensar sobre o uso de ferramentas de IA em pesquisa acadêmica.  
     </p>
     <p>
-        O enquadramento padrão compara a IA a uma versão idealizada do trabalho acadêmico: perfeitamente transparente, imparcial, meticulosamente referenciada, metodologicamente impecável e eticamente irrepreensível. Nessa comparação, a IA inspira medo e desconfiança, porque *é claro que isso teria que acontecer*. O parâmetro imaginado não é “boa pesquisa”. O parâmetro imaginado é “pesquisa conduzida por anjos catedráticos”.
+        O enquadramento padrão compara a IA a uma versão idealizada do trabalho acadêmico: perfeitamente transparente, imparcial, meticulosamente referenciada, metodologicamente impecável e eticamente irrepreensível. Nessa comparação, a IA inspira medo e desconfiança, porque <i>é claro que isso teria que acontecer</i>. O parâmetro imaginado não é “boa pesquisa”. O parâmetro imaginado é “pesquisa conduzida por anjos catedráticos”.
     </p>
   </div>
 </div>
@@ -84,11 +84,9 @@ Uma coisa que pode ajudar esse debate é parar de tratar “IA em pesquisa” co
 
 **IA como escrita.** Quando você usa IA para redigir o argumento em si, ou para produzir a prosa final de uma publicação acadêmica, o risco central muda. Não é apenas o fato de que o texto pode conter erros. O risco real é ético: a produção acadêmica pode escorregar para uma situação em que temos “máquinas conversando com máquinas”: autores gerando artigos, pareceristas gerando pareceres, editores gerando cartas de decisão, sem que ninguém faça o trabalho lento de pensar (e assumir responsabilidade) que deveria estar integrado à produção acadêmica.
 
-É verdade que a IA pode alucinar. Mas humanos também, só que chamamos isso de “lembrar mal da literatura” ou “generalizar demais a partir de um caso”. É verdade que a IA pode ser enviesada. Humanos também, só que chamamos isso de “perspectiva teórica” ou “agenda de pesquisa”. Também é verdade que a IA pode ser uma caixa-preta. Humanos também, só que a caixa se chama “conhecimento tácito”, e os dados de treinamento se chamam “toda a minha formação intelectual desde os 19 anos”.
+## Em conclusão, faça o que der na telha! (brincadeira)
 
 O meu ponto não é que “usar IA é permitido porque humanos são ruins”. O argumento que quero fazer aqui é de que **rigor acadêmico não é um teste de pureza**. É um conjunto de práticas que reduz erro *em relação a uma linha de base real*.
-
-## Em conclusão, faça o que der na telha! (brincadeira)
 
 Quando a IA é usada para análise, o rigor se parece com disciplina metodológica que usamos quando queremos mensurar a realidade: validação, estimativas de erro e testes de robustez. Quando a IA é usada para escrita, o rigor se torna a garantia de padrões éticos de pesquisa e da responsabilidade dos autores: um autor humano deve ser capaz de defender o que o texto afirma e, para isso, deve estar apto a reproduzir o resultado obtido (ter conhecimento e autonomia sobre o que produziu).
 
