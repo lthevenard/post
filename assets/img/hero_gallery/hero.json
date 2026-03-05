@@ -1,8 +1,28 @@
 {
   "items": [
     {
-      "month": "2026-02",
+      "month": "2026-03",
       "archived": false,
+      "title": {
+        "pt": "É tudo baseado em evidências",
+        "en": "It's all about the evidence"
+      },
+      "alt": {
+        "pt": "Ilustração de um regulador pressionando um botão vermelho “Decisão Regulatória”, com pilhas rotuladas “Evidências Empíricas” e “Jogo Político” ao fundo.",
+        "en": "Illustration of a regulator pressing a red “Regulatory Decision” button, with stacks labeled “Evidence-Based Policy” and “Politics” behind him."
+      },
+      "base": {
+        "pt": "evidence_based_decision-pt",
+        "en": "evidence_based_decision-en"
+      },
+      "description": {
+        "pt": "Naturalmente, a política regulatória é sempre baseada em evidências empíricas sólidas. As análises de impacto regulatório são conduzidas com impecável rigor metodológico, ponderando cuidadosamente custos e benefícios por meio de modelos objetivos, premissas neutras e dados transparentes. Considerações políticas, pressões de grupos de interesse, incentivos institucionais e cálculos estratégicos de timing não desempenham qualquer papel relevante na definição do resultado. Afinal, a boa regulação é baseada em evidências — e certamente é apenas uma coincidência que a interpretação mais apropriada dessas evidências raramente divirja dos interesses políticos e institucionais em jogo, ou da decisão que, de forma totalmente independente, já estava prestes a ser tomada.",
+        "en": "Naturally, regulatory policy is always grounded in solid empirical evidence. Regulatory impact analyses are conducted with impeccable methodological rigor, carefully weighing costs and benefits through objective models, neutral assumptions, and transparent data. Political considerations, lobbying pressures, institutional incentives, and strategic timing play no meaningful role in shaping the outcome. After all, good regulation is evidence-based — and it is surely just a coincidence that the most appropriate interpretation of the evidence so rarely diverges from the political and institutional interests at stake, or from the decision that, quite independently, was already about to be made."
+      }
+    },
+    {
+      "month": "2026-02",
+      "archived": true,
       "title": {
         "pt": "Nunca desista das suas hipóteses",
         "en": "Never give up on your hypotheses"

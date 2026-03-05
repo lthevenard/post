@@ -1,5 +1,35 @@
 [
   {
+    "group": "2026-03-hero-of-the-month",
+    "slug": "2026-03-hero-of-the-month-en",
+    "title": "Illustration of the Month: It’s all about the evidence",
+    "date": "2026-03-05",
+    "tags": [
+      "evidence-based policy",
+      "regulatory decisions",
+      "political science",
+      "illustrations"
+    ],
+    "lang": "en",
+    "posted": true,
+    "file": "posts/2026-03-hero-of-the-month.en.md"
+  },
+  {
+    "group": "2026-03-hero-of-the-month",
+    "slug": "2026-03-hero-of-the-month-pt",
+    "title": "Ilustração do Mês: É tudo baseado em evidências",
+    "date": "2026-03-05",
+    "tags": [
+      "política baseada em evidências",
+      "decisões regulatórias",
+      "ciência política",
+      "ilustrações"
+    ],
+    "lang": "pt",
+    "posted": true,
+    "file": "posts/2026-03-hero-of-the-month.pt.md"
+  },
+  {
     "group": "2026-02-miami-drivers-ai-research",
     "slug": "2026-02-miami-drivers-ai-research-en",
     "title": "Self-driving cars, Miami drivers and uses of AI in academic research",
