@@ -1,5 +1,18 @@
 [
   {
+    "group": "ai_for_regulatory_studies",
+    "slug": "ai_for_regulatory_studies",
+    "title": "Ferramentas de IA para pesquisas em regulação",
+    "event": "Apresentação para o grupo de estudos ",
+    "date": "2026-03-06",
+    "html": "ai_for_regulatory_studies.html",
+    "pdf": "ai_for_regulatory_studies.pdf",
+    "lang": "pt",
+    "project": "projeto-regnum",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "td26_3",
     "slug": "td26_aula3",
     "title": "(TD26) Aula 3 - Modelos de Decisão Racional Não-Estratégicos: MDRC e MDRR",
