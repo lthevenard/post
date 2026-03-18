@@ -1,5 +1,19 @@
 [
   {
+    "group": "td26_5",
+    "slug": "td26_aula5",
+    "title": "(TD26) Aula 5 - Decisão Racional sob Condições de Ignorância II",
+    "event": "TD26.5",
+    "date": "2026-03-24",
+    "html": "td26_aula5.html",
+    "pdf": "td26_aula5.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "td26_4",
     "slug": "td26_aula4",
     "title": "(TD26) Aula 4 - Decisão Racional sob Condições de Ignorância I ",
@@ -11,7 +25,7 @@
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "ai_for_regulatory_studies",
