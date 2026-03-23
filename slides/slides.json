@@ -1,5 +1,18 @@
 [
   {
+    "group": "ai_for_public_participation",
+    "slug": "ai_for_public_participation",
+    "title": "Inteligência Artificial para Análise de Contribuições em Processos de Participação Social",
+    "event": "Inteligência Artificial e Melhoria Regulatória: Oportunidades e Desafios para o Brasil (MDIC/BID)",
+    "date": "2026-03-26",
+    "html": "ai_for_public_participation.html",
+    "pdf": "ai_for_public_participation.pdf",
+    "lang": "pt",
+    "project": "projeto-regnum",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "td26_5",
     "slug": "td26_aula5",
     "title": "(TD26) Aula 5 - Decisão Racional sob Condições de Ignorância II",
