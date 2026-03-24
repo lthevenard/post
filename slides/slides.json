@@ -1,5 +1,18 @@
 [
   {
+    "group": "experiencia_pdse",
+    "slug": "experiencia_pdse",
+    "title": "Experiência no PDSE (2025-2026)",
+    "event": "Apresentação para o PPGD",
+    "date": "2026-03-27",
+    "html": "experiencia_pdse.html",
+    "pdf": "experiencia_pdse.pdf",
+    "lang": "pt",
+    "project": "tese",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "ai_for_public_participation",
     "slug": "ai_for_public_participation",
     "title": "Inteligência Artificial para Análise de Contribuições em Processos de Participação Social",

@@ -46,5 +46,13 @@
     "title": "PhD Dissertation",
     "description": "Meetings and presentations related to my PhD dissertation work",
     "tags": ["regulation", "empirical research", "data science", "public consultation"]
+  },
+   {
+    "group": "tese",
+    "slug": "tese",
+    "lang": "pt",
+    "title": "Tese de Doutorado",
+    "description": "Reuniões e apresentações relacionadas ao meu trabalho de tese de doutorado",
+    "tags": ["regulação", "pesquisa empírica", "ciência de dados", "consulta pública"]
   }
 ]
