@@ -1,5 +1,18 @@
 [
   {
+    "group": "projeto_stablecoins_congressos",
+    "slug": "projeto_stablecoins_congressos",
+    "title": "Congressos de AED (2026)",
+    "event": "Reunião com a Marina Copola",
+    "date": "2026-03-25",
+    "html": "projeto_stablecoins_congressos.html",
+    "pdf": "projeto_stablecoins_congressos.pdf",
+    "lang": "pt",
+    "project": "projeto-neasf",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "experiencia_pdse",
     "slug": "experiencia_pdse",
     "title": "Experiência no PDSE (2025-2026)",
@@ -37,7 +50,7 @@
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "td26_4",

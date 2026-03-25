@@ -1,5 +1,13 @@
 [
   {
+    "group": "neasf",
+    "slug": "projeto-neasf",
+    "lang": "pt",
+    "title": "NEASF",
+    "description": "Projetos de pesquisa e atividades relacionadas ao Núcleo de Estudos Avançados de Regulação do Sistema Financeiro Nacional (NEASF).",
+    "tags": ["regulação financeira", "neasf", "ativos virtuais", "stablecoins"]
+  },
+  {
     "group": "legalxplain",
     "slug": "projeto-legalxplain",
     "lang": "pt",
