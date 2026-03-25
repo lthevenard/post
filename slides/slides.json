@@ -1,5 +1,19 @@
 [
   {
+    "group": "td26_6",
+    "slug": "td26_aula6",
+    "title": "(TD26) Aula 6 - Introdução à Teoria dos Jogos ",
+    "event": "TD26.6",
+    "date": "2026-03-31",
+    "html": "td26_aula6.html",
+    "pdf": "td26_aula6.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "projeto_stablecoins_congressos",
     "slug": "projeto_stablecoins_congressos",
     "title": "Congressos de AED (2026)",
