@@ -292,10 +292,10 @@ _footer: ""
 
 ## Aplicações para auxiliar reguladores no processamento das contribuições
 
-- Identificação mais rápida dos **participantes** e dos **pedidos** formulados.
-* Sistematização da **fundamentação dos pedidos**, a qual pode se organizar a partir de leituras transversais e multitemáticas: fundamentos econômicos, fundamentos jurídicos, fundamentos técnicos, etc.
-- Extração e sistematização de **dados empíricos** e evidências trazidos pelos participantes.
 - **Triagem** preliminar de contribuições, agrupamento de **casos semelhantes** e apoio à elaboração de **relatórios analíticos**.
+* Identificação mais rápida dos **participantes** e dos **pedidos** formulados.
+* Sistematização da **fundamentação dos pedidos**, a qual pode se organizar a partir de leituras transversais e multitemáticas: fundamentos econômicos, fundamentos jurídicos, fundamentos técnicos, etc.
+* Extração e sistematização de **dados empíricos** e evidências trazidos pelos participantes. 
 
 ---
 
@@ -303,15 +303,15 @@ _footer: ""
 
 - IA pode interagir com participantes, explicar a consulta, tirar dúvidas e sugerir melhorias de redação.
 - Esse campo tem potencial para tornar a participação mais acessível, dinâmica e produtiva, sobretudo para grupos que hoje enfrentam maiores barreiras técnicas.
-- Não é o foco principal desta fala, mas é uma fronteira importante para ampliar a qualidade do diálogo regulatório.
+  - Não é o foco principal desta fala, mas é uma fronteira importante para ampliar a qualidade do diálogo regulatório.
 
 ---
 
 ## Condições para uso responsável
 
-- Definir previamente as categorias e os critérios de extração.
-- Trabalhar com processos auditáveis, amostras de validação humana e documentação das métricas.
-- Usar IA como **ferramenta de apoio**, não como substituta do juízo regulatório.
+- Trabalhar sempre com **boas definições** prévias das categorias e dos critérios de extração.
+* Trabalhar com processos **auditáveis**, amostras de validação humana e documentação das métricas.
+* Usar IA como **ferramenta de apoio**, não como substituta do juízo regulatório.
 
 ---
 
