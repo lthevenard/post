@@ -1,8 +1,36 @@
 [
   {
+    "group": "td26_7",
+    "slug": "td26_aula7",
+    "title": "(TD26) Aula 7 - Cooperação, jogos repetitivos e coordenação",
+    "event": "TD26.7",
+    "date": "2026-05-05",
+    "html": "td26_aula7.html",
+    "pdf": "td26_aula7.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
+    "group": "td26_p1",
+    "slug": "gabarito_p1_2026",
+    "title": "(TD26) P1 - Resolução de prova e pedidos de revisão",
+    "event": "TD26.6",
+    "date": "2026-04-28",
+    "html": "gabarito_p1_2026.html",
+    "pdf": "gabarito_p1_2026.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "td26_6",
     "slug": "td26_aula6",
-    "title": "(TD26) Aula 6 - Introdução à Teoria dos Jogos ",
+    "title": "(TD26) Aula 6 - Introdução à Teoria dos Jogos",
     "event": "TD26.6",
     "date": "2026-03-31",
     "html": "td26_aula6.html",
@@ -11,7 +39,7 @@
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "projeto_stablecoins_congressos",

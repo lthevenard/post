@@ -20,6 +20,7 @@ const DEFAULT_OPTIONS = {
   labelLineHeight: 1.3,
   labelCharWidth: 0.58,
   labelPadding: 8,
+  symmetricBranchLayout: false,
   decisionSize: 26,
   chanceRadius: 15,
   terminalRadius: 4,
@@ -1056,6 +1057,12 @@ function computeSpan(node, settings) {
   const offsets = new Array(count);
   if (count === 1) {
     offsets[0] = 0;
+  } else if (settings.symmetricBranchLayout) {
+    const uniformGap = Math.max(settings.leafGap, ...gaps);
+    const center = (count - 1) / 2;
+    for (let i = 0; i < count; i += 1) {
+      offsets[i] = (i - center) * uniformGap;
+    }
   } else if (count % 2 === 1) {
     const mid = Math.floor(count / 2);
     offsets[mid] = 0;
