@@ -7,10 +7,11 @@ import { randomIntInclusive } from "../shared/utils.js";
 const PLAYER_ONE_CLASS = "player-one";
 const PLAYER_TWO_CLASS = "player-two";
 const EPS = 1e-9;
+const FRIENDLY_PROBABILITY_DENOMINATOR = 20;
+const FRIENDLY_PROBABILITY_STEPS = Array.from({ length: 13 }, (_, index) => index + 4);
 
 export const MIXED_GAME_SIZE_OPTIONS = [
   { id: "2x2", label: { en: "2x2 game", pt: "Jogo 2x2" } },
-  { id: "3x3", label: { en: "3x3 game", pt: "Jogo 3x3" } },
 ];
 
 export const MIXED_GAME_PAYOFF_STYLE_OPTIONS = [
@@ -52,8 +53,10 @@ function buildStrategyLabels(count) {
   return Array.from({ length: count }, (_, i) => alphabetLabel(i));
 }
 
-function formatPayoffCell(rowPayoff, colPayoff) {
-  return `<span class="payoff-row">${rowPayoff}</span>, <span class="payoff-col">${colPayoff}</span>`;
+function formatPayoffCell(rowPayoff, colPayoff, rowBest = false, colBest = false) {
+  const rowClass = rowBest ? "payoff-row best-response" : "payoff-row";
+  const colClass = colBest ? "payoff-col best-response" : "payoff-col";
+  return `<span class="${rowClass}">${rowPayoff}</span>, <span class="${colClass}">${colPayoff}</span>`;
 }
 
 function buildTable(rowPayoffs, colPayoffs, rowStrategies, colStrategies, texts) {
@@ -77,6 +80,46 @@ function randomMatrix(size, rng, minVal = -10, maxVal = 16) {
   return Array.from({ length: size }, () =>
     Array.from({ length: size }, () => randomIntInclusive(minVal, maxVal, rng))
   );
+}
+
+function pickFriendlyProbabilityStep(rng) {
+  const index = randomIntInclusive(0, FRIENDLY_PROBABILITY_STEPS.length - 1, rng);
+  return FRIENDLY_PROBABILITY_STEPS[index];
+}
+
+function buildFriendly2x2PayoffMatrix(probabilityStep, orientation, rng) {
+  const firstGap = FRIENDLY_PROBABILITY_DENOMINATOR - probabilityStep;
+  const secondGap = probabilityStep;
+  const firstBase = randomIntInclusive(-4, 8, rng);
+  const secondBase = randomIntInclusive(-4, 8, rng);
+
+  if (orientation > 0) {
+    return [
+      [firstBase + firstGap, secondBase],
+      [firstBase, secondBase + secondGap],
+    ];
+  }
+
+  return [
+    [firstBase, secondBase + secondGap],
+    [firstBase + firstGap, secondBase],
+  ];
+}
+
+function buildFriendly2x2PayoffPair(payoffStyleId, rng) {
+  const qStep = pickFriendlyProbabilityStep(rng);
+  const rowOrientation = rng() < 0.5 ? 1 : -1;
+  const rowPayoffs = buildFriendly2x2PayoffMatrix(qStep, rowOrientation, rng);
+
+  if (payoffStyleId === "parallel") {
+    return { rowPayoffs, colPayoffs: transposeMatrix(rowPayoffs) };
+  }
+
+  const pStep = pickFriendlyProbabilityStep(rng);
+  const colPayoffs = transposeMatrix(
+    buildFriendly2x2PayoffMatrix(pStep, -rowOrientation, rng)
+  );
+  return { rowPayoffs, colPayoffs };
 }
 
 function solveLinearSystem(matrix, rhs) {
@@ -183,7 +226,7 @@ function computePureNashEquilibria(rowPayoffs, colPayoffs, rowStrategies, colStr
       }
     }
   }
-  return { pure, cellClasses };
+  return { pure, cellClasses, rowBest, colBest };
 }
 
 function solveMixed2x2(rowPayoffs, colPayoffs) {
@@ -287,8 +330,8 @@ function solveMixed3x3(rowPayoffs, colPayoffs) {
 
 function buildFallback2x2(parallel) {
   const rowPayoffs = [
-    [4, 0],
-    [1, 3],
+    [2, 11],
+    [14, 3],
   ];
   if (parallel) {
     return { rowPayoffs, colPayoffs: transposeMatrix(rowPayoffs) };
@@ -296,8 +339,8 @@ function buildFallback2x2(parallel) {
   return {
     rowPayoffs,
     colPayoffs: [
-      [3, 1],
-      [0, 4],
+      [9, 4],
+      [1, 16],
     ],
   };
 }
@@ -322,6 +365,8 @@ function buildFallback3x3(parallel) {
 }
 
 function generatePayoffPair(size, payoffStyleId, rng) {
+  if (size === 2) return buildFriendly2x2PayoffPair(payoffStyleId, rng);
+
   const parallel = payoffStyleId === "parallel";
   const rowPayoffs = randomMatrix(size, rng);
   const colPayoffs = parallel ? transposeMatrix(rowPayoffs) : randomMatrix(size, rng);
@@ -345,7 +390,7 @@ function buildInstanceFromPayoffs({ size, sizeId, payoffStyleId, rowPayoffs, col
   }
 
   const table = buildTable(rowPayoffs, colPayoffs, rowStrategies, colStrategies, texts);
-  const { pure, cellClasses } = computePureNashEquilibria(
+  const { pure, cellClasses, rowBest, colBest } = computePureNashEquilibria(
     rowPayoffs,
     colPayoffs,
     rowStrategies,
@@ -362,6 +407,7 @@ function buildInstanceFromPayoffs({ size, sizeId, payoffStyleId, rowPayoffs, col
     colPayoffs,
     table,
     pureEquilibria: pure,
+    bestResponses: { rowBest, colBest },
     solution,
     solutionCellClasses: cellClasses,
   };
@@ -401,8 +447,16 @@ function formatNumber(value, digits = 4) {
   return rounded.toFixed(digits).replace(/\.?0+$/, "");
 }
 
+function formatProbabilityText(value) {
+  return `${formatNumber(value * 100, 2)}%`;
+}
+
+function formatProbabilityLatex(value) {
+  return `${formatNumber(value * 100, 2)}\\%`;
+}
+
 function formatProbabilityVectorLatex(values) {
-  return `(${values.map((value) => formatNumber(value)).join(",\\;")})`;
+  return `(${values.map((value) => formatProbabilityLatex(value)).join(",\\;")})`;
 }
 
 function formatPureEquilibria(instance, texts) {
@@ -420,6 +474,32 @@ function coeffTermLatex(coef, variable, isFirst = false) {
   return value < 0 ? ` - ${body}` : ` + ${body}`;
 }
 
+function gcd(a, b) {
+  let x = Math.abs(Math.round(a));
+  let y = Math.abs(Math.round(b));
+  while (y) {
+    const next = x % y;
+    x = y;
+    y = next;
+  }
+  return x || 1;
+}
+
+function formatFractionLatex(numerator, denominator) {
+  if (Math.abs(denominator) < EPS) return "";
+  let top = Math.round(numerator);
+  let bottom = Math.round(denominator);
+  if (bottom < 0) {
+    top *= -1;
+    bottom *= -1;
+  }
+  const divisor = gcd(top, bottom);
+  top /= divisor;
+  bottom /= divisor;
+  if (bottom === 1) return `${top}`;
+  return `\\frac{${top}}{${bottom}}`;
+}
+
 function linearEquationLatex(coeffs, variables, rhsValue = 0) {
   let expression = "";
   let firstWritten = false;
@@ -431,6 +511,74 @@ function linearEquationLatex(coeffs, variables, rhsValue = 0) {
   }
   if (!expression) expression = "0";
   return `${expression} = ${formatNumber(rhsValue, 3)}`;
+}
+
+function weightedPayoffTermLatex(coef, factor, isFirst = false) {
+  const value = normalizeValue(coef, 6);
+  const absLabel = formatNumber(Math.abs(value), 3);
+  const body = `${absLabel}${factor}`;
+  if (isFirst) return value < 0 ? `-${body}` : body;
+  return value < 0 ? ` - ${body}` : ` + ${body}`;
+}
+
+function expectedPayoffLatex(firstPayoff, secondPayoff, variable) {
+  const terms = [
+    { coef: firstPayoff, factor: variable },
+    { coef: secondPayoff, factor: `(1-${variable})` },
+  ];
+  let expression = "";
+  let firstWritten = false;
+  for (const term of terms) {
+    if (Math.abs(term.coef) < EPS) continue;
+    expression += weightedPayoffTermLatex(term.coef, term.factor, !firstWritten);
+    firstWritten = true;
+  }
+  return expression || "0";
+}
+
+function linearExpectedExpressionLatex(firstPayoff, secondPayoff, variable) {
+  const constant = normalizeValue(secondPayoff, 6);
+  const slope = normalizeValue(firstPayoff - secondPayoff, 6);
+  let expression = "";
+  let firstWritten = false;
+
+  if (Math.abs(constant) >= EPS) {
+    expression += formatNumber(constant, 3);
+    firstWritten = true;
+  }
+  if (Math.abs(slope) >= EPS) {
+    expression += coeffTermLatex(slope, variable, !firstWritten);
+    firstWritten = true;
+  }
+  return expression || "0";
+}
+
+function buildIndifferenceAlgebraLatex({
+  firstPayoff,
+  secondPayoff,
+  thirdPayoff,
+  fourthPayoff,
+  variable,
+  numerator,
+  denominator,
+  probability,
+}) {
+  return `
+    <div class="exercises-katex-line">\\[ ${expectedPayoffLatex(
+      firstPayoff,
+      secondPayoff,
+      variable
+    )} = ${expectedPayoffLatex(thirdPayoff, fourthPayoff, variable)} \\]</div>
+    <div class="exercises-katex-line">\\[ ${linearExpectedExpressionLatex(
+      firstPayoff,
+      secondPayoff,
+      variable
+    )} = ${linearExpectedExpressionLatex(thirdPayoff, fourthPayoff, variable)} \\]</div>
+    <div class="exercises-katex-line">\\[ ${variable} = ${formatFractionLatex(
+      numerator,
+      denominator
+    )} = ${formatProbabilityLatex(probability)} \\]</div>
+  `;
 }
 
 function build2x2MixedSection(instance, texts) {
@@ -446,31 +594,53 @@ function build2x2MixedSection(instance, texts) {
   const h = instance.colPayoffs[1][1];
   const p = instance.solution.rowMix[0];
   const q = instance.solution.colMix[0];
+  const qDetails = instance.solution.details?.q;
+  const pDetails = instance.solution.details?.p;
 
   const qBlock = `
     <p><strong>${texts.solveQTitle}</strong></p>
     <div class="exercises-explainer-math">
-      <div class="exercises-katex-line">\\[ U_1(${rows[0]}) = ${a}q + ${b}(1-q) \\]</div>
-      <div class="exercises-katex-line">\\[ U_1(${rows[1]}) = ${c}q + ${d}(1-q) \\]</div>
-      <div class="exercises-katex-line">\\[ U_1(${rows[0]}) = U_1(${rows[1]}) \\Rightarrow q = ${formatNumber(q)} \\]</div>
+      <div class="exercises-katex-line">\\[ U_1(${rows[0]}) = ${expectedPayoffLatex(a, b, "q")} \\]</div>
+      <div class="exercises-katex-line">\\[ U_1(${rows[1]}) = ${expectedPayoffLatex(c, d, "q")} \\]</div>
+      <div class="exercises-katex-line">\\[ U_1(${rows[0]}) = U_1(${rows[1]}) \\]</div>
+      ${buildIndifferenceAlgebraLatex({
+        firstPayoff: a,
+        secondPayoff: b,
+        thirdPayoff: c,
+        fourthPayoff: d,
+        variable: "q",
+        numerator: qDetails?.numerator ?? d - b,
+        denominator: qDetails?.denominator ?? a - b - c + d,
+        probability: q,
+      })}
     </div>
   `;
 
   const pBlock = `
     <p><strong>${texts.solvePTitle}</strong></p>
     <div class="exercises-explainer-math">
-      <div class="exercises-katex-line">\\[ U_2(${cols[0]}) = ${e}p + ${g}(1-p) \\]</div>
-      <div class="exercises-katex-line">\\[ U_2(${cols[1]}) = ${f}p + ${h}(1-p) \\]</div>
-      <div class="exercises-katex-line">\\[ U_2(${cols[0]}) = U_2(${cols[1]}) \\Rightarrow p = ${formatNumber(p)} \\]</div>
+      <div class="exercises-katex-line">\\[ U_2(${cols[0]}) = ${expectedPayoffLatex(e, g, "p")} \\]</div>
+      <div class="exercises-katex-line">\\[ U_2(${cols[1]}) = ${expectedPayoffLatex(f, h, "p")} \\]</div>
+      <div class="exercises-katex-line">\\[ U_2(${cols[0]}) = U_2(${cols[1]}) \\]</div>
+      ${buildIndifferenceAlgebraLatex({
+        firstPayoff: e,
+        secondPayoff: g,
+        thirdPayoff: f,
+        fourthPayoff: h,
+        variable: "p",
+        numerator: pDetails?.numerator ?? h - g,
+        denominator: pDetails?.denominator ?? e - f - g + h,
+        probability: p,
+      })}
     </div>
   `;
 
   if (instance.payoffStyleId === "parallel") {
     return `
       ${qBlock}
-      <p>${texts.parallelInference2x2.replace("{q}", formatNumber(q))}</p>
+      <p>${texts.parallelInference2x2.replace("{q}", formatProbabilityText(q))}</p>
       <div class="exercises-explainer-math">
-        <div class="exercises-katex-line">\\[ p = q = ${formatNumber(q)} \\]</div>
+        <div class="exercises-katex-line">\\[ p = q = ${formatProbabilityLatex(q)} \\]</div>
       </div>
     `;
   }
@@ -534,27 +704,10 @@ function build3x3MixedSection(instance, texts) {
   `;
 }
 
-function getOptionLabel(options, id) {
-  const found = options.find((option) => option.value === id);
-  return found ? found.title || found.label : id;
-}
-
 export function describeMixedGameProblem(instance, texts) {
-  const sizeLabel = getOptionLabel(texts.matrixSizeOptions, instance.sizeId);
-  const payoffStyleLabel = getOptionLabel(texts.payoffStyleOptions, instance.payoffStyleId);
-  const styleLead =
-    instance.payoffStyleId === "parallel"
-      ? texts.parallelStatement
-      : texts.independentStatement;
   return `
     <h2 class="exercises-section-title">${texts.problemTitle}</h2>
     <p class="exercises-lead"><b>${texts.problemLead}</b></p>
-    <p class="exercises-lead">${texts.problemConfig.replace("{size}", sizeLabel).replace(
-      "{payoffStyle}",
-      payoffStyleLabel
-    )}</p>
-    <p class="exercises-lead">${styleLead}</p>
-    <p class="exercises-lead">${texts.payoffNote}</p>
   `;
 }
 
@@ -562,17 +715,12 @@ export function buildMixedGameExplainerBody(instance, texts) {
   const steps = (instance.size === 2 ? texts.explainerSteps2x2 : texts.explainerSteps3x3)
     .map((step) => `<li>${step}</li>`)
     .join("");
-  const styleHint =
-    instance.payoffStyleId === "parallel"
-      ? texts.explainerParallelHint
-      : texts.explainerIndependentHint;
 
   return `
     <p>${texts.explainerIntro}</p>
-    <p><b>${texts.logicLabel}:</b> ${texts.explainerLogic}</p>
     <p><b>${texts.stepsLabel}:</b></p>
     <ol>${steps}</ol>
-    <p>${styleHint}</p>
+    <p>${texts.explainerStyleHint}</p>
   `;
 }
 
@@ -615,8 +763,21 @@ export function buildMixedGameCalculationCard(instance, texts) {
 }
 
 export function buildMixedGameSolutionTable(instance) {
+  const headers = instance.table.headers;
+  const rows = instance.rowStrategies.map((rowLabel, rowIndex) => {
+    const payoffCells = instance.colStrategies.map((_, colIndex) =>
+      formatPayoffCell(
+        instance.rowPayoffs[rowIndex][colIndex],
+        instance.colPayoffs[rowIndex][colIndex],
+        instance.bestResponses?.rowBest?.[rowIndex]?.[colIndex],
+        instance.bestResponses?.colBest?.[rowIndex]?.[colIndex]
+      )
+    );
+    return [wrapPlayer(rowLabel, PLAYER_ONE_CLASS), ...payoffCells];
+  });
+
   return {
-    table: instance.table,
+    table: { headers, rows },
     cellClasses: instance.solutionCellClasses,
   };
 }
@@ -626,14 +787,9 @@ export function buildGameMixedTexts(lang) {
   const sizeOptions = MIXED_GAME_SIZE_OPTIONS.map((option) => ({
     value: option.id,
     title: option.label?.[lang] ?? option.id,
-    description:
-      option.id === "2x2"
-        ? isEn
-          ? "Two strategies for each player. Solve using one indifference equation for each player plus probability sums."
-          : "Duas estratégias para cada jogador. Resolva com uma equação de indiferença para cada jogador e as somas de probabilidades."
-        : isEn
-          ? "Three strategies for each player. Solve with two indifference equations plus the probability-sum equation for each player."
-          : "Três estratégias para cada jogador. Resolva com duas equações de indiferença e a equação de soma das probabilidades para cada jogador.",
+    description: isEn
+      ? "Two strategies for each player. Solve with one indifference equation for each player."
+      : "Duas estratégias para cada jogador. Resolva com uma equação de indiferença para cada jogador.",
   }));
 
   const payoffStyleOptions = MIXED_GAME_PAYOFF_STYLE_OPTIONS.map((option) => ({
@@ -652,7 +808,7 @@ export function buildGameMixedTexts(lang) {
   return {
     title: isEn ? "Game theory: mixed strategies" : "Teoria dos jogos: estratégias mistas",
     sidebarTitle: isEn ? "Mixed-strategy parameters" : "Parâmetros do exercício",
-    matrixSizeTitle: isEn ? "Game size" : "Tamanho do jogo",
+    matrixSizeTitle: isEn ? "Exercise format" : "Formato do exercício",
     payoffStyleTitle: isEn ? "Payoff parallelism" : "Paralelismo de payoffs",
     matrixSizeOptions: sizeOptions,
     payoffStyleOptions,
@@ -666,14 +822,14 @@ export function buildGameMixedTexts(lang) {
       : "Gere o jogo para visualizar sua solução aqui.",
     problemTitle: isEn ? "Problem" : "Problema",
     problemLead: isEn
-      ? "Find all Nash equilibria of this game (pure and mixed strategies)."
-      : "Encontre todos os equilíbrios de Nash deste jogo (estratégias puras e mistas).",
+      ? "Find the pure-strategy Nash equilibria of the following simultaneous game (if any) and the mixed-strategy equilibrium."
+      : "Encontre os equilíbrios de Nash em estratégias puras do jogo simultâneo a seguir (se existirem) e o equilíbrio em estratégias mistas.",
     problemConfig: isEn
       ? "Configuration: {size}; {payoffStyle}."
       : "Configuração: {size}; {payoffStyle}.",
     parallelStatement: isEn
-      ? "Because payoffs are parallel, solve one mixed distribution and infer the other from parallelism."
-      : "Como os payoffs são paralelos, resolva uma distribuição mista e use o paralelismo para inferir a outra.",
+      ? "Because payoffs are parallel, one mixed distribution determines the other."
+      : "Como os payoffs são paralelos, uma distribuição mista determina a outra.",
     independentStatement: isEn
       ? "Because payoffs are not parallel, compute each player’s mixed distribution separately."
       : "Como os payoffs não são paralelos, calcule separadamente a distribuição mista de cada jogador.",
@@ -685,8 +841,8 @@ export function buildGameMixedTexts(lang) {
       ? "How to solve mixed-strategy equilibria"
       : "Como resolver equilíbrios em estratégias mistas",
     explainerIntro: isEn
-      ? "A mixed-strategy equilibrium is found by making the opponent indifferent among the strategies played with positive probability."
-      : "Um equilíbrio em estratégias mistas é obtido ao tornar o oponente indiferente entre as estratégias usadas com probabilidade positiva.",
+      ? "A mixed-strategy equilibrium is found by choosing probabilities that make the opponent indifferent among their pure strategies. Thus, to find the equilibrium, we must equalize the expected values of the opponent's pure actions, using the fact that probabilities must necessarily sum to 1."
+      : "Um equilíbrio em estratégias mistas é obtido escolhendo probabilidades que tornam o oponente indiferente entre as suas estratégias puras. Assim, para encontrar o equilíbrio, precisamos igualar os valores esperados das jogadas puras do oponente, usando o fato de que as probabilidades devem necessariamente somar 1.",
     explainerLogic: isEn
       ? "Equal expected payoffs of the opponent’s pure strategies and use that probabilities sum to 1."
       : "Iguale os valores esperados das jogadas puras do oponente e use o fato de que as probabilidades somam 1.",
@@ -694,16 +850,16 @@ export function buildGameMixedTexts(lang) {
     stepsLabel: isEn ? "Steps" : "Passos",
     explainerSteps2x2: isEn
       ? [
-          "Let Player 1 mix rows with probability p (and 1-p) and Player 2 mix columns with probability q (and 1-q).",
-          "Find q by making Player 1 indifferent between its two rows.",
-          "Find p by making Player 2 indifferent between its two columns.",
-          "List pure equilibria (if any) and the mixed equilibrium.",
+          "Let Player 1 combine their strategies (rows) with probabilities p and 1-p, respectively, and Player 2 combine their strategies (columns) with probabilities q and 1-q, respectively.",
+          "Find the value of q that makes Player 1 indifferent between their strategies (rows): that is, the value of q that equalizes the expected value of Player 1's choices.",
+          "Find p by making Player 2 indifferent between their strategies (columns): that is, the value of p that equalizes the expected value of Player 2's choices.",
+          "Report the mixed equilibrium and check pure equilibria separately, when they exist.",
         ]
       : [
-          "Defina que o Jogador 1 mistura as linhas com probabilidade p (e 1-p) e o Jogador 2 mistura as colunas com probabilidade q (e 1-q).",
-          "Encontre q tornando o Jogador 1 indiferente entre suas duas linhas.",
-          "Encontre p tornando o Jogador 2 indiferente entre suas duas colunas.",
-          "Liste os equilíbrios puros (se houver) e o equilíbrio misto.",
+          "Defina que o Jogador 1 combina as suas estratégias (linhas) com probabilidades p e 1-p, respectivamente, e que o Jogador 2 combina as suas estratégias (colunas) com probabilidades q e 1-q, respectivamente.",
+          "Encontre o valor de q que torna o Jogador 1 indiferente entre suas estratégias (linhas): ou seja, o valor de q que iguala o valor esperado das escolhas do Jogador 1.",
+          "Encontre p tornando o Jogador 2 indiferente entre suas estratégias (colunas): ou seja, o valor de p que iguala o valor esperado das escolhas do Jogador 2.",
+          "Informe o equilíbrio misto e verifique separadamente os equilíbrios puros, quando existirem.",
         ],
     explainerSteps3x3: isEn
       ? [
@@ -724,6 +880,9 @@ export function buildGameMixedTexts(lang) {
     explainerIndependentHint: isEn
       ? "In the non-parallel mode, both distributions must be solved independently."
       : "No modo sem paralelismo de payoffs, as duas distribuições devem ser resolvidas de forma independente.",
+    explainerStyleHint: isEn
+      ? "In games with payoff parallelism, when we solve the problem for one player, we are already solving it for the other player as well. In the mode without payoff parallelism, by contrast, the two distributions must be solved independently."
+      : "Em jogos com paralelismo de payoffs, ao resolvermos o problema para um jogador, já estaremos resolvendo para o outro jogador também. No modo sem paralelismo de payoffs, em contrapartida, as duas distribuições devem ser resolvidas de forma independente.",
     solutionSummaryTitle: isEn ? "Solution" : "Solução",
     calculationBoxTitle: isEn
       ? "Mixed-strategy equilibrium calculation"
@@ -737,6 +896,20 @@ export function buildGameMixedTexts(lang) {
     mixedEquilibriumLabel: isEn
       ? "Mixed-strategy equilibrium"
       : "Equilíbrio em estratégias mistas",
+    exerciseTasksTitle: isEn ? "What to solve" : "O que resolver",
+    exerciseTasks: isEn
+      ? [
+          "Check whether the payoff matrix has pure-strategy Nash equilibria.",
+          "Let p be the probability that Player 1 chooses the first row and q the probability that Player 2 chooses the first column.",
+          "Find q by making Player 1 indifferent between the two rows.",
+          "Find p by making Player 2 indifferent between the two columns.",
+        ]
+      : [
+          "Verifique se a matriz de payoffs possui equilíbrios de Nash em estratégias puras.",
+          "Defina p como a probabilidade de o Jogador 1 escolher a primeira linha e q como a probabilidade de o Jogador 2 escolher a primeira coluna.",
+          "Encontre q tornando o Jogador 1 indiferente entre as duas linhas.",
+          "Encontre p tornando o Jogador 2 indiferente entre as duas colunas.",
+        ],
     solveQTitle: isEn
       ? "Find Player 2 probabilities (q) by making Player 1 indifferent"
       : "Encontre as probabilidades do Jogador 2 (q) tornando o Jogador 1 indiferente",
@@ -750,8 +923,8 @@ export function buildGameMixedTexts(lang) {
       ? "By payoff parallelism, Player 1 and Player 2 share the same mixed distribution."
       : "Pelo paralelismo de payoffs, o Jogador 1 e o Jogador 2 compartilham a mesma distribuição mista.",
     solutionLegend: isEn
-      ? "Highlighted cells indicate pure-strategy Nash equilibria (if any)."
-      : "As células destacadas indicam equilíbrios de Nash em estratégias puras (se houver).",
+      ? "Bold and underlined values indicate each player's best responses. Highlighted cells indicate pure-strategy Nash equilibria (if any)."
+      : "Valores sublinhados e em negrito indicam as melhores respostas de cada jogador. As células destacadas indicam equilíbrios de Nash em estratégias puras (se houver).",
     solutionMatrixTitle: isEn
       ? "Payoff matrix with pure equilibria highlighted"
       : "Matriz de payoffs com equilíbrios puros destacados",

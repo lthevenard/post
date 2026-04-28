@@ -8,7 +8,7 @@ Este documento resume o estado atual do app de exercícios e serve como contexto
 - Estilos: `/Users/lucasthevenard/Repo/post/apps/exercises/styles.css`
 - Registro do app no site: `/Users/lucasthevenard/Repo/post/apps/apps.json`
 
-A home atualmente contempla 8 cards (7 modalidades + Sobre), com suporte para ocultar/exibir via arquivo de configuração.
+A home atualmente contempla 9 cards (8 modalidades + Sobre), com suporte para ocultar/exibir via arquivo de configuração.
 
 ## Módulos existentes
 - DUI (métodos):
@@ -23,8 +23,10 @@ A home atualmente contempla 8 cards (7 modalidades + Sobre), com suporte para oc
   - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/dur/expected_value.js`
 - Game (Nash):
   - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/game/nash_equilibrium.js`
-- Game (placeholder):
+- Game (jogos clássicos):
   - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/game/classic_games.js`
+- Game (estratégias mistas):
+  - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/game/game_mixed.js`
 - Shared:
   - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/shared/ui.js`
   - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/shared/utils.js`
@@ -115,9 +117,17 @@ Comportamento implementado:
   - sombra reduzida
   - animação lenta de variação de tom verde/vermelho
 
-## Placeholders criados (ainda sem lógica completa)
-- DUI: Nível de Otimismo (`dui_optimism`)
-- Game: Jogos Clássicos (`game_classic`)
+## Exercício Game: Estratégias Mistas (estado atual)
+- Card publicado na home (`game_mixed: true`).
+- Exercício 2x2 sem verificação automática de resposta: o aluno resolve na aba Exercício e confere na aba Solução.
+- Gerador usa seed e produz probabilidades de equilíbrio em múltiplos de 5%.
+- Modos:
+  - com paralelismo de payoffs: distribuição mista comum para os dois jogadores;
+  - sem paralelismo de payoffs: distribuições calculadas separadamente e sem equilíbrio puro.
+- Solução mostra:
+  - equilíbrios puros, se houver;
+  - equilíbrio em estratégias mistas em porcentagens;
+  - cálculo por indiferença do adversário.
 
 ## Convenções de implementação acordadas
 - Não alterar fora de `apps/exercises/` sem pedido explícito.
@@ -134,4 +144,4 @@ Comportamento implementado:
 - `/Users/lucasthevenard/Repo/post/apps/exercises/modules/shared/exercise_visibility.js`
 
 ## Próximo passo sugerido
-- Implementar a lógica completa de validação/solução para os placeholders `dui_optimism` e `game_classic`, mantendo o mesmo padrão de UX usado nos demais exercícios.
+- Validar o exercício de estratégias mistas com alguns seeds usados em sala e, se necessário, adicionar novos templates semânticos (ex.: Run or Pass) mantendo probabilidades em múltiplos de 5%.

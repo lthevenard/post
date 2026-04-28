@@ -25,7 +25,7 @@ export const HOME_CARD_VISIBILITY = {
   ev: true,
   game: true,
   game_classic: true,
-  game_mixed: false,
+  game_mixed: true,
   about: true,
 };
 
