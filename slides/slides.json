@@ -15,6 +15,20 @@
   },
   {
     "group": "td26_p1",
+    "slug": "analise_p1_2026",
+    "title": "(TD26) P1 - Análise do Resultado",
+    "event": "TD26.6",
+    "date": "2026-04-28",
+    "html": "analise_p1_2026.html",
+    "pdf": "analise_p1_2026.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": false
+  },
+  {
+    "group": "td26_p1",
     "slug": "gabarito_p1_2026",
     "title": "(TD26) P1 - Resolução de prova e pedidos de revisão",
     "event": "TD26.6",
