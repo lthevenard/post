@@ -113,29 +113,24 @@ footer: lucas.gomes@fgv.br | 28/04/2026
 
 <div class="columns3">
 <div class="metric"><div class="value">69</div><div class="label">presentes</div></div>
-<div class="metric"><div class="value">10</div><div class="label">ausentes</div></div>
-<div class="metric"><div class="value">7,47</div><div class="label">média</div></div>
+<div class="metric"><div class="value">7,50</div><div class="label">mediana</div></div>
+<div class="metric"><div class="value">80%</div><div class="label">com nota >= 6,0</div></div>
 </div>
 
 <br>
 
 <div class="columns3">
-<div class="metric"><div class="value">7,50</div><div class="label">mediana</div></div>
-<div class="metric"><div class="value">80%</div><div class="label">com nota >= 6,0</div></div>
+<div class="metric"><div class="value">10</div><div class="label">ausentes</div></div>
+<div class="metric"><div class="value">7,47</div><div class="label">média</div></div>
 <div class="metric"><div class="value">10,25</div><div class="label">maior nota</div></div>
 </div>
 
 <br>
 
-**Leitura curta:** a turma foi bem na primeira questão, mas perdeu tração em Q4 e sobretudo em Q5. A dispersão existe, mas a massa principal ficou acima de 6,0.
+**Resultado Geral:** a turma foi bem em geral. Muitos acertaram a Q1, as questões mais problemáticas foram Q2 e Q5. No entanto, o resultado mais decepcionante foi na Q4, que era simples. Há alguma dispersão de notas, mas a massa principal ficou acima de 6,0.
 
 ---
 
-## Distribuição das notas
-
-![h:455](charts/notas_histograma.png)
-
----
 
 ## Concentração da turma
 
@@ -143,7 +138,7 @@ footer: lucas.gomes@fgv.br | 28/04/2026
 
 ---
 
-## Curva acumulada
+## Curva de densidade acumulada
 
 ![h:455](charts/curva_acumulada.png)
 
@@ -167,42 +162,9 @@ footer: lucas.gomes@fgv.br | 28/04/2026
 
 ---
 
-## Zeros por item
-
-![h:455](charts/zeros_itens.png)
-
----
-
-## O que os gráficos sugerem
-
-<div class="columns">
-<div>
-
-**Pontos fortes**
-
-- Q1 teve aproveitamento médio de **86%**.
-- Q3 ficou em **71%**, com bom fechamento em Q3D.
-- 55 dos 69 presentes ficaram com nota igual ou superior a 6,0.
-
-</div>
-<div>
-
-**Pontos de atenção**
-
-- Q5 teve o menor aproveitamento médio: **38%**.
-- Q4 veio em seguida, com **58%**.
-- Q5 concentrou zeros: **62%** dos presentes.
-
-</div>
-</div>
+## Faixas para consulta
 
 <br>
-
-**Itens mais difíceis:** <strong>Q5</strong>: 38%; <strong>Q3A</strong>: 54%; <strong>Q4A</strong>: 57%.
-
----
-
-## Faixas para consulta
 
 <table>
 <thead><tr><th>Faixa</th><th>Alunos</th><th>Percentual dos presentes</th></tr></thead>
@@ -211,6 +173,3 @@ footer: lucas.gomes@fgv.br | 28/04/2026
 </tbody>
 </table>
 
-<br>
-
-<p class="note">Dados agregados a partir de <strong>p1_correcao.numbers</strong>. CPFs foram usados apenas para identificar registros e não aparecem nos slides.</p>
