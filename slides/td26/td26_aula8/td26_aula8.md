@@ -1,0 +1,2027 @@
+---
+marp: true
+backgroundImage: 'default_bg.png'
+math: mathjax
+---
+<style>
+section {
+  background-image: url(default_bg.png);
+}
+h1, h2, h3, strong {
+  color: #003E7E;
+}
+h3, h4, h5 {
+  text-align: center;
+}
+h4, h5 {
+  font-weight: normal;
+}
+h1 {
+  font-size: 200%;
+}
+h2, h3 {
+  font-size: 150%;
+}
+h4 {
+  font-size: 100%;
+}
+h5 {
+  font-size: 75%;
+}
+header, a {
+  color: #058ED0;
+}
+header {
+  font-size: 85%;
+}
+footer {
+  color: black;
+  font-size: 60%;
+}
+blockquote {
+  background: #f9f9f9;
+  font-style: italic;
+  font-family: Verdana;
+  font-size: 80%;
+  line-height: 170%;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 20px;
+  padding: 1.2em 30px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote p {
+  display: inline;
+}
+section::after {
+  content: attr(data-marpit-pagination) ' / ' attr(data-marpit-pagination-total);
+  color: #003E7E;
+  font-size: 60%;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+th {
+  background-color: #003E7E;
+  color: white
+}
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.columns3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+span.under {
+  text-decoration: underline;
+}
+td.game, tr.game {
+  background-color: white;
+  text-align: center;
+}
+tr.game.action.player1, td.game.action.player1 {
+  background-color: #f8f8f8;
+  color: #058ED0;
+  font-weight: bold;
+}
+tr.game.action.player2, td.game.action.player2 {
+  background-color: #f8f8f8;
+  color: #003E7E;
+  font-weight: bold;
+}
+span.payoff.player1 {
+  color: #058ED0;
+  font-weight: bold;
+}
+span.payoff.player2 {
+  color: #003E7E;
+  font-weight: bold;
+}
+span.fade {
+  color: lightgray!important;
+}
+td.eliminated {
+  color: lightgray!important;
+  text-decoration: line-through!important;
+}
+td.eliminated > span {
+  color: lightgray!important;
+  text-decoration: line-through!important;
+}
+td.player1 {
+  height: 80px;
+  width: 80px;
+}
+</style>
+
+![bg](section_bg.png)
+
+# Aula 8 – Jogos Sequenciais I 
+**Teoria da Decisão – 2026.1**
+Lucas Thevenard
+
+---
+<!-- 
+paginate: true 
+header: Aula 8 – Jogos Sequenciais I
+footer: lucas.gomes@fgv.br | 12/05/2026
+-->
+
+
+## Roteiro da Aula
+- Recapitulando os problemas estratégicos estudados
+  - Definição de jogo, Conceitos de solução, Cooperação, Coordenação
+- Equilíbrios em estratégias mistas
+- Jogos Sequenciais
+
+---
+
+![bg](section_bg.png)
+
+## 1. Recapitulando os problemas estratégicos estudados
+
+---
+
+## Recapitulando
+* Jogos: situação estratégica
+* Solução por Dominância - conceito forte, mas incompleto
+* Solução por Equilíbrio de Nash - aspecto dinâmico, completo
+  - Estratégias puras - melhores respostas se estabilizam
+  - Estratégias mistas - inclui aleatoriedade (melhor não ser previsível)
+* Problema da cooperação – dilema dos prisioneiros
+* Problema da coordenação - 4 jogos clássicos
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="__under__">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 fade __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">2</span>, 
+      <span class="payoff player2 fade __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="__under__">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">3</span>, 
+      <span class="payoff player2 fade __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 fade __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="__under__">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">3</span>, 
+      <span class="payoff player2 fade __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">2</span>, 
+      <span class="payoff player2 fade __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="__under__">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">2</span>, 
+      <span class="payoff player2 fade __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade __under__">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">3</span>, 
+      <span class="payoff player2 fade __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="__under__">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">3</span>, 
+      <span class="payoff player2 fade __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">1</span>, 
+      <span class="payoff player2 fade __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">2</span>, 
+      <span class="payoff player2 fade __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under__">0</span>, 
+      <span class="payoff player2 fade under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">1</span>, 
+      <span class="payoff player2 __fade__ under">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="under">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">1</span>, 
+      <span class="payoff player2 __fade__ under">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<div class="columns">
+<div>
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td><span class="under">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ under">1</span>, 
+      <span class="payoff player2 __fade__ under">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+<div>
+
+- Os dois jogadores possuem estratégias dominantes.
+#### Solução: **(C, F)**
+<br>
+
+* Mas esse equilíbrio é benéfico para os jogadores?
+  - Qual seria o resultado se jogassem infinitas vezes?
+
+</div>
+</div>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<div class="columns">
+<div>
+<table style="line-height: 120%;">
+  <tr class="game action player2"> 
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>D</td>
+    <td>E</td>
+    <td class="eliminated"><span class="under">F</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>A<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">3</span>, 
+      <span class="payoff player2 __fade__ __under__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game eliminated">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><br>B<br>&nbsp;</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">1</span>, 
+      <span class="payoff player2 __fade__ __under__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">2</span>, 
+      <span class="payoff player2 __fade__ __under__">3</span>
+    &nbsp;)</td>
+    <td class="game eliminated">(&nbsp;
+      <span class="payoff player1 __fade__ __under__">0</span>, 
+      <span class="payoff player2 __fade__ under">4</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1 eliminated"><br><span class="under">C</span><br>&nbsp;</td>
+    <td class="game eliminated">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game eliminated">(&nbsp;
+      <span class="payoff player1 __fade__ under">4</span>, 
+      <span class="payoff player2 __fade__ __under__">0</span>
+    &nbsp;)</td>
+    <td class="game eliminated">(&nbsp;
+      <span class="payoff player1 __fade__ under">1</span>, 
+      <span class="payoff player2 __fade__ under">1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+<div>
+
+- Os dois jogadores possuem estratégias dominantes.
+#### Solução: **(C, F)**
+<br>
+
+* Mas esse equilíbrio é benéfico para os jogadores?
+  - Qual seria o resultado se jogassem infinitas vezes?
+
+</div>
+</div>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">3</span>, 
+      <span class="payoff player2 __fade2__ __under2__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">1</span>, 
+      <span class="payoff player2 __fade4__ __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">1</span>, 
+      <span class="payoff player2 __fade6__ __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">2</span>, 
+      <span class="payoff player2 __fade8__ __under8__">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">3</span>, 
+      <span class="payoff player2 fade __under2__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under3__">1</span>, 
+      <span class="payoff player2 fade __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under5__">1</span>, 
+      <span class="payoff player2 fade __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">2</span>, 
+      <span class="payoff player2 fade __under8__">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">3</span>, 
+      <span class="payoff player2 fade __under2__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under3__">1</span>, 
+      <span class="payoff player2 fade __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under5__">1</span>, 
+      <span class="payoff player2 fade __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">2</span>, 
+      <span class="payoff player2 fade __under8__">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ under">3</span>, 
+      <span class="payoff player2 __fade2__ __under2__">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">1</span>, 
+      <span class="payoff player2 __fade4__ __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">1</span>, 
+      <span class="payoff player2 __fade6__ __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ under">2</span>, 
+      <span class="payoff player2 __fade8__ __under8__">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">3</span>, 
+      <span class="payoff player2  under">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under3__">1</span>, 
+      <span class="payoff player2  __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under5__">1</span>, 
+      <span class="payoff player2 fade __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">2</span>, 
+      <span class="payoff player2 fade __under8__">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">3</span>, 
+      <span class="payoff player2 fade under">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under3__">1</span>, 
+      <span class="payoff player2 fade __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under5__">1</span>, 
+      <span class="payoff player2  __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">2</span>, 
+      <span class="payoff player2  under">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ under">3</span>, 
+      <span class="payoff player2 __fade2__ under">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">1</span>, 
+      <span class="payoff player2 __fade4__ __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">1</span>, 
+      <span class="payoff player2 __fade6__ __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ under">2</span>, 
+      <span class="payoff player2 __fade8__ under">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+
+---
+
+### Observe o jogo abaixo
+<br>
+
+<div class="columns">
+
+<div>
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">D</span></td>
+    <td><span class="__underp22__">E</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">A</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ under">3</span>, 
+      <span class="payoff player2 __fade2__ under">2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">1</span>, 
+      <span class="payoff player2 __fade4__ __under4__">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">B</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">1</span>, 
+      <span class="payoff player2 __fade6__ __under6__">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ under">2</span>, 
+      <span class="payoff player2 __fade8__ under">3</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+<br>
+
+#### Solução: **{ (A, D), (B, E) }**
+</div>
+<div style="line-height: 200%;">
+<br>
+
+- O novo jogo envolve um problema de coordenação. Que jogo é esse?
+  * Jogo da Batalha dos Sexos. 
+
+</div>
+</div>
+
+---
+
+![bg](section_bg.png)
+
+## 2. Equilíbrios em estratégias mistas
+
+---
+
+
+
+<div class="columns">
+
+<div>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Par</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 200px;"><b style="color: #003E7E; text-align: center;">Ímpar</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td>0</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 80px;">0</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 under">1</span>, 
+      <span class="payoff player2">0</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1">0</span>, 
+      <span class="payoff player2 under">1</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1">1</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1">0</span>, 
+      <span class="payoff player2 under">1</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 under">1</span>, 
+      <span class="payoff player2">0</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+</div>
+<div>
+
+## Introdução ao conceito de estratégias mistas
+
+* Como jogar par ou ímpar?
+* Por que não devemos sempre jogar 0 ou sempre jogar 1.
+* Seria desejável jogar 1 em 75% dos casos? Por que?
+
+</div>
+</div>
+
+---
+
+## Estratégias mistas
+- **Par ou ímpar**: nenhum jogador deve utilizar uma estratégia com mais frequência que a outra (mais de 50% das vezes).
+  * A situação em que cada jogador utiliza cada estratégia em 50% dos casos é considerada um equilíbrio de Nash.
+  * Cada jogador, nesse caso, está dando sua melhor resposta ao outro.
+    - Qualquer mudança nas distribuições seria instável pois os jogadores teriam incentivos para mudar suas estratégias.
+  * Chamamos esse tipo de equilíbrio de **"estratégias mistas"** pois cada jogador não usa apenas uma estratégia. Mais de uma estratégia é usada, cada uma em uma certa proporção de casos (distribuição de probabilidades).
+
+---
+
+## Estratégias mistas
+* Nem sempre a distribuição de probabilidades será 50% para cada jogador.
+  - Como calcular o equilíbrio em estratégias mistas em casos menos triviais que o jogo de par ou ímpar? (...)
+* Jogos podem possuir simultaneamente equilíbrios em estratégias puras e equilíbrios em estratégias mistas.
+  - Exemplo: o jogo da galinha também possui um equilíbrio em estratégias mistas.
+
+---
+
+
+### Agora vamos aprender a calcular o equilíbrio em estratégias mistas
+
+---
+
+<div style="display: flex; gap: 4rem;">
+<div style="margin: auto 0 auto auto;">
+
+![w:500](expand.001.png)
+
+</div>
+<div>
+
+<br><br>
+
+### IMPORTANTE 
+### Respire fundo e tenha brio!
+<br>
+
+- Esse é o conceito de solução mais sofisticado que teremos no curso.
+- O John Nash é um gênio mesmo?? 
+  - Resposta: **SIM!**
+</div>
+
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">2</span>, 
+      <span class="payoff player2 __fade2__ __under2__">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">17</span>, 
+      <span class="payoff player2 __fade4__ __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">6</span>, 
+      <span class="payoff player2 __fade6__ __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">1</span>, 
+      <span class="payoff player2 __fade8__ __under8__">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under1__">2</span>, 
+      <span class="payoff player2 fade __under2__">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under3__">17</span>, 
+      <span class="payoff player2 fade __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">6</span>, 
+      <span class="payoff player2 fade __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">1</span>, 
+      <span class="payoff player2 fade __under8__">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">2</span>, 
+      <span class="payoff player2 fade __under2__">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">17</span>, 
+      <span class="payoff player2 fade __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">6</span>, 
+      <span class="payoff player2 fade __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under7__">1</span>, 
+      <span class="payoff player2 fade __under8__">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">2</span>, 
+      <span class="payoff player2 __fade2__ __under2__">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ under">17</span>, 
+      <span class="payoff player2 __fade4__ __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ under">6</span>, 
+      <span class="payoff player2 __fade6__ __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">1</span>, 
+      <span class="payoff player2 __fade8__ __under8__">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">2</span>, 
+      <span class="payoff player2  under">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">17</span>, 
+      <span class="payoff player2  __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">6</span>, 
+      <span class="payoff player2 fade __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">1</span>, 
+      <span class="payoff player2 fade __under8__">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">2</span>, 
+      <span class="payoff player2 fade under">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">17</span>, 
+      <span class="payoff player2 fade __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">6</span>, 
+      <span class="payoff player2  __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">1</span>, 
+      <span class="payoff player2  under">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Jogo "Run or Pass" (futebol americano)
+<br>
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">2</span>, 
+      <span class="payoff player2 __fade2__ under">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ under">17</span>, 
+      <span class="payoff player2 __fade4__ __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ under">6</span>, 
+      <span class="payoff player2 __fade6__ __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">1</span>, 
+      <span class="payoff player2 __fade8__ under">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+<br>
+
+#### **Não há solução em estratégias puras**
+
+---
+
+## Como jogar esse jogo?
+* O ataque pode sempre optar pela jogada com o maior potencial de ganho (passe)?
+  * Não, pois o ataque, nesse caso, vai sempre defender o passe, garantindo que o ataque avance apenas 2 jardas.
+* O ataque deve defender o passe, aleatoriamente, em 50% dos casos? Que tal em 60% dos casos?
+  * Como analisar as estratégias da defesa nesse caso?
+
+---
+
+## Análise do valor esperado
+- Precisamos calcular o valor esperado de cada resposta da defesa, sabendo que o ataque opta pelo passe em 50% dos casos e pela corrida nos outros 50%.
+* $E_{dp} = (0,5)(-2) + (0,5)(-6) = -4$
+* $E_{dc} = (0,5)(-17) + (0,5)(-1) = -9$
+* $E_{dp} > E_{dc}$
+* Defesa sempre prefere defender o passe, e o ataque ganha em média apenas 4 jardas!
+
+---
+
+## Como evitar que o outro jogador antecipe nossa jogada?
+* Devemos escolher as probabilidades das estratégias de forma que a outra parte, em cada jogo, seja indiferente entre qual resposta adotar.
+  * **Ataque**: probabilidade de passar e de correr que iguala o valor esperado de defender o passe ou a corrida.
+  * **Defesa**: probabilidade de defender o passe e de defender a corrida que iguala o valor esperado de passar ou correr.
+
+---
+
+## Análise da estratégia do ataque
+- Escolhe a probabilidade de passar ($q_p$) de forma que, para a defesa, o valor esperado de defender o passe ($E_{dp}$) seja igual ao valor esperado de defender a corrida ($E_{dc}$).
+* $(1 - q_p) = \textrm{probabilidade de correr}$
+<br>
+
+* $E_{dp} = (q_p)(-2) + (1 - q_p)(-6) = 4q_p - 6$
+* $E_{dc} = (q_p)(-17) + (1 - q_p)(-1) = -16q_p - 1$
+* $E_{dp} = E_{dc} \implies 4q_p - 6 = -16q_p - 1 \implies q_p = \frac{5}{20} = 25\%$
+
+---
+
+## Análise da estratégia da defesa
+- Escolhe a probabilidade de defender o passe ($q_{dp}$) de forma que, para o ataque, o valor esperado de passar ($E_p$) seja igual ao valor esperado de correr ($E_{c}$).
+* $(1 - q_{dp}) = \textrm{probabilidade de defender a corrida}$
+<br>
+
+* $E_{p} = (q_{dp})(2) + (1 - q_{dp})(17) = - 15q_{dp} + 17$
+* $E_{c} = (q_{dp})(6) + (1 - q_{dp})(1) = 5q_{dp} + 1$
+* $E_{p} = E_{c} \implies - 15q_{dp} + 17 = 5q_{dp} + 1 \implies q_{dp} = \frac{16}{20} = 80\%$
+
+---
+
+### Solução do jogo "Run or Pass"
+
+
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Ataque</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Defesa</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Defende o Passe</span></td>
+    <td><span class="__underp22__">Defende a Corrida</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Passe</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">2</span>, 
+      <span class="payoff player2 __fade2__ under">-2</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ under">17</span>, 
+      <span class="payoff player2 __fade4__ __under4__">-17</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Corrida</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ under">6</span>, 
+      <span class="payoff player2 __fade6__ __under6__">-6</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">1</span>, 
+      <span class="payoff player2 __fade8__ under">-1</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+<br>
+
+<div style="text-align: center; line-height:150%">
+
+ **Ataque passa em 25% dos casos e corre em 75% dos casos,**
+ **Defesa defende o passe em 80% dos casos e a corrida em 20% dos casos.**
+
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">-3</span>, 
+      <span class="payoff player2 __fade2__ __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ __under3__">4</span>, 
+      <span class="payoff player2 __fade4__ __under4__">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ __under5__">0</span>, 
+      <span class="payoff player2 __fade6__ __under6__">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">2</span>, 
+      <span class="payoff player2 __fade8__ __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under1__">-3</span>, 
+      <span class="payoff player2 fade __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under3__">4</span>, 
+      <span class="payoff player2 fade __under4__">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">0</span>, 
+      <span class="payoff player2 fade __under6__">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">2</span>, 
+      <span class="payoff player2 fade __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">-3</span>, 
+      <span class="payoff player2 fade __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  under">4</span>, 
+      <span class="payoff player2 fade __under4__">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">0</span>, 
+      <span class="payoff player2 fade __under6__">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1  __under7__">2</span>, 
+      <span class="payoff player2 fade __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">-3</span>, 
+      <span class="payoff player2 __fade2__ __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ under">4</span>, 
+      <span class="payoff player2 __fade4__ __under4__">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ under">0</span>, 
+      <span class="payoff player2 __fade6__ __under6__">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">2</span>, 
+      <span class="payoff player2 __fade8__ __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">-3</span>, 
+      <span class="payoff player2  __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2  under">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">0</span>, 
+      <span class="payoff player2 fade __under6__">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">2</span>, 
+      <span class="payoff player2 fade __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under1__">-3</span>, 
+      <span class="payoff player2 fade __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">4</span>, 
+      <span class="payoff player2 fade under">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade under">0</span>, 
+      <span class="payoff player2  under">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 fade __under7__">2</span>, 
+      <span class="payoff player2  __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+
+---
+
+### Voltando ao jogo da galinha...
+<br>
+
+<div class="columns" style="grid-template-columns: auto auto auto auto; gap: 0.5rem;">
+<div style="line-height: 200%; margin: 190px 0 auto auto;">
+<b style="color: #058ED0;">Predador 1</b>
+</div>
+<div>
+<div style="margin: 0 10px 30px 360px;"><b style="color: #003E7E; text-align: center;">Predador 2</b></div>
+
+<table>
+  <tr class="game action player2"> 
+    <td></td>
+    <td><span class="__underp21__">Agressivo (Hawk)</span></td>
+    <td><span class="__underp22__">Passivo (Dove)</span></td>
+  </tr>
+  <tr>
+    <td class="game action player1" style="width: 180px;"><span class="__underp11__">Agressivo (Hawk)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade1__ __under1__">-3</span>, 
+      <span class="payoff player2 __fade2__ __under2__">-3</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade3__ under">4</span>, 
+      <span class="payoff player2 __fade4__ under">0</span>
+    &nbsp;)</td>
+  </tr>
+  <tr>
+    <td class="game action player1"><span class="__underp12__">Passivo (Dove)</span></td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade5__ under">0</span>, 
+      <span class="payoff player2 __fade6__ under">4</span>
+    &nbsp;)</td>
+    <td class="game">(&nbsp;
+      <span class="payoff player1 __fade7__ __under7__">2</span>, 
+      <span class="payoff player2 __fade8__ __under8__">2</span>
+    &nbsp;)</td>
+  </tr>
+</table>
+</div>
+</div>
+</div>
+
+#### Solução (estratégias puras): **{ (Hawk, Dove), (Dove, Hawk) }**
+
+---
+
+## Qual seria o equilíbrio desse jogo em estratégias mistas?
+- Cada predador escolhe a probabilidade de ser agressivo ($q_a$) de forma que, para o outro, o valor esperado de ser agressivo ($E_{a}$) seja igual ao de ser passivo ($E_{p}$).
+* $(1 - q_a) = \textrm{probabilidade de ser passivo}$
+<br>
+
+* $E_{a} = (q_a)(-3) + (1 - q_a)(4) = 4 - 7q_a$
+* $E_{p} = (q_a)(0) + (1 - q_a)(2) = 2 - 2q_a$
+* $E_{a} = E_{p} \implies 4 - 7q_a = 2 - 2q_a \implies q_a = \frac{2}{5} = 40\%$
+
+---
+
+## Equilíbrio representa a tendência de equilíbrio da população
+* Se mais indivíduos se tornam hawks, há um excesso de encontro entre agressivos, gerando prejuízos para ambos (-3, -3).
+* Se mais indivíduos se tornam doves, há uma maior oportunidade para hawks ganharem mais (4, 0).
+
+---
+
+![bg](section_bg.png)
+
+## 3. Jogos Sequenciais
+
+---
+
+### Vamos jogar NIM!
+<br>
+
+- Cada jogador escolhe retirar entre 1 e 6 peças a cada turno.
+- O jogo começa com 20 peças.
+- O último jogador que retira (acaba com as peças) vence.
+
+---
+
+## Entendendo o resultado de NIM
+* Jogador que joga quando há 7 peças perde o jogo.
+* Consequentemente, jogador que joga quando há 14 peças perde o jogo.
+
+---
+
+## NIM com 20 peças
+- Com 20 peças, Jogador 1 sempre pode vencer se jogar corretamente.
+  - Jogador 1 tira 6, deixando o jogador 2 com 14.
+  - Em seguida, tira o suficiente para deixar o outro jogador com 7 peças. 
+  - Por fim, tira as remanescentes.
+* **First-mover advantage**: em diversos jogos, quem age primeiro tem a vantagem.
+  * Mas o que acontece quando jogamos NIM com 21 peças?
+  * Embora seja comum, nem todos os jogos possuem first-mover advantage.
+
+---
+
+## Indução retroativa
+* Para resolver jogos sequenciais, precisamos voltar ao conceito de **indução retroativa**.
+  * Em NIM, para entendermos nossa primeira jogada, precisamos entender como o jogo termina.
+  *  Em jogos sequenciais, cada jogador tenta antecipar as jogadas seguintes por isso a análise é feita de trás para frente.
+
+---
+
+![bg](nofooter_bg.png)
+
+![w:700](veto.019.png)
+

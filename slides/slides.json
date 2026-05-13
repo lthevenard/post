@@ -1,11 +1,11 @@
 [
   {
     "group": "td26_8",
-    "slug": "z6490",
+    "slug": "gab_lista_5",
     "title": "(TD26) Gabarito – Lista 5",
     "event": "TD26.L5",
     "date": "2026-05-12",
-    "html": "z6490.html",
+    "html": "gab_lista_5.html",
     "pdf": "gab_lista_5.pdf",
     "lang": "pt",
     "project": "teodec",
@@ -15,17 +15,17 @@
   },
   {
     "group": "td26_8",
-    "slug": "x3444",
+    "slug": "td26_aula8",
     "title": "(TD26) Aula 8 – Jogos Sequenciais I",
     "event": "TD26.8",
     "date": "2026-05-12",
-    "html": "x3444.html",
+    "html": "td26_aula8.html",
     "pdf": "td26_aula8.pdf",
     "lang": "pt",
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "td26_7",
