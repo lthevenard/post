@@ -1,5 +1,33 @@
 [
   {
+    "group": "td26_l6",
+    "slug": "y9089",
+    "title": "(TD26) Gabarito – Lista 6",
+    "event": "TD26.L6",
+    "date": "2026-05-19",
+    "html": "y9089.html",
+    "pdf": "y9089.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
+    "group": "td26_9",
+    "slug": "x4655",
+    "title": "(TD26) Aula 9 – Jogos Sequenciais II",
+    "event": "TD26.9",
+    "date": "2026-06-19",
+    "html": "x4655.html",
+    "pdf": "x4655.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "td26_l5",
     "slug": "gab_lista_5",
     "title": "(TD26) Gabarito – Lista 5",
