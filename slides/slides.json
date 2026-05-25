@@ -1,12 +1,26 @@
 [
   {
+    "group": "td26_10",
+    "slug": "x4655",
+    "title": "(TD26) Aula 10 – Vieses e heurísticas em julgamentos sob condição de incerteza",
+    "event": "TD26.10",
+    "date": "2026-06-26",
+    "html": "x7993.html",
+    "pdf": "x7993.pdf",
+    "lang": "pt",
+    "project": "teodec",
+    "dir": "td26",
+    "archive": false,
+    "hide": true
+  },
+  {
     "group": "td26_l6",
-    "slug": "y9089",
+    "slug": "gab_lista_6",
     "title": "(TD26) Gabarito – Lista 6",
     "event": "TD26.L6",
     "date": "2026-05-19",
-    "html": "y9089.html",
-    "pdf": "y9089.pdf",
+    "html": "gab_lista_6.html",
+    "pdf": "gab_lista_6.pdf",
     "lang": "pt",
     "project": "teodec",
     "dir": "td26",
@@ -25,7 +39,7 @@
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "td26_l5",
