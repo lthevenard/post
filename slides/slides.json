@@ -1,17 +1,17 @@
 [
   {
     "group": "td26_10",
-    "slug": "x7993",
+    "slug": "td26_aula10",
     "title": "(TD26) Aulas 10 e 11 – Teoria Comportamental",
     "event": "TD26.10",
     "date": "2026-06-26",
-    "html": "x7993.html",
-    "pdf": "x7993.pdf",
+    "html": "td26_aula10.html",
+    "pdf": "td26_aula10.pdf",
     "lang": "pt",
     "project": "teodec",
     "dir": "td26",
     "archive": false,
-    "hide": true
+    "hide": false
   },
   {
     "group": "td26_l6",
@@ -29,12 +29,12 @@
   },
   {
     "group": "td26_9",
-    "slug": "x4655",
+    "slug": "td26_aula9",
     "title": "(TD26) Aula 9 – Jogos Sequenciais II",
     "event": "TD26.9",
     "date": "2026-06-19",
-    "html": "x4655.html",
-    "pdf": "x4655.pdf",
+    "html": "td26_aula9.html",
+    "pdf": "td26_aula9.pdf",
     "lang": "pt",
     "project": "teodec",
     "dir": "td26",
