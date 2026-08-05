@@ -336,9 +336,9 @@ _class: compact
 * **Questions on agency design and use of participation**
   - (1) What are the main uses of participation? (2) When and why does the agency decide not to use participation? (3) How legal obligations have affected the agency's use of participation.
 * **Questions on participant engagement and their argumentative strategies**
-  - (4) Who participates? Are there recurring actors? (5) What are people asking for. Who is seeking "more" or "less" regulation? (6) How actors substantiate their requests, what type of arguments are used? (7) How does argumentative choices impact the effectiveness of participation?
+  - (4) Who participates? Are there recurring actors? (**5**) What are people asking for. Who is seeking "more" or "less" regulation? (**6**) How actors substantiate their requests, what type of arguments are used? (**7**) How does argumentative choices impact the effectiveness of participation?
 * **Questions on agency responsiveness to participation**
-  - (1) How responsive is the agency and why? (2) Does the obligation to respond affect the likelyhood of using formal  participatory procedures?
+  - (1) How responsive is the agency and why? (2) Does the obligation to respond affect the likelihood of using formal  participatory procedures?
 
 ---
 
