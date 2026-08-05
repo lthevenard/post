@@ -1,5 +1,18 @@
 [
   {
+    "group": "spasrg_2026",
+    "slug": "anatel_participation_spasrg_2026",
+    "title": "(TD26) Aulas 10 e 11 – Teoria Comportamental",
+    "event": "spasrg_2026",
+    "date": "2026-08-05",
+    "html": "anatel_participation_spasrg_2026.html",
+    "pdf": "anatel_participation_spasrg_2026.pdf",
+    "lang": "en",
+    "project": "dissertation",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "td26_10",
     "slug": "td26_aula10",
     "title": "(TD26) Aulas 10 e 11 – Teoria Comportamental",
