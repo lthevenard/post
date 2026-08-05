@@ -1,0 +1,20 @@
+{
+  "schema_version": "anatel-participation-spasrg-deck-validation-2026-08-04-v1",
+  "status": "complete",
+  "errors": [],
+  "slides": 23,
+  "final_slides_visually_inspected": 23,
+  "embedded_analysis_figures": 12,
+  "html_relative_figure_references": 12,
+  "artifacts": {
+    "anatel_participation_spasrg_2026.md": {
+      "sha256": "055af045358e6fe9d2d8e365b8e48ca2dd6ea1b14ca77eb6183b263add7dc81a"
+    },
+    "anatel_participation_spasrg_2026.pdf": {
+      "sha256": "824ff72beb517bca7c4f603394c77238b3b5380dcb389902293f6612deed105d"
+    },
+    "anatel_participation_spasrg_2026.html": {
+      "sha256": "e3021457dee84ec60e06eb8e9401b30bcd465cd7fa63aabb485d31db9da30d1e"
+    }
+  }
+}
