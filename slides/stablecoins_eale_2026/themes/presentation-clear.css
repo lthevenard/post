@@ -1,0 +1,116 @@
+/* @theme presentation-clear */
+@import 'default';
+
+:root {
+  --paper: #ffffff;
+  --paper-2: #f4f5f6;
+  --slate: #344867;
+  --ink: #2f3540;
+  --muted: #68717a;
+  --mustard: #b88a2d;
+  --line: #d9dde2;
+  --white: #ffffff;
+}
+
+section {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  line-height: 1.35;
+  padding: 62px 76px 54px;
+}
+
+h1, h2 {
+  color: var(--slate);
+  font-family: Georgia, Cambria, 'Times New Roman', serif;
+  font-weight: 700;
+}
+h1 { font-size: 56px; line-height: 1.07; }
+h2 { border-bottom: 1px solid var(--line); font-size: 43px; line-height: 1.12; margin: 0 0 30px; padding-bottom: 18px; }
+h3 { color: var(--slate); font-size: 27px; line-height: 1.2; margin: 0 0 10px; }
+p { margin: 0 0 18px; }
+strong { color: var(--slate); }
+a { color: var(--slate); text-decoration-color: var(--mustard); }
+ul, ol { margin: 10px 0 0 25px; padding-left: 20px; }
+li { margin: 0 0 12px; padding-left: 6px; }
+li::marker { color: var(--mustard); }
+
+header {
+  color: var(--mustard);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+footer { color: var(--muted); font-size: 13px; }
+section::after { color: var(--muted); font-size: 13px; }
+
+section.title {
+  background: var(--slate);
+  color: var(--white);
+  justify-content: center;
+  padding-right: 510px;
+}
+section.title::before {
+  background: rgba(255,255,255,.055);
+  border-radius: 50%;
+  content: '';
+  height: 560px;
+  position: absolute;
+  right: -30px;
+  top: 70px;
+  width: 560px;
+}
+section.title h1, section.title h2, section.title h3,
+section.title p, section.title strong { color: var(--white); }
+section.title h1 { font-size: 62px; position: relative; }
+section.title p { font-size: 22px; position: relative; }
+
+section.section { background: var(--slate); color: var(--white); justify-content: center; }
+section.section h1, section.section h2, section.section h3,
+section.section p, section.section strong { color: var(--white); }
+section.section h1 { font-size: 58px; max-width: 950px; }
+section.section h2 { border: 0; }
+
+section.concept { justify-content: center; }
+section.concept h2 { border: 0; font-size: 50px; }
+section.concept p { color: var(--slate); font-family: Georgia, Cambria, serif; font-size: 34px; line-height: 1.35; }
+section.dense { font-size: 22px; line-height: 1.28; }
+section.dense h2 { font-size: 38px; margin-bottom: 20px; }
+
+.layout { display: grid; gap: 26px; width: 100%; }
+.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cell { border: 1px solid var(--line); min-height: 235px; padding: 24px 24px 18px; }
+.cell h3 { border-top: 6px solid var(--mustard); padding-top: 18px; }
+.cell p, .cell li { font-size: 22px; }
+
+blockquote {
+  border-left: 7px solid var(--mustard);
+  color: var(--slate);
+  font-family: Georgia, Cambria, serif;
+  font-size: 27px;
+  line-height: 1.45;
+  margin: 26px 24px;
+  padding: 16px 34px;
+}
+
+table { border-collapse: collapse; font-size: 21px; margin: 18px auto; width: 94%; }
+th { border-bottom: 3px solid var(--mustard); color: var(--slate); }
+th, td { padding: 11px 14px; text-align: left; }
+td { border-bottom: 1px solid var(--line); }
+
+.steps { display: grid; gap: 16px; list-style: none; margin: 10px 0; padding: 0; }
+.steps li { border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 190px 1fr; padding: 13px 4px 16px; }
+.steps strong { color: var(--slate); font-size: 26px; }
+.steps span { color: var(--muted); }
+
+.metric { display: flex; flex-direction: column; margin: 38px 0; max-width: 550px; }
+.metric strong { color: var(--slate); font-family: Georgia, Cambria, serif; font-size: 110px; line-height: 1; }
+.metric span { border-top: 6px solid var(--mustard); color: var(--muted); font-size: 25px; margin-top: 16px; padding-top: 18px; }
+
+section.figure img { display: block; margin: 0 auto; max-height: 525px; max-width: 1110px; object-fit: contain; }
+.source { color: var(--muted); font-size: 14px; margin-top: 16px; }
+section.closing { justify-content: center; }
+section.closing h2 { border: 0; font-size: 50px; }

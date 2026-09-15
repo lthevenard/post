@@ -1,5 +1,18 @@
 [
   {
+    "group": "stablecoins_eale_2026",
+    "slug": "stablecoins_eale_2026",
+    "title": "Stablecoins and Regulatory Competence: A Comparative Law-and-Economics Analysis",
+    "event": "43rd EALE Conference (Warsaw)",
+    "date": "2026-09-17",
+    "html": "stablecoins_eale_2026.html",
+    "pdf": "stablecoins_eale_2026_v2.pdf",
+    "lang": "en",
+    "project": "project-neasf",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "spasrg_2026",
     "slug": "anatel_participation_spasrg_2026",
     "title": "Ideas, Issue Networks, and the Argumentative Structure of Brazilian Notice-and-Comment Rulemaking",

@@ -1,6 +1,19 @@
 [
   {
     "group": "neasf",
+    "slug": "project-neasf",
+    "lang": "en",
+    "title": "NEASF",
+    "description": "Research and presentations associated with NEASF, focusing on the regulation of Brazil's financial system, virtual assets and stablecoins.",
+    "tags": [
+      "financial regulation",
+      "neasf",
+      "virtual assets",
+      "stablecoins"
+    ]
+  },
+  {
+    "group": "neasf",
     "slug": "projeto-neasf",
     "lang": "pt",
     "title": "NEASF",
