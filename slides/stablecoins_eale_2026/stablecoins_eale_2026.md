@@ -24,14 +24,18 @@ style: |
 <!-- _class: title -->
 <!-- _paginate: false -->
 
-# Stablecoins and<br>regulatory competence
+# Stablecoins and regulatory competence
 
-The boundary between the Central Bank of Brazil<br>and the Brazilian Securities Commission (CVM)
+The boundary between the Central Bank of Brazil and the Brazilian Securities Commission (CVM): A comparative law-and-economics analysis
 
-A comparative law-and-economics analysis
+<br>
+<div style="font-size: 75%;"><i>
 
-Antônio José Maristrello Porto · Lucas Thevenard Gomes<br>Marina Palma Copolla
+Lucas Thevenard Gomes
+Antônio José Maristrello Porto
+Marina Palma Copolla
 
+</div></i><br>
 EALE 2026
 
 <!--
@@ -72,13 +76,12 @@ en_stablecoins_2026.pdf, sections 3.1-3.3. US$1 is an illustrative target used t
 
 | Type discussed in the paper | How stability is supported |
 |---|---|
-| **Fiat-backed** | Reserves of cash and liquid financial assets support redemption. Examples: USDT and USDC. |
-| **Commodity-backed** | Physical assets, such as gold or silver, provide the value reference and backing. |
-| **Crypto-backed** | Other crypto-assets serve as collateral, usually with overcollateralization to absorb price volatility. |
+| **Fiat-backed** | <mark>Reserves of cash and liquid financial assets</mark> support redemption. Examples: USDT and USDC. |
+| **Commodity-backed** | <mark>Physical assets</mark>, such as gold or silver, provide the value reference and backing. |
+| **Crypto-backed** | <mark>Other crypto-assets</mark> serve as collateral, usually with <mark>overcollateralization</mark> to absorb price volatility. |
 | **Treasury-backed** | A fiat-backed subtype: government securities generate income for the issuer. |
-| **Algorithmic** | Programmed supply adjustments seek to sustain the target without conventional collateral. |
+| **Algorithmic** | <mark>Programmed supply adjustments</mark> seek to sustain the target without conventional collateral. |
 
-These are economic designs; they do not determine securities status by themselves.
 
 <!--
 [Speaker notes]
@@ -94,7 +97,7 @@ en_stablecoins_2026.pdf, section 3.1, drawing on Caresana (2025). USDT and USDC 
 
 How should regulatory authority be allocated when a stablecoin combines **payment and investment functions**?
 
-Brazil's binary division between virtual assets and securities provides institutional clarity, but leaves difficult classification and coordination questions.
+<br>
 
 We examine this boundary through **economic functions, comparative legal analysis and the Dynasty Global decision**, contrasting Brazil with the United States and the European Union.
 
@@ -112,11 +115,11 @@ en_stablecoins_2026.pdf, abstract and sections 1, 5.4, 6 and 7.
 
 **Banking market: financial intermediation**
 
-Banks raise funds in their own name and lend them to borrowers. The bank owes depositors and assumes credit risk on its loans.
+Banks raise funds in their own name and lend them to borrowers. <mark>The bank</mark> owes depositors and <mark>assumes credit risk</mark> on its loans.
 
 **Capital market: direct financing**
 
-Investors fund issuers through securities and bear the risks of the investment. Financial intermediaries arrange transactions without taking the borrower's place.
+<mark>Investors</mark> fund issuers through securities and <mark>bear the risks of the investment</mark>. Financial intermediaries arrange transactions without taking the borrower's place.
 
 These relationships expose savers to different risks and support different regulatory mandates.
 
@@ -132,11 +135,11 @@ en_stablecoins_2026.pdf, sections 2.1-2.2, drawing on Pitta and Pereira Filho (2
 
 ## Why banking regulation is prudential
 
-- **Repayment obligations:** banks must meet withdrawals while loans may be repaid later or suffer losses.
-- **Liquidity risk:** simultaneous withdrawals can force rapid asset sales, worsening losses and weakening confidence.
-- **Systemic effects:** distress may spread to other institutions and disrupt payments, imposing costs beyond the bank and its customers.
+- **Repayment obligations:** <mark>banks must meet withdrawals</mark> while loans may be repaid later or suffer losses.
+- **Liquidity risk:** <mark>simultaneous withdrawals can force rapid asset sales</mark>, worsening losses and weakening confidence.
+- **Systemic effects:** <mark>distress may spread to other institutions</mark> and disrupt payments, imposing costs beyond the bank and its customers.
 
-Prudential supervision addresses **solvency, liquidity and continuity of payments**, because individual institutions do not internalize all the costs of their distress.
+Prudential supervision addresses solvency, liquidity and continuity of payments, because **individual institutions do not internalize all the costs of their distress**.
 
 <!--
 [Speaker notes]
@@ -150,9 +153,9 @@ Explanatory synthesis of en_stablecoins_2026.pdf, sections 2.1, 3.1 and 3.3: int
 
 ## Prudential and monetary risks in stablecoins
 
-- **Convertibility:** a fiat-backed issuer receives funds, issues tokens and invests reserves. Parity depends on its ability to meet redemptions.
-- **Run dynamics:** loss of confidence can trigger redemptions and reserve sales, reinforcing liquidity pressure.
-- **Monetary externalities:** private issuance can affect aggregate liquidity and the transmission of monetary policy, beyond the issuer's own interests.
+- **Convertibility:** a fiat-backed issuer receives funds, issues tokens and invests reserves. <mark>Parity depends on its ability to meet redemptions</mark>.
+- **Run dynamics:** <mark>loss of confidence can trigger redemptions</mark> and reserve sales, reinforcing liquidity pressure.
+- **Monetary externalities:** private issuance <mark>can affect aggregate liquidity and the transmission of monetary policy</mark>, beyond the issuer's own interests.
 
 These mechanisms support **liquid reserve requirements and oversight of issuance, reserve management and payments**.
 
@@ -170,9 +173,8 @@ en_stablecoins_2026.pdf, sections 3.1 and 3.3, including its discussions of Care
 
 - **Information asymmetry:** issuers know more about assets and prospects than investors. Poor information impairs pricing and can discourage investment.
 - **Agency problems:** investors entrust funds to managers whose decisions they cannot readily monitor. Managers may pursue their own interests at investors' expense.
-- **Regulatory response:** mandatory disclosure supports informed pricing; governance and management rules constrain conflicts of interest.
-
-The central relationship is between **investors supplying capital and those using or managing it**.
+* **Regulatory response:** mandatory disclosure supports informed pricing; governance and management rules constrain conflicts of interest.
+  - The central relationship is between **investors supplying capital and those using or managing it**.
 
 <!--
 [Speaker notes]
@@ -194,9 +196,8 @@ en_stablecoins_2026.pdf, sections 4.1-4.3, drawing on Mahoney (2021), and sectio
 |---|---|
 | **Payment** | Redeemability depends on adequate, liquid reserves. |
 | **Investment** | Returns depend on portfolio choices, information and the issuer's incentives. |
-| **Interaction** | Portfolio losses may reduce returns and weaken confidence in redemption. |
+| **Interaction** | <mark>Portfolio losses may reduce returns and weaken confidence in redemption</mark>. |
 
-Income retained by the issuer alone does not establish a holder's investment right. Securities status still depends on the legal test.
 
 <!--
 [Speaker notes]
@@ -210,11 +211,9 @@ Illustrative synthesis based on en_stablecoins_2026.pdf, sections 3.2, 4.2-4.3, 
 
 ## United States: overlapping regulatory mandates
 
-- **Initial fragmentation:** banking authorities emphasized convertibility and stability; securities authorities saw possible investment-contract and fund characteristics.
-- **GENIUS Act, July 2025:** established a federal framework for payment stablecoins.
-- **Remaining boundaries:** hybrid and yield-bearing arrangements still raise questions about the relation between payment oversight and securities law.
-
-The paper uses this trajectory to show how overlapping mandates can generate **coordination costs and uncertainty about the applicable regime**.
+- **Initial fragmentation:** institutional dispute between SEC and CFTC over authority to regulate stablecoins (Sec Chair Gary Gensler exposed these tensions in 2021 in his [Remarks Before the Aspen Security Forum](https://www.sec.gov/newsroom/speeches-statements/gensler-aspen-security-forum-2021-08-03)).
+* **GENIUS Act, July 2025:** established a federal framework for payment stablecoins.
+  - Came into force before the CLARITY Act.
 
 <!--
 [Speaker notes]
@@ -226,12 +225,22 @@ en_stablecoins_2026.pdf, section 5.1; PWG Report on Stablecoins (2021), SEC rema
 
 ---
 
+## GENIUS Act
+
+- **Multiple supervisors:** The GENIUS Act distributes oversight among the OCC, Federal Reserve, FDIC, NCUA and state authorities, according to issuer type and authorization.
+
+* **Targeted securities-law exclusion:** The Act excludes payment stablecoins issued by permitted <mark>payment stablecoin</mark> issuers from the federal definition of a security.
+
+* **Continuing SEC jurisdiction:** Other stablecoins may fall under SEC jurisdiction when their characteristics or offering arrangements satisfy the applicable securities-law tests.
+  - **Case-by-case classification:** Falling outside the payment-stablecoin category does not automatically make a stablecoin a security or place it under SEC supervision.
+
+---
+
 ## European Union: categories defined in advance
 
 - **Starting problem:** gaps in existing financial law and divergent national responses, alongside payment and monetary risks.
 - **MiCA's response:** common categories for e-money tokens and asset-referenced tokens guide prudential, informational and supervisory treatment.
 - **Institutional design:** national and European authorities share tasks within a common legislative framework.
-- **Remaining boundary:** financial instruments fall under other legislation; hybrid products still require functional classification.
 
 A more detailed taxonomy reduces uncertainty but still needs **coordination and adaptation**.
 
@@ -268,13 +277,15 @@ en_stablecoins_2026.pdf, sections 5.3-5.4; Law 14,478/2022, Article 1, sole para
 Six cumulative elements under CVM Guidance Opinion 40/2022:
 
 1. Investment of money or an asset with economic value.
-2. Formalization in a security or contract.
+2. Formalization in a negotiable financial instrument or contract.
 3. Collective character.
 4. Expectation of economic benefit.
 5. Predominant efforts of an entrepreneur or third party.
 6. Public offering.
 
-**Article 2(IX) also requires a right of participation, partnership or remuneration.**
+<br>
+
+* Potential for <mark>positive and negative conflicts of competence</mark> involving stablecoins.
 
 <!--
 [Speaker notes]
@@ -297,6 +308,8 @@ The **D¥N token** was presented as a payment token linked to real estate.
 <li><strong>Buyback</strong><span>Cash flow funds purchases of D¥N on the secondary market.</span></li>
 <li><strong>Burn</strong><span>Purchased tokens are cancelled to increase scarcity and support value.</span></li>
 </ol>
+
+<br>
 
 Does this mechanism create an investment right under Brazilian law?
 
@@ -365,7 +378,6 @@ en_stablecoins_2026.pdf, sections 5.4, 5.5 and 6.2.
 | **Business organization** | Does success depend on continuing centralized efforts? |
 | **Effective use** | Is the token mainly used for payments or held for investment? |
 
-These indicators inform Article 2(IX); they do not replace its statutory requirements.
 
 <!--
 [Speaker notes]

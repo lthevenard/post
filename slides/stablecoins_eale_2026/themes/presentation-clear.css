@@ -31,6 +31,13 @@ h2 { border-bottom: 1px solid var(--line); font-size: 43px; line-height: 1.12; m
 h3 { color: var(--slate); font-size: 27px; line-height: 1.2; margin: 0 0 10px; }
 p { margin: 0 0 18px; }
 strong { color: var(--slate); }
+
+/* Yellow bold emphasis in Markdown: <mark>text</mark>. */
+section mark {
+  background: transparent;
+  color: var(--mustard);
+  font-weight: 700;
+}
 a { color: var(--slate); text-decoration-color: var(--mustard); }
 ul, ol { margin: 10px 0 0 25px; padding-left: 20px; }
 li { margin: 0 0 12px; padding-left: 6px; }
