@@ -1,5 +1,17 @@
 [
   {
+    "group": "ia-participacao-social",
+    "slug": "ia-participacao-social",
+    "lang": "pt",
+    "title": "IA e participação social",
+    "description": "Apresentações do seminário sobre inteligência artificial na análise de contribuições em processos de participação social.",
+    "tags": [
+      "inteligência artificial",
+      "participação social",
+      "administração pública"
+    ]
+  },
+  {
     "group": "neasf",
     "slug": "project-neasf",
     "lang": "en",

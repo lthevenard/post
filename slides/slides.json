@@ -1,5 +1,18 @@
 [
   {
+    "group": "seminario_ia_participacao_social_2026",
+    "slug": "seminario_ia_participacao_social_2026",
+    "title": "Inteligência artificial e participação social",
+    "event": "Seminário sobre IA e participação social",
+    "date": "2026-09-24",
+    "html": "seminario_ia_participacao_social_2026.html",
+    "pdf": "seminario_ia_participacao_social_2026.pdf",
+    "lang": "pt",
+    "project": "ia-participacao-social",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "stablecoins_eale_2026",
     "slug": "stablecoins_eale_2026",
     "title": "Stablecoins and Regulatory Competence: A Comparative Law-and-Economics Analysis",
