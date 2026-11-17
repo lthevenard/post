@@ -309,82 +309,42 @@ img { display: block; margin: 0 auto; width: 800px; }
 -->
 ---
 <style scoped>
-.neasf { display: grid; grid-template-columns: 500px 1fr; gap: 36px; margin-top: 4px; align-items: start; }
+.neasf { display: grid; grid-template-columns: 460px 1fr; gap: 36px; margin-top: 4px; align-items: start; }
 .neasf img { width: 100%; display: block; }
 .neasf .cap { color: var(--muted); font-size: 14px; margin-top: 6px; }
-.items { display: grid; gap: 16px; }
-.item { border-left: 6px solid var(--fgv-blue); padding: 2px 0 2px 18px; }
-.item strong { display: block; font-size: 22px; color: var(--fgv-navy); }
-.item span { display: block; font-size: 18.5px; line-height: 1.35; margin-top: 3px; }
+.items { display: grid; gap: 13px; }
+.item { border-left: 6px solid var(--fgv-blue); padding: 1px 0 1px 18px; }
+.item strong { display: block; font-size: 21px; color: var(--fgv-navy); }
+.item span { display: block; font-size: 17.5px; line-height: 1.33; margin-top: 2px; }
 </style>
 
-## NEASF and the Central Bank of Brazil
+## NEASF: research on financial regulation
 
 <div class="neasf">
 <div>
 <img src="assets/neasf_26th_meeting.jpg">
-<div class="cap">26th NEASF meeting, co-organised with the Central Bank of Brazil (Rio de Janeiro, 16 October 2026)</div>
+<div class="cap">26th NEASF meeting (Rio de Janeiro, 16 October 2026)</div>
 </div>
 <div class="items">
-<div class="item"><strong>Technical cooperation with the Central Bank</strong><span>Joint activities on regulation and financial stability in 2026–2027</span></div>
+<div class="item"><strong>Technical cooperations</strong><span>Joint activities with partners that include the Central Bank of Brazil and the Open Finance Association, among others</span></div>
 <div class="item"><strong>Three meetings a year</strong><span>Academia, market and regulators; reports under the Chatham House Rule. 26th meeting: bank capital and the countercyclical buffer</span></div>
 <div class="item"><strong>Webinar series</strong><span>Sep. 2026: calibrating a positive neutral countercyclical buffer, with ECB researchers · Dec. 2026: credit receivables funds, payroll loans and supervision</span></div>
+<div class="item"><strong>International seminar, Frankfurt (March 2027)</strong><span>"Banking Capital and Burden-Sharing Mechanisms", with FGV Europe: lessons from Credit Suisse, creditor hierarchy and Brazil's bank resolution bill</span></div>
 </div>
 </div>
 
 <!--
 - NEASF (Center for Advanced Studies on the Regulation of the National Financial System) brings together academia, market participants and regulators.
-- In 2026 it established a technical cooperation with the Central Bank of Brazil. The 26th meeting (16 October 2026) was organised jointly with the Central Bank, on the countercyclical capital buffer (CCyB), the usability of capital buffers and bank credit.
-- The cooperation includes a new webinar series. 29 September 2026: ECB researchers Giorgia De Nora and Mara Pirovano on the "losses-to-buffer" approach to calibrating a positive neutral CCyB. 11 December 2026: "Originate to distribute: FIDCs, payroll-deductible credit and the supervision of the credit market", with participation of the Central Bank.
+- Technical cooperations with partners that include the Central Bank of Brazil and the Open Finance Association, among others.
+- Three meetings a year. The 26th meeting (16 October 2026) discussed the countercyclical capital buffer (CCyB), the usability of capital buffers and bank credit.
+- New webinar series. 29 September 2026: ECB researchers Giorgia De Nora and Mara Pirovano on the "losses-to-buffer" approach to calibrating a positive neutral CCyB. 11 December 2026: "Originate to distribute: FIDCs, payroll-deductible credit and the supervision of the credit market".
+- First international seminar, with FGV Europe: one morning in Frankfurt, March 2027 (date and venue to be confirmed), by invitation. Theme: bank capital and loss allocation in resolution; the Credit Suisse case (2023) and AT1 write-downs; Brazil's bank resolution bill (PLP 281/2019).
 
 [Sources]
 - NEASF. Atividades e agenda do NEASF em 2026 (24/09/2026), ~/Repo/NEASF/00_coordenacao/NEASF_Atividades_e_Agenda_2026.pdf.
 - NEASF. Plano de Webinar, 11/12/2026 (2026.11.10), ~/Repo/NEASF/01_reunioes_eventos/webinarios/2026-12-11_fidcs_consignado/.
-- Photo: 26th meeting, 16/10/2026 (~/Repo/NEASF/01_reunioes_eventos/reunioes/26a_reuniao/fotos/).
--->
----
-<style scoped>
-.sem { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; margin-top: 4px; }
-.box { background: var(--fgv-navy); color: white; padding: 24px 28px; }
-.box p { color: white; margin: 0 0 10px; font-size: 19px; line-height: 1.4; }
-.box .t { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
-.box .s { color: #cfe6f5; font-size: 20px; margin-bottom: 18px; }
-.box .meta { color: #cfe6f5; font-size: 18px; }
-.sem h3 { margin: 0 0 10px; }
-.sem li { font-size: 20px; margin-bottom: 10px; }
-</style>
-
-## NEASF international seminar, Frankfurt
-
-<div class="sem">
-<div class="box">
-<p class="t">Banking Capital and Burden-Sharing Mechanisms</p>
-<p class="s">Who bears the losses when a bank fails?</p>
-<p class="meta"><strong style="color:white">When:</strong> March 2027 (date to be confirmed)</p>
-<p class="meta"><strong style="color:white">Format:</strong> one morning, by invitation, 20–30 participants, Chatham House Rule</p>
-<p class="meta"><strong style="color:white">Partners:</strong> NEASF and FGV Europe, developed with the Central Bank of Brazil</p>
-</div>
-<div>
-
-### Topics
-
-- Lessons from Credit Suisse (2023) for bail-in and AT1 instruments
-- Creditor hierarchy and the discretion of resolution authorities
-- Implications for Brazil's bank resolution bill (PLP 281/2019)
-- Expert panel envisaged: BIS, ECB, Central Bank of Brazil and practitioners
-
-</div>
-</div>
-
-<!--
-- First international event of NEASF, defined with the Central Bank of Brazil in October 2026, in partnership with FGV Europe.
-- Theme: bank capital and loss allocation in resolution. The Credit Suisse case (2023), where AT1 instruments were written down while shareholders received UBS shares, reopened questions on the credibility of bail-in and contractual write-down instruments.
-- Brazil's bank resolution bill (PLP 281/2019) is under consideration in Congress; loss allocation is one of the open questions.
-- Format: one morning in Frankfurt, March 2027 (date and venue to be confirmed); expert panel followed by a technical roundtable; speakers to be confirmed.
-
-[Sources]
 - NEASF. "Banking Capital and Burden-Sharing Mechanisms: event description and programme" (v3, 29/10/2026), ~/Repo/NEASF/01_reunioes_eventos/seminario_internacional/comunicacao/.
-- NEASF. Seminário Internacional, contexto e próximos passos (29/10/2026).
+- Photo: 26th meeting, 16/10/2026 (~/Repo/NEASF/01_reunioes_eventos/reunioes/26a_reuniao/fotos/).
 -->
 ---
 
@@ -544,7 +504,6 @@ img { display: block; margin: 0 auto; width: 900px; }
 .ty { display: grid; grid-template-columns: 1fr 300px; gap: 60px; align-items: center; }
 .ty h1 { font-size: 72px; margin: 0 0 24px; }
 .ty p { color: white; font-size: 24px; margin: 6px 0; }
-.ty .url { color: #cfe6f5; font-size: 18px; }
 .qr { background: white; padding: 16px; }
 .qr img { width: 100%; display: block; }
 .qr div { color: var(--fgv-navy); font-size: 15px; text-align: center; margin-top: 6px; }
@@ -556,7 +515,6 @@ img { display: block; margin: 0 auto; width: 900px; }
 # Thank you
 
 <p><strong>Lucas Thevenard</strong> · lucas.gomes@fgv.br</p>
-<p class="url">lthevenard.github.io/post</p>
 
 </div>
 <div class="qr">
