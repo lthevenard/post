@@ -1,5 +1,18 @@
 [
   {
+    "group": "fgv_global_bridges_2026",
+    "slug": "fgv_global_bridges_2026",
+    "title": "Regulation, Infrastructure and the Investment Environment in Brazil",
+    "event": "FGV Global Bridges (FGV Europe)",
+    "date": "2026-11-17",
+    "html": "fgv_global_bridges_2026.html",
+    "pdf": "fgv_global_bridges_2026.pdf",
+    "lang": "en",
+    "project": "project-regnum",
+    "archive": false,
+    "hide": false
+  },
+  {
     "group": "seminario_ia_participacao_social_2026",
     "slug": "seminario_ia_participacao_social_2026",
     "title": "Inteligência artificial e participação social",

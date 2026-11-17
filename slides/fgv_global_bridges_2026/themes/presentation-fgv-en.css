@@ -1,0 +1,61 @@
+/* @theme presentation-fgv-en */
+@import 'presentation-fgv-pt';
+
+:root { --fgv-divider: #0069a6; }
+
+section { background-image: url('backgrounds/fgv-en/default.png'); }
+section.title { background-image: url('backgrounds/fgv-en/cover.png'); }
+
+/* Primary divisions use a plain blue distinct from the textured cover. */
+section.section {
+  background-color: var(--fgv-divider);
+  background-image: none;
+  color: white;
+  justify-content: center;
+  padding: 66px 76px 60px;
+}
+section.section h1, section.section h2 {
+  color: white;
+  font-size: 60px;
+  line-height: 1.12;
+}
+section.section h3, section.section p, section.section strong,
+section.section a, section.section header, section.section footer,
+section.section::after, section.section .source { color: white; }
+/* Keep review labels legible even when a slide defines a scoped label color. */
+section.section .review-origin { color: white !important; }
+
+/* Secondary divisions retain the original layout and untouched FGV logo.
+   The CSS layer covers only the original sidebar (600 / 1920 = 31.25%). */
+section.subsection {
+  background-color: white;
+  background-image:
+    linear-gradient(to right, var(--fgv-divider) 31.25%, transparent 31.25%),
+    url('backgrounds/fgv-en/section.png');
+  justify-content: center;
+  padding-left: 464px;
+}
+section.subsection h1, section.subsection h2, section.subsection h3,
+section.subsection strong, section.subsection a, section.subsection mark,
+section.subsection li::marker { color: var(--fgv-divider); }
+section.subsection h1 { font-size: 55px; }
+section.subsection mark { background: transparent; font-weight: 700; }
+section.no-footer { background-image: url('backgrounds/fgv-en/nofooter.png'); }
+
+/* Running section labels stay clear of the FGV logo and long titles ellipsize. */
+section header {
+  top: 14px;
+  left: 76px;
+  right: 280px;
+  width: auto;
+  max-width: calc(100% - 356px);
+  color: var(--fgv-divider);
+  font-size: 18px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+section header a, section header strong { color: inherit; }
+section.title header, section.section header,
+section.subsection header, section.figure header { display: none; }
